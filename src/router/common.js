@@ -1,7 +1,7 @@
 import { RouteConstant } from "@/constants/route_constant";
-import LoginPage from "@/pages/LoginPage";
-import SignupPage from "@/pages/SignupPage";
-import index from "@/pages/index";
+import LoginPage from "@/pages/LoginPage.vue";
+import SignupPage from "@/pages/SignupPage.vue";
+import index from "@/pages/index.vue";
 
 const CommonRoutes = [
     {

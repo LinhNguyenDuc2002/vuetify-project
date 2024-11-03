@@ -12,6 +12,15 @@ const VietNam = {
     mail_address: 'Địa chỉ mail',
     phone_number: 'Số điện thoại',
     repeat_your_password: 'Nhập lại mật khẩu',
+    home: 'Trang chủ',
+    category: 'Danh mục',
+    about: 'Về chúng tôi',
+    search: 'Tìm kiếm',
+    view_orders: 'Xem đơn hàng',
+    edit_profile: 'Sửa thông tin hồ sơ',
+    settings: 'Cài đặt',
+    help: 'Trợ giúp',
+    logout: 'Đăng xuất',
 };
   
 export default VietNam;

@@ -12,6 +12,16 @@ const English = {
     mail_address: 'Mail address',
     phone_number: 'Phone number',
     repeat_your_password: 'Repeat your password',
+    home: 'Home',
+    category: 'Category',
+    about: 'About',
+    search: 'Search',
+    view_orders: 'View orders',
+    edit_profile: 'Edit profile',
+    settings: 'Settings',
+    help: 'Help & support',
+    logout: 'Log out',
+
 };
   
 export default English;

@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex justify-between mx-16 mb-5 h-75 align-center" style="margin-top: 10%;">
+    <div class="d-flex justify-between mx-16 mb-5 align-center">
         <v-card class="mx-16 my-6 w-50 text-center" elevation="0">
             <v-img max-width="100%" src="../assets/draw2.webp"></v-img>
         </v-card>
@@ -34,7 +34,7 @@
 
             <hr class="my-4">
             <div class="mt-8">
-                <v-btn class="w-100 mb-3 text-center" size="large" data-mdb-ripple-init style="background-color: #dd4b39; color: white;"
+                <v-btn class="w-100 mb-3 text-center mb-5" size="large" data-mdb-ripple-init style="background-color: #dd4b39; color: white;"
                 type="submit">
                     <v-icon class="mr-1" size="20" color="white">mdi-google</v-icon> {{ $t('sign_in_with_google') }}
                 </v-btn>
@@ -45,7 +45,7 @@
             </div>
 
             <v-card-text class="text-center">
-                <a class="text-blue text-decoration-none" href="#" @click.prevent="goTo(SignupPage)" rel="noopener noreferrer" target="_blank">
+                <a class="text-blue text-decoration-none" href="#" @click.prevent="goTo(signupPage)" rel="noopener noreferrer" target="_blank">
                     {{ $t('signup') }} <v-icon icon="mdi-chevron-right"></v-icon>
                 </a>
             </v-card-text>
@@ -59,7 +59,7 @@ import { RouteConstant } from '@/constants/route_constant';
 
 export default {
   data: () => ({
-    SignupPage: RouteConstant.SIGNUP_PAGE.name,
+    signupPage: RouteConstant.SIGNUP_PAGE.name,
     visible: false,
   }),
 
@@ -67,6 +67,10 @@ export default {
     goTo(page) {
         this.$router.push({ name: page });
     },
-  }
+  },
+
+//   mounted() {
+//     console.log(import.meta.env.VITE_API_URL);
+//   }
 }
 </script>
