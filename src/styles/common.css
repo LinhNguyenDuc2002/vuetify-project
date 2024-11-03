@@ -1,0 +1,7 @@
+.div-text {
+    color: gray;
+}
+
+.div-text:hover {
+    color: black;
+}

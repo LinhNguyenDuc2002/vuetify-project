@@ -6,7 +6,12 @@
             </div>
 
             <div class="w-75 d-flex h-100 pa-5 align-center">
-                <p class="cursor-pointer text-center mr-16" v-for="item in headerItems">{{ $t(`${item.title}`) }}</p>
+                <p 
+                    class="cursor-pointer text-center mr-16 div-text"
+                    @click="goTo(item.name)"
+                    v-for="item in headerItems">
+                    {{ $t(`${item.title}`) }}
+                </p>
             </div>
         </div>
 
@@ -65,6 +70,7 @@
 </template>
 
 <script>
+import '@/styles/common.css';
 import { HeaderIconItems, HeaderItems, MenuItems } from '@/constants/label_constant';
 import { RouteConstant } from '@/constants/route_constant';
 

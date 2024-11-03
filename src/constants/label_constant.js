@@ -1,3 +1,5 @@
+import { RouteConstant } from "./route_constant";
+
 export const ToolBarItems = [
     {
         title: 'sign_in_with_google',
@@ -44,12 +46,15 @@ export const ToolBarItems = [
 export const HeaderItems = [
     {
         title: 'home',
+        name: RouteConstant.HOME_PAGE.name,
     },
     {
         title: 'category',
+        name: RouteConstant.HOME_PAGE.name,
     },
     {
         title: 'about',
+        name: RouteConstant.HOME_PAGE.name,
     },
 ];
 
