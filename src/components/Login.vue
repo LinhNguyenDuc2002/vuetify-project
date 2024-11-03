@@ -9,7 +9,7 @@
 
             <div class="text-subtitle-1 text-medium-emphasis">{{ $t('username') }}</div>
 
-            <v-text-field density="compact" :placeholder="$t('username')" prepend-inner-icon="mdi-account-outline"
+            <v-text-field v-model="username" density="compact" :placeholder="$t('username')" prepend-inner-icon="mdi-account-outline"
                 variant="outlined"></v-text-field>
 
             <div class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between">
@@ -19,7 +19,7 @@
                 </a>
             </div>
 
-            <v-text-field :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'" :type="visible ? 'text' : 'password'"
+            <v-text-field v-model="password" :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'" :type="visible ? 'text' : 'password'"
                 density="compact" :placeholder="$t('enter_your_password')" prepend-inner-icon="mdi-lock-outline" variant="outlined"
                 @click:append-inner="visible = !visible"></v-text-field>
 
@@ -61,6 +61,8 @@ export default {
   data: () => ({
     signupPage: RouteConstant.SIGNUP_PAGE.name,
     visible: false,
+    username: '',
+    password: ''
   }),
 
   methods: {

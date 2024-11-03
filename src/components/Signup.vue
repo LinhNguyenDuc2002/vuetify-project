@@ -7,31 +7,40 @@
         <v-card class="mx-16 pa-12 w-50" elevation="0" rounded="lg">
             <v-card-title class="text-center mb-3">{{ $t('create_an_account') }}</v-card-title>
 
-            <v-text-field class="mb-2" density="compact" :placeholder="$t('username')" prepend-inner-icon="mdi-account-outline"
+            <v-form>
+                <v-text-field class="mb-2" density="compact" :placeholder="$t('username')" prepend-inner-icon="mdi-account-outline"
+                    variant="outlined"></v-text-field>
+
+                <v-text-field class="mb-2" density="compact" :placeholder="$t('mail_address')" prepend-inner-icon="mdi-email-outline"
                 variant="outlined"></v-text-field>
 
-            <v-text-field class="mb-2" density="compact" :placeholder="$t('mail_address')" prepend-inner-icon="mdi-email-outline"
-            variant="outlined"></v-text-field>
+                <v-text-field class="mb-2" density="compact" :placeholder="$t('phone_number')" prepend-inner-icon="mdi-phone-in-talk-outline"
+                variant="outlined"></v-text-field>
 
-            <v-text-field class="mb-2" density="compact" :placeholder="$t('phone_number')" prepend-inner-icon="mdi-phone-in-talk-outline"
-            variant="outlined"></v-text-field>
+                <v-text-field 
+                    class="mb-2" density="compact" :placeholder="$t('password')" prepend-inner-icon="mdi-lock-outline"
+                    :append-inner-icon="visible1 ? 'mdi-eye-off' : 'mdi-eye'" :type="visible1 ? 'text' : 'password'"
+                    @click:append-inner="visible1 = !visible1"
+                    variant="outlined">
+                </v-text-field>
 
-            <v-text-field class="mb-2" density="compact" :placeholder="$t('password')" prepend-inner-icon="mdi-lock-outline"
-            variant="outlined"></v-text-field>
+                <v-text-field class="mb-2" density="compact" :placeholder="$t('repeat_your_password')" prepend-inner-icon="mdi-key-outline"
+                    :append-inner-icon="visible2 ? 'mdi-eye-off' : 'mdi-eye'" :type="visible2 ? 'text' : 'password'"
+                    @click:append-inner="visible2 = !visible2"
+                    variant="outlined">
+                </v-text-field>
 
-            <v-text-field class="mb-2" density="compact" :placeholder="$t('repeat_your_password')" prepend-inner-icon="mdi-key-outline"
-            variant="outlined"></v-text-field>
+                <div class="form-check d-flex justify-content-center">
+                    <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3cg" />
+                    <label class="form-check-label" for="form2Example3g">
+                        I agree all statements in <a href="#!" class="text-blue text-decoration-none">Terms of service</a>
+                    </label>
+                </div>
 
-            <div class="form-check d-flex justify-content-center">
-                <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3cg" />
-                <label class="form-check-label" for="form2Example3g">
-                    I agree all statements in <a href="#!" class="text-blue text-decoration-none">Terms of service</a>
-                </label>
-            </div>
-
-            <v-btn class="mb-8 mt-8" color="blue" size="large" variant="tonal" block>
-                Register
-            </v-btn>
+                <v-btn type="submit" class="mb-8 mt-8" color="blue" size="large" variant="tonal" block>
+                    Register
+                </v-btn>
+            </v-form>
 
             <p class="text-center text-muted mt-5">
                 Have already an account?
@@ -47,7 +56,14 @@ import { RouteConstant } from '@/constants/route_constant';
 export default {
   data: () => ({
     loginPage: RouteConstant.LOGIN_PAGE.name,
-    visible: false,
+    visible1: false,
+    visible2: false,
+    userRegistration: {
+        username: '',
+        password: '',
+        email: '',
+        phone: '',
+    }
   }),
 
   methods: {
