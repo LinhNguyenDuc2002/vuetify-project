@@ -1,7 +1,6 @@
 <template>
-  <HelloWorld />
+  <LoginPage></LoginPage>
 </template>
 
 <script setup>
-  //
 </script>
