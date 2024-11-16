@@ -2,10 +2,13 @@
   <v-app>
     <v-main>
       <Header></Header>
-      <router-view style="padding-top: 5%;"/>
-      <Footer></Footer>
+      <div class="position-fixed h-100 w-100" style="top: 10%; overflow-y: auto;">
+        <router-view/>
+
+        <Footer></Footer>
+      </div>
     </v-main>
-    <!-- <AppFooter /> -->
+    <AppFooter class="position-fixed"/>
   </v-app>
 </template>
 
