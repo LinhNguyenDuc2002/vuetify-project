@@ -54,7 +54,6 @@
 </template>
 
 <script>
-import Footer from '@/components/Footer.vue';
 import { RouteConstant } from '@/constants/route_constant';
 
 export default {

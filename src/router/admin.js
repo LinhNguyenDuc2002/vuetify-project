@@ -1,5 +1,5 @@
 import { RouteConstant } from "@/constants/route_constant";
-import AdminHomePage from "@/pages/admin/AdminHomePage.vue";
+import AdminHomePage from "@/pages/AdminHomePage.vue";
 
 const AdminRoutes = [
     {

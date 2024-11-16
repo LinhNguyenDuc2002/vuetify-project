@@ -16,24 +16,23 @@
         </div>
 
         <div class="w-50 h-100 position-absolute right-0 d-flex justify-between">
-            <div class="w-75 h-100 d-flex justify-start align-center mr-10">
-                <v-text-field
-                    :loading="loading"
-                    append-inner-icon="mdi-magnify"
-                    density="compact"
-                    :label="$t('search')"
-                    variant="outlined"
-                    hide-details
-                    single-line
-                    @click:append-inner="onClick">
-                </v-text-field>
+            <v-text-field
+                class="h-100 align-center mt-2"
+                :loading="loading"
+                append-inner-icon="mdi-magnify"
+                density="compact"
+                :label="$t('search')"
+                variant="outlined"
+                hide-details
+                single-line
+                @click:append-inner="onClick">
+            </v-text-field>
 
-                <v-list class="d-flex">
-                    <v-list-item class="text-center" v-for="item in headerIconItems">
-                        <v-icon class="cursor-pointer" size="25">{{ item.icon }}</v-icon>
-                    </v-list-item>
-                </v-list>
-            </div>
+            <v-list class="d-flex">
+                <v-list-item class="text-center" v-for="item in headerIconItems">
+                    <v-icon class="cursor-pointer" size="25">{{ item.icon }}</v-icon>
+                </v-list-item>
+            </v-list>
 
             <v-menu>
                 <template v-slot:activator="{ props }">

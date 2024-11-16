@@ -1,5 +1,5 @@
 <template>
-    <v-card class="position-fixed h-screen border-thin" style="padding-top: 5%; width: 20%;" elevation="0">
+    <v-card class="h-100 border-thin position-fixed" style="width: 20%; overflow-y: auto;" elevation="0">
         <!-- <v-card-title>Tool Bar</v-card-title> -->
 
         <v-card-text class="h-100 py-0">
