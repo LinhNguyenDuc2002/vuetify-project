@@ -21,6 +21,11 @@ const VietNam = {
     settings: 'Cài đặt',
     help: 'Trợ giúp',
     logout: 'Đăng xuất',
+    toolbar: {
+        dashboard: 'Thống kê',
+        add_product: 'Thêm sản phẩm mới',
+        product_list: 'Danh sách sản phẩm'
+    }
 };
   
 export default VietNam;

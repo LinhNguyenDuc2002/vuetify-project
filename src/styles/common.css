@@ -5,3 +5,11 @@
 .div-text:hover {
     color: black;
 }
+
+.menu:hover {
+    background-color: #F5F5F5;
+}
+
+.chosen {
+    color: #03A9F4 !important;
+}

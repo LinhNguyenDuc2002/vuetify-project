@@ -21,6 +21,11 @@ const English = {
     settings: 'Settings',
     help: 'Help & support',
     logout: 'Log out',
+    toolbar: {
+        dashboard: 'Dashboard',
+        add_product: 'Add a new product',
+        product_list: 'Product list'
+    }
 
 };
   

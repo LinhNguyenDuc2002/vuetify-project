@@ -1,21 +1,19 @@
 <template>
-    <div style="height: 10%; z-index: 1;" class="position-fixed top-0 w-100 border-thin bg-white">
-        <div class="w-50 h-100 d-flex position-absolute">
-            <div class="h-100 w-25 pa-2 mr-5 cursor-pointer">
-                <v-img class="h-100 w-auto" src="../assets/logo.png"></v-img>
-            </div>
-
-            <div class="w-75 d-flex h-100 pa-5 align-center">
-                <p 
-                    class="cursor-pointer text-center mr-16 div-text"
-                    @click="goTo(item.name)"
-                    v-for="item in headerItems">
-                    {{ $t(`${item.title}`) }}
-                </p>
-            </div>
+    <div class="position-fixed top-0 w-100 border-thin bg-white d-flex" style="height: 10%; z-index: 1;">
+        <div class="left-0 h-100 pa-2 cursor-pointer position-absolute" style="width: 5%;">
+            <v-img class="h-100" src="/src/assets/logo.png"></v-img>
         </div>
 
-        <div class="w-50 h-100 position-absolute right-0 d-flex justify-between">
+        <div class="d-flex h-100 align-center position-absolute" style="margin-left: 10%;">
+            <p 
+                class="cursor-pointer text-center mr-16 div-text"
+                @click="goTo(item.name)"
+                v-for="item in headerItems">
+                {{ $t(`${item.title}`) }}
+            </p>
+        </div>
+
+        <div class="w-50 h-100 position-absolute right-0 d-flex justify-between" style="min-width: 50%;">
             <v-text-field
                 class="h-100 align-center mt-2"
                 :loading="loading"
