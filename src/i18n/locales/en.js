@@ -25,6 +25,17 @@ const English = {
         dashboard: 'Dashboard',
         add_product: 'Add a new product',
         product_list: 'Product list'
+    },
+    product: {
+        name: 'Product name',
+        category: 'Category',
+        description: 'Description',
+        price: 'Price',
+        quantity: 'Quantity'
+    },
+    button: {
+        add: 'Add',
+        delete: 'Delete'
     }
 
 };

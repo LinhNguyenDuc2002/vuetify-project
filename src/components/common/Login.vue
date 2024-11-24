@@ -1,7 +1,7 @@
 <template>
     <div class="d-flex justify-between mx-16 mb-5 align-center">
         <v-card class="mx-16 my-6 w-50 text-center" elevation="0">
-            <v-img max-width="100%" src="../assets/draw2.webp"></v-img>
+            <v-img max-width="100%" src="/src/assets/draw1.webp"></v-img>
         </v-card>
 
         <v-card class="mx-16 pa-12 w-50" elevation="0" rounded="lg">

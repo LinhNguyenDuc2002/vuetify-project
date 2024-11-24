@@ -10,6 +10,7 @@ const BaseApi = {
                     params: params
                 }
             );
+
             return response;
         }
         catch (error) {
@@ -27,6 +28,7 @@ const BaseApi = {
                     headers: header
                 }
             );
+
             return response;
         }
         catch (error) {
@@ -45,6 +47,7 @@ const BaseApi = {
                     headers: header
                 }
             );
+
             return response;
         }
         catch (error) {
@@ -62,6 +65,7 @@ const BaseApi = {
                     headers: header
                 }
             );
+            
             return response;
         }
         catch (error) {

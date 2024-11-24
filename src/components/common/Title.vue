@@ -1,10 +1,12 @@
 <template>
-    <div class="font-weight-bold text-caption mb-5">
-        <h1 v-if="title">{{ title }}</h1>
+    <div class="title">
+        <p v-if="title">{{ title }}</p>
     </div>
 </template>
 
 <script>
+import '@/styles/common.css';
+
 export default {
     props: {
         title: {

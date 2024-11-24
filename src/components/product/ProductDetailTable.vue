@@ -12,11 +12,11 @@
 
             <div class="w-25 pb-6 d-flex justify-between align-center">
                 <v-btn class="mr-auto" style="width: 45%;" color="blue" @click="changeOpenDialog(true)">
-                    <v-icon class="mr-3">mdi-plus</v-icon>Thêm
+                    <v-icon class="mr-3">mdi-plus</v-icon>{{ $t('button.add') }}
                 </v-btn>
 
                 <v-btn style="width: 45%;" color="blue">
-                    <v-icon class="mr-3">mdi-trash-can-outline</v-icon>Xóa
+                    <v-icon class="mr-3">mdi-trash-can-outline</v-icon>{{ $t('button.delete') }}
                 </v-btn>
             </div>
         </div>
@@ -115,6 +115,13 @@ export default {
                 volume: '0.0001',
             },
             ],
+        }
+    },
+
+    props: {
+        details: {
+            type: Array,
+            required: true
         }
     },
 
