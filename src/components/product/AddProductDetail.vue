@@ -76,7 +76,7 @@
 
                 <div class="d-flex justify-between">
                     <v-btn class="mr-auto" style="width: 20%;" color="blue" @click="changePopUpDialog(true)">Cancle</v-btn>
-                    <v-btn style="width: 20%;" color="blue">OK</v-btn>
+                    <v-btn style="width: 20%;" color="blue" @click="addDetail()">OK</v-btn>
                 </div>
             </v-card>
         </v-dialog>
@@ -121,6 +121,10 @@ export default {
         openDialog: {
             type: Boolean,
             required: true
+        },
+        details: {
+            type: Array,
+            required: true
         }
     },
 
@@ -153,6 +157,10 @@ export default {
             URL.revokeObjectURL(this.image);
             this.image = null;
             this.productDetail.image = null;
+        },
+
+        addDetail() {
+            this.details.push(this.productDetail);
         }
     }
 }

@@ -31,7 +31,9 @@ const VietNam = {
         category: 'Danh mục',
         description: 'Mô tả',
         price: 'Đơn giá',
-        quantity: 'Số lượng'
+        quantity: 'Số lượng',
+        image: 'Ảnh',
+        type: 'Tên loại sản phẩm'
     },
     button: {
         add: 'Thêm',
