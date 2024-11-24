@@ -1,6 +1,7 @@
-import { BASE_PRODUCT_SERVICE, BASE_API } from '../../constant/RouteConstant';
+// import { BASE_API } from '@/constants/constant';
 import BaseApi from './BaseApi';
 
+const BASE_API = "http://localhost:8082"
 const CONTEXT_PATH = "/api/product-service/category"
 
 const CategoryApi = {

@@ -12,8 +12,8 @@ import AdminRoutes from './admin'
 // import { routes } from 'vue-router/auto-routes'
 
 const routes = [
-  ...CommonRoutes,
-  ...AdminRoutes,
+  AdminRoutes,
+  CommonRoutes,
 ]
 
 const router = createRouter({

@@ -5,3 +5,19 @@
 .div-text:hover {
     color: black;
 }
+
+.menu:hover {
+    background-color: #F5F5F5;
+}
+
+.chosen {
+    color: #03A9F4 !important;
+}
+
+.title {
+    font-size: 1.25rem; 
+    line-height: 1.6; 
+    font-weight: 500;
+    margin-bottom: 25px;
+    text-transform: uppercase !important;
+}

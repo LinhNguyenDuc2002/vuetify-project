@@ -21,6 +21,22 @@ const VietNam = {
     settings: 'Cài đặt',
     help: 'Trợ giúp',
     logout: 'Đăng xuất',
+    toolbar: {
+        dashboard: 'Thống kê',
+        add_product: 'Thêm sản phẩm mới',
+        product_list: 'Danh sách sản phẩm'
+    },
+    product: {
+        name: 'Tên sản phẩm',
+        category: 'Danh mục',
+        description: 'Mô tả',
+        price: 'Đơn giá',
+        quantity: 'Số lượng'
+    },
+    button: {
+        add: 'Thêm',
+        delete: 'Xóa'
+    }
 };
   
 export default VietNam;
