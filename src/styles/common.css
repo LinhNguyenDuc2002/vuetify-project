@@ -21,3 +21,19 @@
     margin-bottom: 25px;
     text-transform: uppercase !important;
 }
+
+thead {
+    background-color: #B3E5FC;
+}
+
+.my-table tbody tr:hover {
+    background-color: #F5F5F5; /*grey-lighten-4*/
+}
+
+.arrow {
+    color: gray
+}
+
+.selected-arrow {
+    color: black
+}

@@ -31,7 +31,9 @@ const English = {
         category: 'Category',
         description: 'Description',
         price: 'Price',
-        quantity: 'Quantity'
+        quantity: 'Quantity',
+        image: 'Image',
+        type: 'Name'
     },
     button: {
         add: 'Add',

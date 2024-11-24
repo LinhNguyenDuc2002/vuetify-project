@@ -1,16 +1,21 @@
 <template>
     <div class="mt-5">
-        <div class="d-flex justify-between align-center">
+        <div class="d-flex justify-between align-center mb-5">
             <div class="w-25 mr-auto">
-                <v-select
+                <v-text-field
+                    class="h-100 align-center"
+                    :loading="loading"
+                    append-inner-icon="mdi-magnify"
                     density="compact"
-                    :placeholder="$t('username')"
-                    :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
-                    variant="outlined">
-                </v-select>
+                    :label="$t('search')"
+                    variant="outlined"
+                    hide-details
+                    single-line
+                    @click:append-inner="onClick">
+                </v-text-field>
             </div>
 
-            <div class="w-25 pb-6 d-flex justify-between align-center">
+            <div class="w-25 d-flex justify-between align-center">
                 <v-btn class="mr-auto" style="width: 45%;" color="blue" @click="changeOpenDialog(true)">
                     <v-icon class="mr-3">mdi-plus</v-icon>{{ $t('button.add') }}
                 </v-btn>
@@ -22,20 +27,48 @@
         </div>
 
         <div class="border-thin">
-            <v-data-table
-                v-model="selected"
-                :items="items"
-                item-value="name"
-                elevation="8"
-                show-select>
-            </v-data-table>
+            <table class="w-100 my-table">
+                <thead>
+                    <tr>
+                        <th>
+                            <v-checkbox
+                                v-model="selectAll"
+                                @change="toggleSelectAll"
+                                hide-details>
+                            </v-checkbox>
+                        </th>
+                        <th v-for="header in headers" class="text-start pl-3">{{ $t(header.text) }}</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr v-for="item in details" class="cursor-pointer">
+                        <td>
+                            <v-checkbox
+                                v-model="selected"
+                                :value="item.id"
+                                hide-details>
+                            </v-checkbox>
+                        </td>
+                        <td class="px-3">
+                            <v-img :src="item.image"></v-img>
+                        </td>
+                        <td class="px-3">{{ item.name }}</td>
+                        <td class="px-3">{{ item.price }}</td>
+                        <td class="px-3">{{ item.quantity }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <PaginationTable></PaginationTable>
         </div>
     </div>
 
-    <AddProductDetail v-if="openDialog" :openDialog="this.openDialog" @change-open-dialog="changeOpenDialog"></AddProductDetail>
+    <AddProductDetail v-if="openDialog" :openDialog="this.openDialog" @change-open-dialog="changeOpenDialog" :details="details"></AddProductDetail>
 </template>
 
 <script>
+import PaginationTable from '../common/PaginationTable.vue';
 import AddProductDetail from './AddProductDetail.vue';
 
 export default {
@@ -43,78 +76,14 @@ export default {
         return {
             openDialog: false,
             selected: [],
-            items: [
-            {
-                name: '🍎 Apple',
-                location: 'Washington',
-                height: '0.1',
-                base: '0.07',
-                volume: '0.0001',
-            },
-            {
-                name: '🍌 Banana',
-                location: 'Ecuador',
-                height: '0.2',
-                base: '0.05',
-                volume: '0.0002',
-            },
-            {
-                name: '🍇 Grapes',
-                location: 'Italy',
-                height: '0.02',
-                base: '0.02',
-                volume: '0.00001',
-            },
-            {
-                name: '🍉 Watermelon',
-                location: 'China',
-                height: '0.4',
-                base: '0.3',
-                volume: '0.03',
-            },
-            {
-                name: '🍍 Pineapple',
-                location: 'Thailand',
-                height: '0.3',
-                base: '0.2',
-                volume: '0.005',
-            },
-            {
-                name: '🍒 Cherries',
-                location: 'Turkey',
-                height: '0.02',
-                base: '0.02',
-                volume: '0.00001',
-            },
-            {
-                name: '🥭 Mango',
-                location: 'India',
-                height: '0.15',
-                base: '0.1',
-                volume: '0.0005',
-            },
-            {
-                name: '🍓 Strawberry',
-                location: 'USA',
-                height: '0.03',
-                base: '0.03',
-                volume: '0.00002',
-            },
-            {
-                name: '🍑 Peach',
-                location: 'China',
-                height: '0.09',
-                base: '0.08',
-                volume: '0.0004',
-            },
-            {
-                name: '🥝 Kiwi',
-                location: 'New Zealand',
-                height: '0.05',
-                base: '0.05',
-                volume: '0.0001',
-            },
+            selectAll: false,
+            headers: [
+                {text: 'product.image', value: 1},
+                {text: 'product.type', value: 2},
+                {text: 'product.price', value: 4},
+                {text: 'product.quantity', value: 5},
             ],
+           
         }
     },
 
@@ -126,6 +95,14 @@ export default {
     },
 
     methods: {
+        toggleSelectAll() {
+            if (this.selectAll) {
+                this.selected = this.details.map(item => item.id);
+            } else {
+                this.selected = [];
+            }
+        },
+
         changeOpenDialog(value) {
             this.openDialog = value;
         }
