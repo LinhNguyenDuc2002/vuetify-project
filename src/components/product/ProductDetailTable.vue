@@ -51,7 +51,7 @@
                             </v-checkbox>
                         </td>
                         <td class="px-3">
-                            <v-img :src="item.image"></v-img>
+                            <v-img :src="createObjectURL(item.image)"></v-img>
                         </td>
                         <td class="px-3">{{ item.name }}</td>
                         <td class="px-3">{{ item.price }}</td>
@@ -105,7 +105,14 @@ export default {
 
         changeOpenDialog(value) {
             this.openDialog = value;
-        }
+        },
+
+        createObjectURL(file) {
+            if(file instanceof File) {
+                return URL.createObjectURL(file);
+            }
+            return file;
+        },
     }
 }
 </script>

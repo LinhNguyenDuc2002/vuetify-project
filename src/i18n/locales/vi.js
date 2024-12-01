@@ -38,6 +38,12 @@ const VietNam = {
     button: {
         add: 'Thêm',
         delete: 'Xóa'
+    },
+    message: {
+        error: {
+            not_empty: 'Không được để trống',
+            not_image: 'Phải chọn ảnh sản phẩm' 
+        }
     }
 };
   

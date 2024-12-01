@@ -82,20 +82,7 @@ export default {
                 category_id: null,
                 images: [],
                 product_details: [
-                    {
-                        id: '1',
-                        name: 'test',
-                        image: null,
-                        price: 123,
-                        quantity: 12220
-                    },
-                    {
-                        id: '2',
-                        name: 'test',
-                        image: null,
-                        price: 123,
-                        quantity: 12220
-                    },
+                    
                 ]
             },
             images: [],

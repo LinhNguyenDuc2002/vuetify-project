@@ -38,6 +38,12 @@ const English = {
     button: {
         add: 'Add',
         delete: 'Delete'
+    },
+    message: {
+        error: {
+            not_empty: 'Can not be empty',
+            not_image: 'Must choose a image' 
+        }
     }
 
 };
