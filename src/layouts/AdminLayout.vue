@@ -12,6 +12,6 @@
       <Footer style="margin-left: 20%;"></Footer>
     </v-main>
 
-    <AppFooter class="position-fixed"/>
+    <!-- <AppFooter class="position-fixed"/> -->
   </v-app>
 </template>

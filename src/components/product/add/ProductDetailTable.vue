@@ -20,7 +20,7 @@
                     <v-icon class="mr-3">mdi-plus</v-icon>{{ $t('button.add') }}
                 </v-btn>
 
-                <v-btn style="width: 45%;" color="blue">
+                <v-btn style="width: 45%;" color="blue" @click="deleteSelected()">
                     <v-icon class="mr-3">mdi-trash-can-outline</v-icon>{{ $t('button.delete') }}
                 </v-btn>
             </div>
@@ -42,11 +42,11 @@
                 </thead>
 
                 <tbody>
-                    <tr v-for="item in details" class="cursor-pointer">
+                    <tr v-for="(item, index) in details" class="cursor-pointer" @click="">
                         <td>
                             <v-checkbox
                                 v-model="selected"
-                                :value="item.id"
+                                :value="index"
                                 hide-details>
                             </v-checkbox>
                         </td>
@@ -64,12 +64,17 @@
         </div>
     </div>
 
-    <AddProductDetail v-if="openDialog" :openDialog="this.openDialog" @change-open-dialog="changeOpenDialog" :details="details"></AddProductDetail>
+    <AddProductDetail v-if="openDialog" 
+        :openDialog="this.openDialog" 
+        @change-open-dialog="changeOpenDialog" 
+        :details="details">
+    </AddProductDetail>
 </template>
 
 <script>
-import PaginationTable from '../common/PaginationTable.vue';
+import PaginationTable from '@/components/common/PaginationTable.vue';
 import AddProductDetail from './AddProductDetail.vue';
+
 
 export default {
     data() {
@@ -91,13 +96,13 @@ export default {
         details: {
             type: Array,
             required: true
-        }
+        },
     },
 
     methods: {
         toggleSelectAll() {
             if (this.selectAll) {
-                this.selected = this.details.map(item => item.id);
+                this.selected = this.details.map((item, index) => index);
             } else {
                 this.selected = [];
             }
@@ -113,6 +118,13 @@ export default {
             }
             return file;
         },
+
+        deleteSelected() {
+            const updatedDetails = this.details.filter((item, index) => !this.selected.includes(index));
+            this.$emit('update-details', updatedDetails);
+            this.selected = [];
+            this.selectAll = false;
+        }
     }
 }
 </script>

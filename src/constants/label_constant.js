@@ -13,6 +13,7 @@ export const ToolBarItems = [
     {
         title: 'toolbar.product_list',
         icon: 'mdi-format-list-bulleted',
+        path: RouteConstant.PRODUCT_LIST_PAGE.path
     },
     {
         title: 'mail_address',
