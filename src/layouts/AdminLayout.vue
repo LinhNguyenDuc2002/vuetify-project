@@ -7,7 +7,7 @@
 
       <Breadcrumbs></Breadcrumbs>
 
-      <router-view style="margin-top: 6%; margin-left: 20%;" class="pa-10"/>
+      <router-view style="margin-top: 3%; margin-left: 20%;" class="pa-10"/>
 
       <Footer style="margin-left: 20%;"></Footer>
     </v-main>
