@@ -2,7 +2,7 @@
     <div class="text-center">
         <v-dialog v-model="dialog" class="d-flex justify-center" max-width="60%" max-height="90%" persistent>
             <v-icon size="25" class="position-absolute ma-2 right-0 cursor-pointer" @click="changePopUpDialog(true)" style="z-index: 1;">mdi-window-close</v-icon>
-            <v-form ref="form">
+            <v-form ref="form" @submit.prevent="checkForm">
                 <v-card class="pa-10 h-100 w-100">
                     <!-- <template v-slot:actions>
                         <v-btn class="ms-auto" text="Ok" @click="dialog = false"></v-btn>
@@ -18,7 +18,7 @@
                                     density="compact" 
                                     :placeholder="$t('product.type')"
                                     variant="outlined"
-                                    :rules="requiredRule">
+                                    :error-messages="message.nameError">
                                 </v-text-field>
                             </div>
 
@@ -31,7 +31,7 @@
                                         density="compact" 
                                         :placeholder="$t('product.price')"
                                         variant="outlined"
-                                        :rules="requiredRule">
+                                        :error-messages="message.priceError">
                                     </v-text-field>
                                 </div>
 
@@ -43,7 +43,7 @@
                                         density="compact" 
                                         :placeholder="$t('product.quantity')"
                                         variant="outlined"
-                                        :rules="requiredRule">
+                                        :error-messages="message.quantityError">
                                     </v-text-field>
                                 </div>
                             </div>
@@ -56,7 +56,7 @@
                                     <v-btn @click="openFileDialog" color="blue" elevation="0">Chọn ảnh</v-btn>
                                 </div>
 
-                                <p v-if="imageMessage" class="h-100 text-center error-message">{{ imageMessage }}</p>
+                                <p class="h-100 text-center error-message">{{ message.imageMessage }}</p>
                             </div>
 
                             <div class="preview-detail" style="min-height: 85px">
@@ -84,7 +84,7 @@
 
                     <div class="d-flex justify-between">
                         <v-btn class="mr-auto" style="width: 20%;" color="blue" @click="changePopUpDialog(true)">Cancle</v-btn>
-                        <v-btn style="width: 20%;" color="blue" @click="checkForm()">OK</v-btn>
+                        <v-btn style="width: 20%;" color="blue" type="submit">OK</v-btn>
                     </div>
                 </v-card>
             </v-form>
@@ -108,7 +108,7 @@
 
 <script>
 import { ERROR_MESSAGE } from '@/constants/message_constants';
-import { RequiredRule } from '@/rules/Rule';
+import { PriceRule, QuantityRule, RequiredRule } from '@/rules/Rule';
 import '@/styles/common.css';
 
 export default {
@@ -124,9 +124,12 @@ export default {
                 image: null,
             },
             statusProduct: false,
-            imageMessage: '',
-            validImage: false,
-            requiredRule: RequiredRule(this.$i18n.t),
+            message: {
+                nameError: '',
+                imageMessage: '',
+                priceError: '',
+                quantityError: '',
+            },
         }
     },
 
@@ -138,7 +141,7 @@ export default {
         details: {
             type: Array,
             required: true
-        }
+        },
     },
 
     watch: {
@@ -176,7 +179,7 @@ export default {
             fileArray.forEach(file => {
                 this.productDetail.image = file;
             });
-            this.imageMessage = '';
+            this.message.imageMessage = '';
         },
 
         createObjectURL(file) {
@@ -190,26 +193,30 @@ export default {
         },
 
         checkForm() {
-            const isValid = this.$refs.form.validate();
+            const errorName = RequiredRule.map(rule => rule(this.productDetail.name)).find(error => error !== true);
+            this.message.nameError = errorName ? this.$t(errorName) : '';
+
+            const errorPrice = PriceRule.map(rule => rule(this.productDetail.name)).find(error => error !== true);
+            this.message.priceError = errorPrice ? this.$t(errorPrice) : '';
+
+            const errorQuantity = QuantityRule.map(rule => rule(this.productDetail.name)).find(error => error !== true);
+            this.message.quantityError = errorQuantity ? this.$t(errorQuantity) : '';
+
+            let validImage = false;
             if(this.productDetail.image == null) {
-                this.imageMessage = this.$t(ERROR_MESSAGE.not_image);
-                this.validImage = true;
+                this.message.imageMessage = this.$t(ERROR_MESSAGE.not_image);
+                validImage = true;
             }
 
-            
-            if (!isValid && !this.validImage) {
-                console.log("ok")
+            if(!errorName && !errorPrice && !errorQuantity && !validImage) {
                 this.addDetail();
             }
-            console.log("ok1")
         },
 
         addDetail() {
-            console.log("ok")
             this.details.push(this.productDetail);
             this.changeDialog();
         },
-        
     }
 }
 </script>

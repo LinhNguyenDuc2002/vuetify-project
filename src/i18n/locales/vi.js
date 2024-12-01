@@ -42,7 +42,11 @@ const VietNam = {
     message: {
         error: {
             not_empty: 'Không được để trống',
-            not_image: 'Phải chọn ảnh sản phẩm' 
+            not_image: 'Bắt buộc chọn ảnh sản phẩm',
+            maximum_image_capacity: 'Số lượng ảnh vượt quá cho phép',
+            maximum_length: 'Vượt quá độ dài tối đa',
+            required_select: 'Bắt buộc chọn danh mục',
+            required_product_detail: 'Bắt buộc phải có tối thiểu một loại sản phẩm'
         }
     }
 };

@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import Breadcrumbs from '@/components/common/Breadcrumbs.vue';
 import Title from '@/components/common/Title.vue';
-import AddProduct from '@/components/product/AddProduct.vue';
-import ProductDetailTable from '@/components/product/ProductDetailTable.vue';
+import AddProduct from '@/components/product/add/AddProduct.vue';
 </script>
 
 <template>

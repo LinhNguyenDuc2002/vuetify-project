@@ -5,6 +5,7 @@ const LOGIN_PATH = HOME_PATH + "/login";
 const SIGNUP_PATH = HOME_PATH + "/signup";
 
 const ADD_PRODUCT_PATH = ADMIN_PATH + "/add-product";
+const PRODUCT_LIST_PATH = ADMIN_PATH + "/all-products";
 
 export const RouteConstant = {
     HOME_PAGE: {
@@ -29,4 +30,8 @@ export const RouteConstant = {
         path: ADD_PRODUCT_PATH,
         name: 'AddProduct',
     },
+    PRODUCT_LIST_PAGE: {
+        path: PRODUCT_LIST_PATH,
+        name: 'ProductList'
+    }
 };
