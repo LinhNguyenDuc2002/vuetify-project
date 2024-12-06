@@ -1,5 +1,5 @@
 import { RouteConstant } from "@/constants/route_constant";
-import Default from "@/layouts/Default.vue";
+import Default from "@/layouts/default.vue";
 import LoginPage from "@/pages/auth/LoginPage.vue";
 import SignupPage from "@/pages/auth/SignupPage.vue";
 import index from "@/pages/index.vue";

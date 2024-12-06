@@ -32,7 +32,7 @@
                 </v-list-item>
             </v-list>
 
-            <v-menu>
+            <v-menu v-if="userStore.isLoggedIn">
                 <template v-slot:activator="{ props }">
                     <v-avatar class="text-center h-100 d-flex justify-end align-center mx-5 cursor-pointer" style="width: 15%;" v-bind="props">
                         <v-icon size="45" icon="mdi-account-circle"></v-icon>
@@ -40,10 +40,10 @@
                 </template>
 
                 <v-list class="pa-3" min-width="250px">
-                    <v-list-item class="cursor-pointer">Linh Nguyen Duc</v-list-item>
+                    <v-list-item class="cursor-pointer">{{ userStore.userInfo }}</v-list-item>
                     <hr class="my-1">
                     <v-list-item v-for="(item, index) in menuItems" :key="index" :value="index">
-                        <v-row class="w-100 h-100" no-gutters>
+                        <v-row class="w-100 h-100" @click="handleClick(item.name)" no-gutters>
                             <v-col cols="2">
                                 <v-icon>{{ item.icon }}</v-icon>
                             </v-col>
@@ -56,12 +56,11 @@
                 </v-list>
             </v-menu>
 
-            <!-- <div class="d-flex justify-end align-center mx-5" style="width: 15%;">
+            <div v-else class="d-flex justify-end align-center mr-5" style="width: 18%;">
                 <v-btn class="h-50 w-100" color="blue" size="large" variant="tonal" block @click="goTo(loginPage)">
                     {{ $t('login') }}
-                    <v-icon class="ml-2">mdi-login</v-icon>
                 </v-btn>
-            </div> -->
+            </div>
         </div>
     </div>
 </template>
@@ -70,9 +69,13 @@
 import '@/styles/common.css';
 import { HeaderIconItems, HeaderItems, MenuItems } from '@/constants/label_constant';
 import { RouteConstant } from '@/constants/route_constant';
+import { useUserStore } from '@/stores/app';
+import { ACCESS_TOKEN } from '@/constants/security_constant';
+import UserApi from '@/services/api/UserApi';
 
 export default {
     data: () => ({
+        userStore: null,
         headerItems: HeaderItems,
         headerIconItems: HeaderIconItems,
         menuItems: MenuItems,
@@ -80,6 +83,21 @@ export default {
         loaded: false,
         loading: false,
     }),
+
+    created() {
+        this.userStore = useUserStore();
+    },
+
+    async mounted() {
+        if(sessionStorage.getItem(ACCESS_TOKEN)) {
+            const userInfo = await UserApi.getLoggedInUser();
+            if(userInfo != null && userInfo.code === 200) {
+                console.log(userInfo)
+                const showName = userInfo.data.first_name + " " + userInfo.data.last_name;
+                this.userStore.login(showName);
+            }
+        }
+    },
 
     methods: {
         onClick() {
@@ -94,6 +112,19 @@ export default {
         goTo(page) {
             this.$router.push({ name: page });
         },
+
+        logout() {
+            console.log("1")
+            this.userStore.logout();
+            sessionStorage.removeItem(SecurityConstant.ACCESS_TOKEN);
+            sessionStorage.removeItem(SecurityConstant.REFRESH_TOKEN);
+        },
+
+        handleClick(name) {
+            if(name === 'logout') {
+                this.logout();
+            }
+        }
     },
 }
 </script>

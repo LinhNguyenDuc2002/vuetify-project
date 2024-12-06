@@ -22,3 +22,13 @@ export const QuantityRule = [
     v => (Number(v) >= 0) || ERROR_MESSAGE.minimum_value,
     v => (Number(v) <= 1000000000) || ERROR_MESSAGE.maximum_value
 ];
+
+export const UsernameLoginRule = [
+    v => !!v || ERROR_MESSAGE.username_not_empty,
+    v => (typeof v === 'string' && v.trim() !== '') || ERROR_MESSAGE.username_not_empty,
+];
+
+export const PasswordLoginRule = [
+    v => !!v || ERROR_MESSAGE.password_not_empty,
+    v => (typeof v === 'string' && v.trim() !== '') || ERROR_MESSAGE.password_not_empty,
+];

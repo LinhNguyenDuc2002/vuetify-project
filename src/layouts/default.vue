@@ -3,7 +3,7 @@
     <v-main>
       <Header></Header>
 
-      <router-view style="margin-top: 3%;" />
+      <router-view style="margin-top: 2%;" />
 
       <Footer></Footer>
     </v-main>
