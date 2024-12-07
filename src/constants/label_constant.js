@@ -122,5 +122,6 @@ export const MenuItems = [
     {
         title: 'logout',
         icon: 'mdi-logout',
+        name: 'logout'
     },
 ];

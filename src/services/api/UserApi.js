@@ -1,7 +1,6 @@
-import { BASE_API } from '../../constant/RouteConstant';
-import * as HeaderParams from '../../constant/SecurityConstant';
-
+import { ENV_BASE_API } from '@/constants/env_constant';
 import BaseApi from './BaseApi';
+import * as HeaderParam from '@/constants/header_constant';
 
 const CONTEXT_PATH = "/api/user-service/user"
 
@@ -9,11 +8,11 @@ const UserApi = {
     getLoggedInUser: async () => {
         const token = sessionStorage.getItem('access_token');
 
-        var uri = `${BASE_API}${CONTEXT_PATH}/me`;
+        var uri = `${ENV_BASE_API}${CONTEXT_PATH}/me`;
 
         var header = {
-            'Content-Type': 'application/json',
-            [HeaderParams.AUTHORIZATION]: `Bearer ${token}`
+            [HeaderParam.CONTENT_TYPE]: 'application/json',
+            [HeaderParam.AUTHORIZATION]: `Bearer ${token}`
         }
 
         var params = {}
@@ -26,16 +25,17 @@ const UserApi = {
     },
 
     signup: async (data) => {
-        var uri = `${BASE_API}${CONTEXT_PATH}`;
+        var uri = `${ENV_BASE_API}${CONTEXT_PATH}/customer`;
 
         var header = {
-            'Content-Type': 'application/json'
+            [HeaderParam.CONTENT_TYPE]: 'application/json',
         }
 
         const response = await BaseApi.post(uri, data, header);
-        console.log("Response: " + JSON.stringify(response, null, 2));
-        var { data } = response;
-        return data;
+        if(response == null) {
+            return null;
+        }
+        return response.data;
     }
 };
 

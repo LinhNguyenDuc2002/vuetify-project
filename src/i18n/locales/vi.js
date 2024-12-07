@@ -46,7 +46,30 @@ const VietNam = {
             maximum_image_capacity: 'Số lượng ảnh vượt quá cho phép',
             maximum_length: 'Vượt quá độ dài tối đa',
             required_select: 'Bắt buộc chọn danh mục',
-            required_product_detail: 'Bắt buộc phải có tối thiểu một loại sản phẩm'
+            required_product_detail: 'Bắt buộc phải có tối thiểu một loại sản phẩm',
+            username_not_empty: 'Tên đăng nhập không được để trống',
+            username_no_spaces: 'Tên đăng nhập không thể chứa khoảng trắng',
+            password_not_empty: 'Mật khẩu không được để trống',
+            login_fail: 'Tên đăng nhập hoặc mật khẩu không chính xác',
+            email_not_empty: 'Email không được để trống',
+            email_invalid: 'Đảm bảo địa chỉ email có định dạng đúng, ví dụ: abc@domain.com',
+            email_format: 'Email không được chứa khoảng trắng hoặc ký tự đặc biệt không hợp lệ',
+            password_length: 'Mật khẩu phải có ít nhất 8 ký tự.',
+            password_uppercase: 'Mật khẩu phải có ít nhất một ký tự chữ hoa',
+            password_lowercase: 'Mật khẩu phải có ít nhất một ký tự chữ thường',
+            password_number: 'Mật khẩu phải có ít nhất một số',
+            password_special: 'Mật khẩu phải có ít nhất một ký tự đặc biệt (@, #, $, %)',
+            password_no_spaces: 'Mật khẩu không thể chứa khoảng trắng',
+            repeat_password: 'Mật khẩu không khớp',
+            term_service: 'Bạn chưa đồng ý với điều khoản dịch vụ'
+        }
+    },
+    rule: {
+        password: {
+            length: 'Mật khẩu phải có ít nhất 8 ký tự',
+            case: 'Phải có ít nhất một chữ cái viết hoa và một chữ cái viết thường',
+            number: 'Phải chứa ít nhất một chữ số',
+            special: 'Bao gồm ít nhất một ký tự đặc biệt (ví dụ: @, #, $, %, &, *)',
         }
     }
 };

@@ -107,7 +107,7 @@
 </style>
 
 <script>
-import { ERROR_MESSAGE } from '@/constants/message_constants';
+import { ERROR_MESSAGE } from '@/constants/message';
 import { PriceRule, QuantityRule, RequiredRule } from '@/rules/Rule';
 import '@/styles/common.css';
 

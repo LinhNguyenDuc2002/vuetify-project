@@ -1,28 +1,34 @@
-import { BASE_API } from '../../constant/RouteConstant';
-import * as HeaderParams from '../../constant/SecurityConstant';
-
+import * as SecurityConstant from '@/constants/security_constant';
+import * as HeaderParam from '@/constants/header_constant';
+import { ENV_BASE_API, ENV_CLIENT_ID, ENV_CLIENT_SECRET, ENV_GRANT_TYPE } from '@/constants/env_constant';
 import BaseApi from './BaseApi';
 
 const CONTEXT_PATH = "/api/user-service/oauth2/token"
 
 const AuthApi = {
-    login: async (data) => {
-        var uri = `${BASE_API}${CONTEXT_PATH}`;
+    login: async (username, password) => {
+        var uri = `${ENV_BASE_API}${CONTEXT_PATH}`;
 
         var header = {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            [HeaderParams.HEADER_ORIGIN]: HeaderParams.HEADER_ORIGIN_VALUE
+            [HeaderParam.CONTENT_TYPE]: 'application/x-www-form-urlencoded',
+            [HeaderParam.ACCEPT_LANGUAGE]: 'vi',
+            'x-origin': 'abc'
+        }
+
+        var data = {
+            [SecurityConstant.CLIENT_ID]: ENV_CLIENT_ID,
+            [SecurityConstant.CLIENT_SECRET]: ENV_CLIENT_SECRET,
+            [SecurityConstant.GRANT_TYPE]: ENV_GRANT_TYPE,
+            [SecurityConstant.USERNAME]: username,
+            [SecurityConstant.PASSWORD]: password,
         }
 
         const response = await BaseApi.post(uri, data, header);
         if(response == null) {
             return null;
         }
-        var result = response.data;
-        sessionStorage.setItem('access_token', result.access_token);
-        sessionStorage.setItem('refresh_token', result.refresh_token);
         
-        return result;
+        return response;
     },
     
     // otp: async (data) => {
