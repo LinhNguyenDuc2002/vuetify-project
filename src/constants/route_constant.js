@@ -3,6 +3,7 @@ const ADMIN_PATH = "/admin";
 
 const LOGIN_PATH = HOME_PATH + "/login";
 const SIGNUP_PATH = HOME_PATH + "/signup";
+const OTP_PATH = SIGNUP_PATH + "/verify-otp";
 
 const ADD_PRODUCT_PATH = ADMIN_PATH + "/add-product";
 const PRODUCT_LIST_PATH = ADMIN_PATH + "/all-products";
@@ -19,6 +20,10 @@ export const RouteConstant = {
     SIGNUP_PAGE: {
         path: SIGNUP_PATH,
         name: 'SignupPage',
+    },
+    OTP_PAGE: {
+        path: OTP_PATH,
+        name: 'OTPPage',
     },
 
     // Admin

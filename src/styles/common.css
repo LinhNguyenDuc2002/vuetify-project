@@ -48,3 +48,14 @@ thead {
     transition-duration: 150ms;
     color: rgb(176,0,32,1);
 }
+
+.message {
+    font-size: 12px;
+    line-height: 12px;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+    transition-duration: 150ms;
+    color: black;
+}

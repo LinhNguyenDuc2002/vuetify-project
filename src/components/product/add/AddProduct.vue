@@ -80,7 +80,7 @@ input[type="file"] {
 <script>
 import CategoryApi from '@/services/api/CategoryApi';
 import { RequiredRule, SelectRule } from '../../../rules/Rule';
-import { ERROR_MESSAGE } from '../../../constants/message_constants';
+import { ERROR_MESSAGE } from '../../../constants/message';
 
 export default {
     data () {

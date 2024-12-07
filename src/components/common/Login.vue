@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import { ERROR_MESSAGE } from '@/constants/message_constants';
+import { ERROR_MESSAGE } from '@/constants/message';
 import { RouteConstant } from '@/constants/route_constant';
 import * as SecurityConstant from '@/constants/security_constant';
 import { PasswordLoginRule, UsernameLoginRule } from '@/rules/Rule';

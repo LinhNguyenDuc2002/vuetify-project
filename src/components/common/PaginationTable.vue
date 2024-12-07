@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { PAGINATION } from '@/constants/variable_constants';
+import { PAGINATION } from '@/constants/variable_constant';
 
 export default {
     data() {

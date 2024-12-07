@@ -25,16 +25,17 @@ const UserApi = {
     },
 
     signup: async (data) => {
-        var uri = `${BASE_API}${CONTEXT_PATH}`;
+        var uri = `${ENV_BASE_API}${CONTEXT_PATH}/customer`;
 
         var header = {
-            'Content-Type': 'application/json'
+            [HeaderParam.CONTENT_TYPE]: 'application/json',
         }
 
         const response = await BaseApi.post(uri, data, header);
-        console.log("Response: " + JSON.stringify(response, null, 2));
-        var { data } = response;
-        return data;
+        if(response == null) {
+            return null;
+        }
+        return response.data;
     }
 };
 
