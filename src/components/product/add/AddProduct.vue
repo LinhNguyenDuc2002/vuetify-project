@@ -81,6 +81,7 @@ input[type="file"] {
 import CategoryApi from '@/services/api/CategoryApi';
 import { RequiredRule, SelectRule } from '../../../rules/Rule';
 import { ERROR_MESSAGE } from '../../../constants/message';
+import ProductApi from '@/services/api/ProductApi';
 
 export default {
     data () {
@@ -165,10 +166,36 @@ export default {
             if(this.product.product_details.length === 0) {
                 this.message.detailsError = this.$t(ERROR_MESSAGE.required_product_detail);
             }
+
+            if(!errorName && !errorCategory && !validImage && this.product.product_details.length > 0) {
+                this.addProduct()
+            }
         },
 
         setDetailMessage(message) {
             this.message.detailsError = message;
+        },
+
+        async addProduct() {
+            console.log(this.product)
+            let formData = new FormData();
+            formData.append('name', this.product.name);
+            formData.append('description', this.product.description);
+            formData.append('categoryId', this.product.category_id);
+
+            this.product.images.forEach((item, index) => {
+                formData.append(`images[${index}]`, item);
+            });
+
+            this.product.product_details.forEach((item, index) => {
+                formData.append(`productDetails[${index}].name`, item.name);
+                formData.append(`productDetails[${index}].description`, item.description);
+                formData.append(`productDetails[${index}].quantity`, item.quantity);
+                formData.append(`productDetails[${index}].price`, item.price);
+                formData.append(`productDetails[${index}].image`, item.image);
+            });
+        
+            const response = await ProductApi.add(formData);
         }
     },
 

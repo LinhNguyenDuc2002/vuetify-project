@@ -1,5 +1,5 @@
 <template>
-    <div class="position-fixed top-0 w-100 border-thin bg-white d-flex" style="height: 10%; z-index: 1;">
+    <div class="position-fixed top-0 w-100 border-thin bg-white d-flex" style="min-height: 10%; z-index: 1;">
         <div class="left-0 h-100 pa-2 cursor-pointer position-absolute" style="width: 5%;">
             <v-img class="h-100" src="/src/assets/logo.png"></v-img>
         </div>

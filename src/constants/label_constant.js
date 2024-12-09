@@ -2,19 +2,27 @@ import { RouteConstant } from "./route_constant";
 
 export const ToolBarItems = [
     {
-        title: 'toolbar.dashboard',
-        icon: 'mdi-view-dashboard-outline',
+        title: 'toolbar.home',
+        icon: 'mdi-home-outline',
     },
+
     {
-        title: 'toolbar.add_product',
-        icon: 'mdi-plus',
-        path: RouteConstant.ADD_PRODUCT_PAGE.path
+        title: 'toolbar.product',
+        icon: 'mdi-shopping-outline',
+        child: [
+            {
+                title: 'toolbar.product_list',
+                icon: 'mdi-format-list-bulleted',
+                path: RouteConstant.PRODUCT_LIST_PAGE.path
+            },
+            {
+                title: 'toolbar.add_product',
+                icon: 'mdi-plus',
+                path: RouteConstant.ADD_PRODUCT_PAGE.path
+            },
+        ]
     },
-    {
-        title: 'toolbar.product_list',
-        icon: 'mdi-format-list-bulleted',
-        path: RouteConstant.PRODUCT_LIST_PAGE.path
-    },
+    
     {
         title: 'mail_address',
         icon: 'mdi-chevron-up-circle',
@@ -22,12 +30,10 @@ export const ToolBarItems = [
             
         }
     },
+    
     {
-        title: 'phone_number',
-        icon: 'mdi-chevron-up-circle',
-        child: {
-            
-        }
+        title: 'toolbar.dashboard',
+        icon: 'mdi-view-dashboard-outline',
     },
     {
         title: 'repeat_your_password',

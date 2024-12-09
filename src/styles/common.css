@@ -10,8 +10,13 @@
     background-color: #F5F5F5;
 }
 
-.chosen {
+.parent-chosen {
     color: #03A9F4 !important;
+}
+
+.child-chosen {
+    color: #03A9F4 !important;
+    background-color: #F5F5F5;
 }
 
 .title {

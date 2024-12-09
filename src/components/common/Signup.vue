@@ -72,7 +72,7 @@
 import { RouteConstant } from '@/constants/route_constant';
 import { EmailRule, PasswordRule, RequiredRule, UsernameRule } from '@/rules/Rule';
 import RulePopUp from './RulePopUp.vue';
-import { PasswordRuleMessage } from '@/rules/Message';
+import { PasswordRuleMessage } from '@/rules/message';
 import { ERROR_MESSAGE } from '@/constants/message';
 import UserApi from '@/services/api/UserApi';
 
@@ -123,7 +123,7 @@ export default {
         const errorRepeatPassword = RequiredRule.map(rule => rule(this.repeatPassword)).find(error => error !== true);
         this.message.repeatError = errorRepeatPassword ? errorRepeatPassword : '';
 
-        const check = false;
+        let check = false;
         if(!errorRepeatPassword) {
             if(this.userRegistration.password !== this.repeatPassword) {
                 this.message.signupError = ERROR_MESSAGE.repeat_password;
@@ -136,15 +136,17 @@ export default {
         }
 
         if(!errorUsername && !errorPassword && !errorEmail && !errorPhone && !errorRepeatPassword && !check) {
-            console.log("OK")
+            this.signup()
         }
     },
 
     async signup() {
-        const response = await UserApi.signup(this.userRegistration);
-        if(response.code === 200) {
-            this.goTo()
-        }
+        console.log(this.userRegistration);
+        this.goTo('OTPPage');
+        // const response = await UserApi.signup(this.userRegistration);
+        // if(response.code === 200) {
+        //     this.goTo('OTPPage');
+        // }
     },
 
     handleMouseDown() {

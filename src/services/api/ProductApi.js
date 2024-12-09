@@ -1,23 +1,21 @@
-import { BASE_API } from '../../constant/RouteConstant';
-import { DEFAULT_SIZE } from '../../constant/ParameterConstant';
-import * as HeaderParams from '../../constant/SecurityConstant';
-
+import { ENV_BASE_API } from '@/constants/env_constant';
 import BaseApi from './BaseApi';
+import * as HeaderParam from '@/constants/header_constant';
 
 const CONTEXT_PATH = "/api/product-service/product"
 
 const ProductApi = {
-    getAll: async (page, category) => {
-        var uri = `${BASE_API}${CONTEXT_PATH}`;
+    getAll: async (page, size, category) => {
+        var uri = `${ENV_BASE_API}${CONTEXT_PATH}`;
 
         var params = {
             page: page,
-            size: DEFAULT_SIZE,
+            size: size,
             category: category ? category : ''
         }
 
         var header = {
-            [HeaderParams.CONTENT_TYPE]: [HeaderParams.APPLICATION_JSON]
+            [HeaderParam.CONTENT_TYPE]: [HeaderParam.APPLICATION_JSON]
         }
 
         const response = await BaseApi.get(uri, header, params)
@@ -27,46 +25,40 @@ const ProductApi = {
         return response;
     },
 
-    get: async (id) => {
-        // const token = sessionStorage.getItem('access_token');
+    // get: async (id) => {
+    //     // const token = sessionStorage.getItem('access_token');
 
-        var uri = `${BASE_API}${CONTEXT_PATH}/${id}`;
+    //     var uri = `${BASE_API}${CONTEXT_PATH}/${id}`;
 
-        var params = {}
+    //     var params = {}
 
-        var header = {
-            [HeaderParams.CONTENT_TYPE]: [HeaderParams.APPLICATION_JSON],
-            // [HeaderParams.AUTHORIZATION]: `Bearer ${token}`
-        }
+    //     var header = {
+    //         [HeaderParam.CONTENT_TYPE]: [HeaderParam.APPLICATION_JSON],
+    //         // [HeaderParam.AUTHORIZATION]: `Bearer ${token}`
+    //     }
 
-        const response = await BaseApi.get(uri, header, params)
-        if(response != null) {
-            return response.data;
-        }
-        return response;
-    },
+    //     const response = await BaseApi.get(uri, header, params)
+    //     if(response != null) {
+    //         return response.data;
+    //     }
+    //     return response;
+    // },
 
-    add: async(data, file) => {
+    add: async(data) => {
         const token = sessionStorage.getItem('access_token');
 
-        var uri = `${BASE_API}${CONTEXT_PATH}`;
-
-        const formData = new FormData();
-        formData.append('product', JSON.stringify(data));
-        file.forEach((image) => {
-            formData.append('images', image);
-        });
+        var uri = `${ENV_BASE_API}${CONTEXT_PATH}`;
 
         var header = {
-            [HeaderParams.CONTENT_TYPE]: [HeaderParams.MULTIPART_FORM_DATA],
-            [HeaderParams.AUTHORIZATION]: `Bearer ${token}`
+            [HeaderParam.CONTENT_TYPE]: [HeaderParam.APPLICATION_FORM_DATA],
+            // [HeaderParam.AUTHORIZATION]: `Bearer ${token}`
         }
 
-        const response = await BaseApi.post(uri, formData, header)
-        if(response != null) {
-            return response.data;
+        const response = await BaseApi.post(uri, data, header)
+        if(response == null) {
+            return null;
         }
-        return response;
+        return response.data;
     },
 
     delete: async(id) => {
@@ -75,8 +67,8 @@ const ProductApi = {
         var uri = `${BASE_API}${CONTEXT_PATH}/${id}`;
 
         var header = {
-            [HeaderParams.CONTENT_TYPE]: [HeaderParams.APPLICATION_JSON],
-            [HeaderParams.AUTHORIZATION]: `Bearer ${token}`
+            [HeaderParam.CONTENT_TYPE]: [HeaderParam.APPLICATION_JSON],
+            [HeaderParam.AUTHORIZATION]: `Bearer ${token}`
         }
 
         const response = await BaseApi.delete(uri, header)
