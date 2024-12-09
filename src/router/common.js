@@ -13,6 +13,7 @@ const CommonRoutes = {
             path: '',
             name: RouteConstant.HOME_PAGE.name,
             component: index,
+            meta: { breadcrumb: 'toolbar.home' },
         },
         {
             path: RouteConstant.LOGIN_PAGE.path,

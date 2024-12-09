@@ -22,8 +22,10 @@ const VietNam = {
     help: 'Trợ giúp',
     logout: 'Đăng xuất',
     toolbar: {
+        home: 'Trang chủ',
         dashboard: 'Thống kê',
-        add_product: 'Thêm sản phẩm mới',
+        product: 'Sản phẩm',
+        add_product: 'Thêm sản phẩm',
         product_list: 'Danh sách sản phẩm'
     },
     product: {
@@ -57,7 +59,7 @@ const VietNam = {
             password_length: 'Mật khẩu phải có ít nhất 8 ký tự.',
             password_uppercase: 'Mật khẩu phải có ít nhất một ký tự chữ hoa',
             password_lowercase: 'Mật khẩu phải có ít nhất một ký tự chữ thường',
-            password_number: 'Mật khẩu phải có ít nhất một số',
+            password_number: 'Mật khẩu phải có ít nhất một chữ số',
             password_special: 'Mật khẩu phải có ít nhất một ký tự đặc biệt (@, #, $, %)',
             password_no_spaces: 'Mật khẩu không thể chứa khoảng trắng',
             repeat_password: 'Mật khẩu không khớp',
@@ -70,6 +72,17 @@ const VietNam = {
             case: 'Phải có ít nhất một chữ cái viết hoa và một chữ cái viết thường',
             number: 'Phải chứa ít nhất một chữ số',
             special: 'Bao gồm ít nhất một ký tự đặc biệt (ví dụ: @, #, $, %, &, *)',
+        }
+    },
+    otp: {
+        title: 'Xác thực tài khoản',
+        message: {
+            info: '',
+            remind: 'Bạn chưa nhận được mã?'
+        },
+        btn: {
+            verify: 'Xác thực',
+            resend: 'Gửi lại mã'
         }
     }
 };

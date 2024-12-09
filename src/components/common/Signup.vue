@@ -144,9 +144,9 @@ export default {
         console.log(this.userRegistration);
         this.goTo('OTPPage');
         // const response = await UserApi.signup(this.userRegistration);
-        if(response.code === 200) {
-            this.goTo('OTPPage');
-        }
+        // if(response.code === 200) {
+        //     this.goTo('OTPPage');
+        // }
     },
 
     handleMouseDown() {

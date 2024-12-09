@@ -16,11 +16,11 @@
             </div>
 
             <div class="w-25 d-flex justify-between align-center">
-                <v-btn class="mr-auto" style="width: 45%;" color="blue" @click="changeOpenDialog(true)">
+                <v-btn class="mr-auto cursor-pointer" style="width: 45%;" color="blue" @click="changeOpenDialog(true)">
                     <v-icon class="mr-3">mdi-plus</v-icon>{{ $t('button.add') }}
                 </v-btn>
 
-                <v-btn style="width: 45%;" color="blue" @click="deleteSelected()">
+                <v-btn class="cursor-pointer" style="width: 45%;" color="blue" @click="deleteSelected()">
                     <v-icon class="mr-3">mdi-trash-can-outline</v-icon>{{ $t('button.delete') }}
                 </v-btn>
             </div>

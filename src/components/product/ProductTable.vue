@@ -72,12 +72,22 @@
 </template>
 
 <script>
+import ProductApi from '@/services/api/ProductApi';
+
 export default {
     data() {
         return {
            
-           
         }
     },
+
+    methods: {
+        async fetchProduct() {
+            const response = await ProductApi.getAll();
+            if(response != null && response.code === 200) {
+                this.categories = response.data;
+            }
+        },
+    }
 }
 </script>
