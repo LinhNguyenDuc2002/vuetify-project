@@ -7,6 +7,7 @@ const OTP_PATH = HOME_PATH + "/verify-otp";
 
 const ADD_PRODUCT_PATH = ADMIN_PATH + "/product/add";
 const PRODUCT_LIST_PATH = ADMIN_PATH + "/product/all";
+const CATEGORY_TABLE_PATH = ADMIN_PATH + "/category/all";
 
 export const RouteConstant = {
     HOME_PAGE: {
@@ -38,5 +39,9 @@ export const RouteConstant = {
     PRODUCT_LIST_PAGE: {
         path: PRODUCT_LIST_PATH,
         name: 'ProductList'
+    },
+    CATEGORY_TABLE_PAGE: {
+        path: CATEGORY_TABLE_PATH,
+        name: 'CategoryTable'
     }
 };

@@ -13,7 +13,6 @@ const VietNam = {
     phone_number: 'Số điện thoại',
     repeat_your_password: 'Nhập lại mật khẩu',
     home: 'Trang chủ',
-    category: 'Danh mục',
     about: 'Về chúng tôi',
     search: 'Tìm kiếm',
     view_orders: 'Xem đơn hàng',
@@ -24,9 +23,10 @@ const VietNam = {
     toolbar: {
         home: 'Trang chủ',
         dashboard: 'Thống kê',
-        product: 'Sản phẩm',
+        product: 'Quản lý sản phẩm',
         add_product: 'Thêm sản phẩm',
-        product_list: 'Danh sách sản phẩm'
+        product_list: 'Danh sách sản phẩm',
+        category: 'Quản lý danh mục',
     },
     product: {
         name: 'Tên sản phẩm',
@@ -84,6 +84,12 @@ const VietNam = {
             verify: 'Xác thực',
             resend: 'Gửi lại mã'
         }
+    },
+    category: {
+        icon: 'Biểu tượng',
+        name: 'Tên danh mục',
+        number: 'Tổng kho',
+        status: 'Trạng thái'
     }
 };
   

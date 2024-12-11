@@ -37,7 +37,11 @@
                                 hide-details>
                             </v-checkbox>
                         </th>
-                        <th v-for="header in headers" class="text-start pl-3">{{ $t(header.text) }}</th>
+                        <th class="text-start pl-3">{{ $t(header.text) }}</th>
+                        <th class="text-start pl-3">{{ $t(header.text) }}</th>
+                        <th class="text-start pl-3">{{ $t(header.text) }}</th>
+                        <th class="text-start pl-3">{{ $t(header.text) }}</th>
+                        <th class="text-start pl-3">{{ $t(header.text) }}</th>
                     </tr>
                 </thead>
 
