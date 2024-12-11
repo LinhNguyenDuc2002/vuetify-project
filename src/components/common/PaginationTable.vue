@@ -9,7 +9,8 @@
                 item-value="id"
                 item-title="value"
                 density="compact"
-                variant="outlined">
+                variant="outlined"
+                @change="changeSize">
             </v-select>
         </div>
 
@@ -18,10 +19,10 @@
         </div>
 
         <div class="d-flex align-center mb-5 mx-5">
-            <v-icon class="cursor-pointer mx-2" :class="page > 0 ? 'selected-arrow' : 'arrow'">mdi-page-first</v-icon>
-            <v-icon class="cursor-pointer mx-2" :class="page > 0 ? 'selected-arrow' : 'arrow'">mdi-chevron-left</v-icon>
-            <v-icon class="cursor-pointer mx-2" :class="page < total ? 'selected-arrow' : 'arrow'">mdi-chevron-right</v-icon>
-            <v-icon class="cursor-pointer mx-2" :class="page < total ? 'selected-arrow' : 'arrow'">mdi-page-last</v-icon>
+            <v-icon @click="page > 0 ? updatePage(0) : null" class="cursor-pointer mx-2" :class="page > 0 ? 'selected-arrow' : 'arrow'">mdi-page-first</v-icon>
+            <v-icon @click="page > 0 ? updatePage(page-1) : null" class="cursor-pointer mx-2" :class="page > 0 ? 'selected-arrow' : 'arrow'">mdi-chevron-left</v-icon>
+            <v-icon @click="page < total ? updatePage(page+1) : null" class="cursor-pointer mx-2" :class="page < total ? 'selected-arrow' : 'arrow'">mdi-chevron-right</v-icon>
+            <v-icon @click="page < total ? updatePage(total) : null" class="cursor-pointer mx-2" :class="page < total ? 'selected-arrow' : 'arrow'">mdi-page-last</v-icon>
         </div>
     </div>
 </template>
@@ -32,11 +33,41 @@ import { PAGINATION } from '@/constants/variable_constant';
 export default {
     data() {
         return {
-            selected: 5,
+            selected: this.size,
             pagination: PAGINATION,
-            page: 0,
-            total: 100
         }
+    },
+
+    props: {
+        size: {
+            type: Number,
+            required: true
+        },
+        page: {
+            type: Number,
+            required: true
+        },
+        total: {
+            type: Number,
+            required: true
+        },
+    },
+
+    watch: {
+        selected: function() {
+            this.updateSize();
+        },
+    },
+
+    methods: {
+        updateSize() {
+            console.log(this.selected + " " + this.size)
+            this.$emit('update-size', this.selected);
+        },
+
+        updatePage(page) {
+            this.$emit('update-page', page);
+        },
     }
 }
 </script>

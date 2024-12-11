@@ -1,0 +1,126 @@
+<template>
+    <div class="mt-5">
+        <div class="d-flex justify-between align-center mb-5">
+            <div class="w-25 mr-auto">
+                <v-text-field
+                    class="h-100 align-center"
+                    :loading="loading"
+                    append-inner-icon="mdi-magnify"
+                    density="compact"
+                    :label="$t('search')"
+                    variant="outlined"
+                    hide-details
+                    single-line
+                    @click:append-inner="onClick">
+                </v-text-field>
+            </div>
+
+            <v-btn style="width: 15%;" color="blue" @click="changeOpenDialog(true)">
+                <v-icon class="mr-3">mdi-plus</v-icon>{{ $t('button.add') }}
+            </v-btn>
+        </div>
+
+        <div class="border-thin">
+            <table class="w-100 my-table">
+                <thead>
+                    <tr>
+                        <th style="width: 5%;">
+                            <v-checkbox
+                                v-model="selectAll"
+                                @change="toggleSelectAll"
+                                hide-details>
+                            </v-checkbox>
+                        </th>
+                        <th class="text-start pl-3" style="width: 15%;">{{ $t('category.icon') }}</th>
+                        <th class="text-start pl-3" style="width: 45%;">{{ $t('category.name') }}</th>
+                        <th class="text-start pl-3" style="width: 15%;">{{ $t('category.number') }}</th>
+                        <th class="text-start pl-3" style="width: 15%;">{{ $t('category.status') }}</th>
+                        <th class="text-start pl-3" style="width: 5%;"></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr v-for="(item, index) in categories" class="cursor-pointer" @click="">
+                        <td>
+                            <v-checkbox
+                                v-model="selected"
+                                :value="index"
+                                hide-details>
+                            </v-checkbox>
+                        </td>
+                        <td class="px-3">
+                            <v-img></v-img>
+                        </td>
+                        <td class="px-3">{{ item.name }}</td>
+                        <td class="px-3">{{ item.total }}</td>
+                        <td class="px-3">{{ item.status }}</td>
+                        <td class="px-3"><v-icon>mdi-pencil-box-outline</v-icon></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <PaginationTable :size="size" :page="page" :total="total" @update-size="updateSize" @update-page="updatePage"></PaginationTable>
+        </div>
+    </div>
+
+    <!-- <AddCategory></AddCategory> -->
+</template>
+
+<script>
+import CategoryApi from '@/services/api/CategoryApi';
+
+export default {
+    data() {
+        return {
+            selected: [],
+            selectAll: false,
+            categories: [],
+            size: 5,
+            page: 0,
+            total: 0,
+            search: '',
+        }
+    },
+
+    watch: {
+        size: function() {
+            this.page = 0;
+            this.fetchCategory();
+        },
+        page: function() {
+            this.fetchCategory();
+        },
+    },
+
+    methods: {
+        toggleSelectAll() {
+            if (this.selectAll) {
+                this.selected = this.categories.map((item, index) => index);
+            } else {
+                this.selected = [];
+            }
+        },
+
+        async fetchCategory() {
+            const response = await CategoryApi.getAllPagination(this.search, this.size, this.page);
+            console.log(response);
+            if(response != null && response.code === 200) {
+                this.categories = response.data['elements'];
+                this.total = response.data['total_page'] - 1;
+            }
+        },
+
+        updateSize(size) {
+            this.size = size;
+        },
+
+        updatePage(page) {
+            this.page = page;
+        }
+    },
+
+    mounted() {
+        this.fetchCategory();
+    }
+}
+</script>

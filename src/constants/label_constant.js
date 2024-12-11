@@ -22,6 +22,12 @@ export const ToolBarItems = [
             },
         ]
     },
+
+    {
+        title: 'toolbar.category',
+        icon: 'mdi-shape-outline',
+        path: RouteConstant.CATEGORY_TABLE_PAGE.path
+    },
     
     {
         title: 'mail_address',
@@ -78,7 +84,7 @@ export const HeaderItems = [
         name: RouteConstant.HOME_PAGE.name,
     },
     {
-        title: 'category',
+        title: 'product.category',
         name: RouteConstant.HOME_PAGE.name,
     },
     {

@@ -2,44 +2,11 @@
     <div>
         <v-form ref="form" @submit.prevent="checkForm">
             <div class="d-flex justify-between align-center w-100 h-100">
-                <div class="h-100 w-50 mr-auto">
-                    <div class="text-subtitle-1 text-medium-emphasis">{{ $t('product.name') }}</div>
-                    <v-text-field v-model="product.name" density="compact" :placeholder="$t('product.name')"
-                        :error-messages="message.nameError"
-                        variant="outlined" class="mb-3">
-                    </v-text-field>
-
-                    <div class="text-subtitle-1 text-medium-emphasis">{{ $t('product.category') }}</div>
-                    <v-select
-                        class="mb-3"
-                        v-model="product.category_id"
-                        :items="categories"
-                        item-value="id"
-                        item-title="name"
-                        density="compact"
-                        :error-messages="message.categoryError"
-                        :placeholder="$t('product.category')"
-                        variant="outlined">
-                    </v-select>
-                </div>
-
-                <div class="w-50 ml-16 h-100">
-                    <div class="position-relative d-flex justify-between align-center mb-5">
-                        <div class="mr-5">
-                            <input type="file" id="file-input" multiple accept="image/*" @change="handleFileUpload">
-                            <v-btn @click="openFileDialog" color="blue" elevation="0">Chọn ảnh</v-btn>
-                        </div>
-
-                        <p class="h-100 text-center error-message">{{ message.imageMessage }}</p>
-                    </div>
-
-                    <div class="preview" style="min-height: 85px">
-                        <div v-for="(item, index) in images" :key="index" class="position-relative cursor-pointer border-thin rounded d-flex">
-                            <v-icon size="20" class="position-absolute ma-1 right-0" @click="removeImage(index)" style="z-index: 1;">mdi-window-close</v-icon>
-                            <v-img class="position-absolute h-100 w-100" :src="item" alt="Product image"></v-img>
-                        </div>
-                    </div>
-                </div>
+                <div class="text-subtitle-1 text-medium-emphasis">{{ $t('product.name') }}</div>
+                <v-text-field v-model="product.name" density="compact" :placeholder="$t('product.name')"
+                    :error-messages="message.nameError"
+                    variant="outlined" class="mb-3">
+                </v-text-field>
             </div>
 
             <div class="w-100">
@@ -56,7 +23,6 @@
             </div>
 
             <p class="error-message">{{ message.detailsError }}</p>
-            <ProductDetailTable :details="product.product_details" @update-details="setDetails"></ProductDetailTable>
 
             <div class="d-flex w-100 my-5 justify-end">
                 <v-btn style="width: 20%;" color="blue" type="submit">Thêm sản phẩm</v-btn>
@@ -114,7 +80,7 @@ export default {
 
     methods: {
         async fetchCategory() {
-            const response = await CategoryApi.getAll('');
+            const response = await CategoryApi.getAll();
             if(response != null && response.code === 200) {
                 this.categories = response.data;
             }
@@ -199,8 +165,8 @@ export default {
         }
     },
 
-    mounted() {
-        this.fetchCategory();
-    }
+    // mounted() {
+    //     this.fetchCategory();
+    // }
 }
 </script>
