@@ -76,7 +76,7 @@ export default {
             selectAll: false,
             categories: [],
             size: 5,
-            page: 0,
+            page: 1,
             total: 0,
             search: '',
         }
@@ -84,7 +84,7 @@ export default {
 
     watch: {
         size: function() {
-            this.page = 0;
+            this.page = 1;
             this.fetchCategory();
         },
         page: function() {
@@ -102,11 +102,11 @@ export default {
         },
 
         async fetchCategory() {
-            const response = await CategoryApi.getAllPagination(this.search, this.size, this.page);
+            const response = await CategoryApi.getAllPagination(this.search, this.size, this.page - 1);
             console.log(response);
             if(response != null && response.code === 200) {
                 this.categories = response.data['elements'];
-                this.total = response.data['total_page'] - 1;
+                this.total = response.data['total_page'];
             }
         },
 
