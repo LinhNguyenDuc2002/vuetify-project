@@ -1,9 +1,9 @@
 <template>
     <div class="mt-10">
         <div class="d-flex w-100 my-5">
-            <v-btn class="mr-5" style="width: 10%;" color="blue" type="submit">Sửa</v-btn>
+            <v-btn class="mr-5" style="width: 10%;" color="blue" type="submit" @click="changeEditStatus()">Sửa</v-btn>
             <v-btn class="mr-5" style="width: 10%;" color="blue" type="submit">Xóa</v-btn>
-            <v-btn class="mr-5" style="width: 10%;" color="blue" type="submit">Lưu</v-btn>
+            <v-btn class="mr-5" style="width: 10%;" color="blue" type="submit" :disabled="!editStatus" @click="changePopUpDialog(true)">Lưu</v-btn>
             <v-btn class="mr-5" style="width: 10%;" color="blue" @click="hidden()">Đóng</v-btn>
         </div>
         <!-- <v-form ref="form" @submit.prevent="checkForm"> -->
@@ -11,22 +11,22 @@
             <div class="d-flex justify-between align-center w-100 h-100">
                 <div class="h-100 w-50 mr-auto">
                     <div class="text-subtitle-1 text-medium-emphasis">{{ $t('product.name') }}</div>
-                    <v-text-field v-model="product.name" density="compact" :placeholder="$t('product.name')"
-                        :error-messages="message.nameError"
-                        variant="outlined" class="mb-3">
+                    <v-text-field variant="outlined" class="mb-3"
+                        v-model="product.name" density="compact"
+                        :placeholder="$t('product.name')"
+                        :disabled="!editStatus"
+                        :error-messages="message.nameError">
                     </v-text-field>
 
                     <div class="text-subtitle-1 text-medium-emphasis">{{ $t('product.category') }}</div>
-                    <v-select
-                        class="mb-3"
+                    <v-select class="mb-3" density="compact" variant="outlined"
                         v-model="product.category.name"
                         :items="categories"
                         item-value="id"
                         item-title="name"
-                        density="compact"
                         :error-messages="message.categoryError"
                         :placeholder="$t('product.category')"
-                        variant="outlined">
+                        :disabled="!editStatus">
                     </v-select>
                 </div>
 
@@ -34,7 +34,7 @@
                     <div class="position-relative d-flex justify-between align-center mb-5">
                         <div class="mr-5">
                             <input type="file" id="file-input" multiple accept="image/*" @change="handleFileUpload">
-                            <v-btn @click="openFileDialog" color="blue" elevation="0">Chọn ảnh</v-btn>
+                            <v-btn @click="openFileDialog" color="blue" elevation="0" :disabled="!editStatus">Chọn ảnh</v-btn>
                         </div>
 
                         <p class="h-100 text-center error-message">{{ message.imageMessage }}</p>
@@ -52,12 +52,9 @@
             <div class="w-100">
                 <div class="text-subtitle-1 text-medium-emphasis">{{ $t('product.description') }}</div>
                 <v-col class="pa-0" cols="12" sm="6" style="max-width: 100%;">
-                    <v-textarea
+                    <v-textarea class="w-100" variant="outlined" auto-grow shaped
                         v-model="product.description"
-                        class="w-100"
-                        variant="outlined"
-                        auto-grow
-                        shaped>
+                        :disabled="!editStatus">
                     </v-textarea>
                 </v-col>
             </div>
@@ -66,6 +63,13 @@
         </v-form>
 
         <ProductDetailList :details="product.product_details" @update-details="setDetails"></ProductDetailList>
+
+        <PopUp v-if="popUpDialog" 
+            :popUpDialog="popUpDialog" 
+            :message="'Bạn muốn xóa không'" 
+            @update-popup-dialog="changePopUpDialog"
+            @update-parent-dialog="handle">
+        </PopUp>
     </div>
 </template>
 
@@ -87,6 +91,7 @@ import { RequiredRule, SelectRule } from '../../../rules/Rule';
 import { ERROR_MESSAGE } from '../../../constants/message';
 import ProductApi from '@/services/api/ProductApi';
 import ProductDetailList from './ProductDetailList.vue';
+import { fa } from 'vuetify/locale';
 
 export default {
     data () {
@@ -100,6 +105,9 @@ export default {
                 detailsError: '',
             },
             productDetails: [],
+            editStatus: false,
+            statusProduct: false,
+            popUpDialog: false
         }
     },
 
@@ -119,7 +127,16 @@ export default {
             immediate: true, // Gọi ngay khi component được khởi tạo
             handler(newId) {
                 this.fetchProduct();
+                this.editStatus = false,
+                this.statusProduct = false,
+                this.popUpDialog = false
             }
+        },
+        product: {
+            handler() {
+                this.statusProduct = true;
+            },
+            deep: true // Follow product
         }
     },
 
@@ -134,6 +151,20 @@ export default {
                 this.product = response.data;
             }
         },
+
+        changeEditStatus() {
+            this.editStatus = !this.editStatus;
+        },
+
+        changePopUpDialog(value) {
+            if(this.statusProduct) {
+                this.popUpDialog = value;
+            }
+        },
+
+        handle() {
+            console.log("Ok")
+         }
 
         // openFileDialog() {
         //     document.getElementById('file-input').click();

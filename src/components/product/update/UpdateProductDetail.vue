@@ -132,20 +132,20 @@ export default {
         //     type: Boolean,
         //     required: true
         // },
-        productDetails: {
-            type: Array,
-            required: true
-        }
+        idProduct: {
+            type: String,
+            required: true,
+        },
     },
 
-    // watch: {
-    //     productDetail: {
-    //         handler() {
-    //             this.statusProduct = true;
-    //         },
-    //         deep: true // Follow productDetail
-    //     }
-    // },
+    watch: {
+        idProduct: {
+            immediate: true,
+            handler(newId) {
+                this.fetchProductTypes();
+            }
+        },
+    },
 
     methods: {
         // async fetchProduct() {
