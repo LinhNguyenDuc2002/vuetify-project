@@ -19,8 +19,8 @@
         </div>
 
         <div class="d-flex align-center mb-5 mx-5">
-            <v-icon @click="page > 0 ? updatePage(0) : null" class="cursor-pointer mx-2" :class="page > 0 ? 'selected-arrow' : 'arrow'">mdi-page-first</v-icon>
-            <v-icon @click="page > 0 ? updatePage(page-1) : null" class="cursor-pointer mx-2" :class="page > 0 ? 'selected-arrow' : 'arrow'">mdi-chevron-left</v-icon>
+            <v-icon @click="page > 1 ? updatePage(1) : null" class="cursor-pointer mx-2" :class="page > 1 ? 'selected-arrow' : 'arrow'">mdi-page-first</v-icon>
+            <v-icon @click="page > 1 ? updatePage(page-1) : null" class="cursor-pointer mx-2" :class="page > 1 ? 'selected-arrow' : 'arrow'">mdi-chevron-left</v-icon>
             <v-icon @click="page < total ? updatePage(page+1) : null" class="cursor-pointer mx-2" :class="page < total ? 'selected-arrow' : 'arrow'">mdi-chevron-right</v-icon>
             <v-icon @click="page < total ? updatePage(total) : null" class="cursor-pointer mx-2" :class="page < total ? 'selected-arrow' : 'arrow'">mdi-page-last</v-icon>
         </div>

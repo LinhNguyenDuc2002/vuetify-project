@@ -35,6 +35,8 @@ const VietNam = {
         price: 'Đơn giá',
         quantity: 'Số lượng',
         image: 'Ảnh',
+        typeNumber: 'Số loại sản phẩm',
+        status: 'Trạng thái',
         type: 'Tên loại sản phẩm'
     },
     button: {

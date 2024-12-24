@@ -2,9 +2,9 @@ import { ENV_BASE_API } from '@/constants/env_constant';
 import BaseApi from './BaseApi';
 import * as HeaderParam from '@/constants/header_constant';
 
-const CONTEXT_PATH = "/api/product-service/product"
+const CONTEXT_PATH = "/api/product-service/product-detail"
 
-const ProductApi = {
+const ProductDetailApi = {
     getAll: async (page, size, search, category, sort) => {
         var uri = `${ENV_BASE_API}${CONTEXT_PATH}`;
 
@@ -81,4 +81,4 @@ const ProductApi = {
     }
 };
 
-export default ProductApi;
+export default ProductDetailApi;

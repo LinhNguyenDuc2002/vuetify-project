@@ -7,6 +7,10 @@
 }
 
 .menu:hover {
+    background-color: #FAFAFA;
+}
+
+.background-chosen {
     background-color: #F5F5F5;
 }
 
@@ -16,7 +20,7 @@
 
 .child-chosen {
     color: #03A9F4 !important;
-    background-color: #F5F5F5;
+    background-color: #FAFAFA;
 }
 
 .title {
@@ -32,7 +36,7 @@ thead {
 }
 
 .my-table tbody tr:hover {
-    background-color: #F5F5F5; /*grey-lighten-4*/
+    background-color: #FAFAFA; /*grey-lighten-4*/
 }
 
 .arrow {
