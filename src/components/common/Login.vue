@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex justify-between mx-16 mb-5 align-center">
+    <div class="d-flex justify-between mx-16 mb-5 align-center" style="margin-top: 3%;">
         <v-card class="mx-16 my-6 w-50 text-center" elevation="0">
             <v-img max-width="100%" src="/src/assets/draw1.webp"></v-img>
         </v-card>
@@ -36,7 +36,8 @@
                 </div>
 
                 <v-btn type="submit" class="mb-8" color="blue" size="large" variant="tonal" block>
-                    {{ $t('login') }}
+                    <span v-if="!loginLoading">{{ $t('login') }}</span>
+                    <Loading v-else></Loading>
                 </v-btn>
             </v-form>
 
@@ -58,7 +59,7 @@
                 </a>
             </v-card-text>
         </v-card>
-  </div>
+    </div>
 </template>
 
 <script>
@@ -67,55 +68,67 @@ import { RouteConstant } from '@/constants/route_constant';
 import * as SecurityConstant from '@/constants/security_constant';
 import { PasswordLoginRule, UsernameLoginRule } from '@/rules/Rule';
 import AuthApi from '@/services/api/AuthApi';
-import UserApi from '@/services/api/UserApi';
 import { useUserStore } from '@/stores/app';
+import Loading from './Loading.vue';
+import DefaultLayout from '@/layouts/DefaultLayout.vue';
+import UserApi from '@/services/api/UserApi';
 
 export default {
-  data: () => ({
-    signupPage: RouteConstant.SIGNUP_PAGE.name,
-    visible: false,
-    username: '',
-    password: '',
-    message: {
-        userNameError: '',
-        passwordError: '',
-        loginError: ''
-    },
-    userStore: null
-  }),
+    data: () => ({
+        signupPage: RouteConstant.SIGNUP_PAGE.name,
+        visible: false,
+        loginLoading: false,
+        username: '',
+        password: '',
+        message: {
+            userNameError: '',
+            passwordError: '',
+            loginError: ''
+        },
+        userStore: useUserStore(),
+    }),
 
-    created() {
-        this.userStore = useUserStore();
-    },
+    methods: {
+        goTo(page) {
+            this.$router.push({ name: page });
+        },
 
-  methods: {
-    goTo(page) {
-        this.$router.push({ name: page });
-    },
+        checkForm() {
+            const errorUsername = UsernameLoginRule.map(rule => rule(this.username)).find(error => error !== true);
+            this.message.userNameError = errorUsername ? errorUsername : '';
 
-    checkForm() {
-        const errorUsername = UsernameLoginRule.map(rule => rule(this.username)).find(error => error !== true);
-        this.message.userNameError = errorUsername ? errorUsername : '';
+            const errorPassword = PasswordLoginRule.map(rule => rule(this.password)).find(error => error !== true);
+            this.message.passwordError = errorPassword ? errorPassword : '';
 
-        const errorPassword = PasswordLoginRule.map(rule => rule(this.password)).find(error => error !== true);
-        this.message.passwordError = errorPassword ? errorPassword : '';
+            if(!errorUsername || !errorPassword) {
+                this.login();
+            }
+        },
 
-        if(!errorUsername || !errorPassword) {
-            this.login();
+        async login() {
+            this.loginLoading = true;
+
+            const response = await AuthApi.login(this.username, this.password);
+            console.log(response);
+            this.loginLoading = false;
+            if(response == null || response.status !== 200) {
+                this.message.loginError = ERROR_MESSAGE.login_fail;
+            }
+
+            const data = response.data;
+            sessionStorage.setItem(SecurityConstant.ACCESS_TOKEN, data.access_token);
+            sessionStorage.setItem(SecurityConstant.REFRESH_TOKEN, data.refresh_token);
+
+            if(sessionStorage.getItem(SecurityConstant.ACCESS_TOKEN)) {
+                const userInfo = await UserApi.getLoggedInUser();
+                if(userInfo != null && userInfo.code === 200) {
+                    const showName = `${userInfo.data.first_name} ${userInfo.data.last_name}`;
+                    this.userStore.login(showName);
+                }
+            }
+
+            this.goTo('HomePage');
         }
     },
-
-    async login() {
-        const response = await AuthApi.login(this.username, this.password);
-        console.log(response);
-        if(response == null || response.status !== 200) {
-            this.message.loginError = ERROR_MESSAGE.login_fail;
-        }
-
-        const data = response.data;
-        sessionStorage.setItem(SecurityConstant.ACCESS_TOKEN, data.access_token);
-        sessionStorage.setItem(SecurityConstant.REFRESH_TOKEN, data.refresh_token);
-    }
-  },
 }
 </script>

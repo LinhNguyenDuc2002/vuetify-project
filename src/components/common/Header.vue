@@ -32,7 +32,7 @@
                 </v-list-item>
             </v-list>
 
-            <v-menu v-if="userStore.isLoggedIn">
+            <v-menu v-if="isLoggedIn">
                 <template v-slot:activator="{ props }">
                     <v-avatar class="text-center h-100 d-flex justify-end align-center mx-5 cursor-pointer" style="width: 15%;" v-bind="props">
                         <v-icon size="45" icon="mdi-account-circle"></v-icon>
@@ -40,7 +40,7 @@
                 </template>
 
                 <v-list class="pa-3" min-width="250px">
-                    <v-list-item class="cursor-pointer">{{ userStore.userInfo }}</v-list-item>
+                    <v-list-item class="cursor-pointer">{{ userInfo }}</v-list-item>
                     <hr class="my-1">
                     <v-list-item v-for="(item, index) in menuItems" :key="index" :value="index">
                         <v-row class="w-100 h-100" @click="handleClick(item.name)" no-gutters>
@@ -57,7 +57,7 @@
             </v-menu>
 
             <div v-else class="d-flex justify-end align-center mr-5" style="width: 18%;">
-                <v-btn class="h-50 w-100" color="blue" size="large" variant="tonal" block @click="goTo(loginPage)">
+                <v-btn class="h-50 w-100" color="blue" size="large" variant="tonal" :to="{ name: loginPage }" block >
                     {{ $t('login') }}
                 </v-btn>
             </div>
@@ -70,34 +70,49 @@ import '@/styles/common.css';
 import { HeaderIconItems, HeaderItems, MenuItems } from '@/constants/label_constant';
 import { RouteConstant } from '@/constants/route_constant';
 import { useUserStore } from '@/stores/app';
-import { ACCESS_TOKEN } from '@/constants/security_constant';
+import * as SecurityConstant from '@/constants/security_constant';
 import UserApi from '@/services/api/UserApi';
 
 export default {
     data: () => ({
-        userStore: null,
+        userStore: useUserStore(),
         headerItems: HeaderItems,
         headerIconItems: HeaderIconItems,
         menuItems: MenuItems,
         loginPage: RouteConstant.LOGIN_PAGE.name,
         loaded: false,
         loading: false,
+        userInfo: null,
     }),
 
-    created() {
-        this.userStore = useUserStore();
-    },
-
-    async mounted() {
-        if(sessionStorage.getItem(ACCESS_TOKEN)) {
-            const userInfo = await UserApi.getLoggedInUser();
-            if(userInfo != null && userInfo.code === 200) {
-                console.log(userInfo)
-                const showName = userInfo.data.first_name + " " + userInfo.data.last_name;
+    async beforeCreate() {
+        if(sessionStorage.getItem(SecurityConstant.ACCESS_TOKEN)) {
+            const userFrom = await UserApi.getLoggedInUser();
+            if(userFrom != null && userFrom.code === 200) {
+                const showName = `${userFrom.data.first_name} ${userFrom.data.last_name}`;
                 this.userStore.login(showName);
+                this.userInfo = showName;
             }
         }
     },
+
+    computed: {
+        isLoggedIn: function() {
+            return this.userStore.isAuthenticated;
+        },
+    },
+
+    // Load after DOM loaded
+    // async mounted() {
+    //     if(sessionStorage.getItem(SecurityConstant.ACCESS_TOKEN)) {
+    //         const userFrom = await UserApi.getLoggedInUser();
+    //         if(userFrom != null && userFrom.code === 200) {
+    //             const showName = `${userFrom.data.first_name} ${userFrom.data.last_name}`;
+    //             this.userStore.login(showName);
+    //             this.userInfo = showName;
+    //         }
+    //     }
+    // },
 
     methods: {
         onClick() {
@@ -114,7 +129,6 @@ export default {
         },
 
         logout() {
-            console.log("1")
             this.userStore.logout();
             sessionStorage.removeItem(SecurityConstant.ACCESS_TOKEN);
             sessionStorage.removeItem(SecurityConstant.REFRESH_TOKEN);
@@ -123,6 +137,17 @@ export default {
         handleClick(name) {
             if(name === 'logout') {
                 this.logout();
+            }
+        },
+
+        async fetchUser() {
+            if(sessionStorage.getItem(SecurityConstant.ACCESS_TOKEN)) {
+                const userFrom = await UserApi.getLoggedInUser();
+                if(userFrom != null && userFrom.code === 200) {
+                    const showName = `${userFrom.data.first_name} ${userFrom.data.last_name}`;
+                    this.userStore.login(showName);
+                    this.userInfo = showName;
+                }
             }
         }
     },

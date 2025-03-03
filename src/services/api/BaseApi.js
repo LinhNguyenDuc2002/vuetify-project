@@ -34,7 +34,7 @@ const BaseApi = {
         catch (error) {
             console.log("Calling api is fail!");
             BaseApi.handleError(error);
-            return null;
+            return error.response;
         }
     },
 
@@ -71,7 +71,7 @@ const BaseApi = {
         catch (error) {
             console.log("Calling api is fail!");
             BaseApi.handleError(error);
-            return null;
+            return error.response;
         }
     },
 

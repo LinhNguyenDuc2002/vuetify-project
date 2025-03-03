@@ -5,14 +5,13 @@ import * as HeaderParam from '@/constants/header_constant';
 const CONTEXT_PATH = "/api/product-service/product-detail"
 
 const ProductDetailApi = {
-    getAll: async (page, size, search, category, sort) => {
-        var uri = `${ENV_BASE_API}${CONTEXT_PATH}`;
+    getAll: async (id, page, size, search, sort) => {
+        var uri = `${ENV_BASE_API}${CONTEXT_PATH}/product/${id}`;
 
         var params = {
             'page': page,
             'size': size,
             'search': search ? search : null,
-            'category': category ? category : null,
             'sort-columns': sort ? sort : null
         }
 

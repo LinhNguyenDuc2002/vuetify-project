@@ -65,7 +65,8 @@ const VietNam = {
             password_special: 'Mật khẩu phải có ít nhất một ký tự đặc biệt (@, #, $, %)',
             password_no_spaces: 'Mật khẩu không thể chứa khoảng trắng',
             repeat_password: 'Mật khẩu không khớp',
-            term_service: 'Bạn chưa đồng ý với điều khoản dịch vụ'
+            term_service: 'Bạn chưa đồng ý với điều khoản dịch vụ',
+            otp_wrong: 'Mã OTP không chính xác',
         }
     },
     rule: {

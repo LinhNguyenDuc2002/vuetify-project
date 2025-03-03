@@ -36,6 +36,20 @@ const UserApi = {
             return null;
         }
         return response.data;
+    },
+
+    verifyOTPToCreateAccount: async (data) => {
+        var uri = `${ENV_BASE_API}${CONTEXT_PATH}/verify`;
+
+        var header = {
+            [HeaderParam.CONTENT_TYPE]: 'application/json',
+        }
+
+        const response = await BaseApi.post(uri, data, header);
+        if(response == null) {
+            return null;
+        }
+        return response.data;
     }
 };
 

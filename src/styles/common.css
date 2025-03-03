@@ -68,3 +68,7 @@ thead {
     transition-duration: 150ms;
     color: black;
 }
+
+.disabled {
+    color: black;
+}

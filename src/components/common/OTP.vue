@@ -12,8 +12,10 @@
             <v-sheet color="surface">
                 <v-otp-input v-model="otpNumber" variant="solo"></v-otp-input>
             </v-sheet>
+
+            <p v-if="messageError" class="h-100 error-message mb-2">{{ $t(messageError) }}</p>
         
-            <v-btn class="my-4" color="purple" height="40" variant="flat" width="70%">{{ $t('otp.btn.verify') }}</v-btn>
+            <v-btn class="my-4" color="purple" height="40" variant="flat" width="70%" @click="toCreateAccount">{{ $t('otp.btn.verify') }}</v-btn>
         
             <div class="text-caption">
                 {{ $t('otp.message.remind') }} <a href="#" @click.prevent="otp = ''">{{ $t('otp.btn.resend') }}</a>
@@ -23,9 +25,15 @@
 </template>
   
 <script>
+import UserApi from '@/services/api/UserApi';
+
 export default {
     data: () => ({
         otp: '',
+        type: {
+            CREATE_ACCOUNT: 'CREATE_ACCOUNT',
+        },
+        messageError: '',
     }),
 
     computed: {
@@ -39,5 +47,35 @@ export default {
             },
         },
     },
+
+    methods: {
+        goTo(page) {
+            this.$router.push({ name: page });
+        },
+
+        // OTPauthentication() {
+        //     if(this.propType === this.type.CREATE_ACCOUNT) {
+
+        //     }
+        // },
+
+        async toCreateAccount() {
+            if(sessionStorage.getItem("temp_key") !== null) {
+                const data = {
+                    secret: sessionStorage.getItem("temp_key"),
+                    otp: this.otp
+                }
+
+                const response = await UserApi.verifyOTPToCreateAccount(data);
+                if(response.code === 200) {
+                    this.goTo('LoginPage');
+                }
+                else {
+                    this.messageError = 'message.error.otp_wrong';
+                }
+            }
+            
+        }
+    }
 }
 </script>

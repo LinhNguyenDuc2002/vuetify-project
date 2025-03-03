@@ -4,6 +4,4 @@
 
 <script>
 import Login from '@/components/common/Login.vue';
-
-
 </script>

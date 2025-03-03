@@ -60,7 +60,7 @@
                 </tbody>
             </table>
 
-            <PaginationTable></PaginationTable>
+            <PaginationTable :size="size" :page="page" :total="total" @update-size="updateSize" @update-page="updatePage"></PaginationTable>
         </div>
     </div>
 
@@ -74,11 +74,13 @@
 <script>
 import PaginationTable from '@/components/common/PaginationTable.vue';
 import UpdateProductDetail from './UpdateProductDetail.vue';
+import ProductDetailApi from '@/services/api/ProductDetailApi';
 
 
 export default {
     data() {
         return {
+            productDetails: [],
             openDialog: false,
             selected: [],
             selectAll: false,
@@ -88,43 +90,49 @@ export default {
                 {text: 'product.price', value: 4},
                 {text: 'product.quantity', value: 5},
             ],
+            size: 5,
+            page: 1,
+            total: 0,
+            search: '',
+            sort: null,
            
         }
     },
 
     props: {
-        details: {
-            type: Array,
-            required: true
+        idProduct: {
+            type: String,
+            required: true,
+        },
+
+    },
+
+    watch: {
+        idProduct: {
+            immediate: true, // Gọi ngay khi component được khởi tạo
+            handler(newId) {
+                this.fetchProductDetails();
+            }
         },
     },
 
     methods: {
-        toggleSelectAll() {
-            if (this.selectAll) {
-                this.selected = this.details.map((item, index) => index);
-            } else {
-                this.selected = [];
+        async fetchProductDetails() {
+            const response = await ProductDetailApi.getAll(this.idProduct, this.page - 1, this.size, this.search, this.sort);
+
+            if(response != null && response.code === 200) {
+                this.productDetails = response.data['elements'];
+                this.total = response.data['total_page'];
             }
         },
 
-        changeOpenDialog(value) {
-            this.openDialog = value;
+        updateSize(size) {
+            this.size = size;
         },
 
-        createObjectURL(file) {
-            if(file instanceof File) {
-                return URL.createObjectURL(file);
-            }
-            return file;
+        updatePage(page) {
+            this.page = page;
         },
-
-        deleteSelected() {
-            const updatedDetails = this.details.filter((item, index) => !this.selected.includes(index));
-            this.$emit('update-details', updatedDetails);
-            this.selected = [];
-            this.selectAll = false;
-        }
     }
 }
 </script>
