@@ -119,6 +119,7 @@ export default {
     methods: {
         async fetchProductDetails() {
             const response = await ProductDetailApi.getAll(this.idProduct, this.page - 1, this.size, this.search, this.sort);
+
             if(response != null && response.code === 200) {
                 this.productDetails = response.data['elements'];
                 this.total = response.data['total_page'];

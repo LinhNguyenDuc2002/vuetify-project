@@ -3,11 +3,10 @@
     <v-main>
       <Header></Header>
 
-      <router-view style="margin-top: 2%;" />
+      <router-view/>
 
       <Footer></Footer>
     </v-main>
-
     <!-- <AppFooter class="position-fixed"/> -->
   </v-app>
 </template>

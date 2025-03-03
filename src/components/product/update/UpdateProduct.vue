@@ -62,7 +62,7 @@
             <p class="error-message">{{ message.detailsError }}</p>
         </v-form>
 
-        <ProductDetailList :details="product.product_details" @update-details="setDetails"></ProductDetailList>
+
 
         <PopUp v-if="popUpDialog" 
             :popUpDialog="popUpDialog" 
@@ -107,7 +107,8 @@ export default {
             productDetails: [],
             editStatus: false,
             statusProduct: false,
-            popUpDialog: false
+            popUpDialog: false,
+            showList: false,
         }
     },
 
@@ -125,11 +126,12 @@ export default {
     watch: {
         idProduct: {
             immediate: true, // Gọi ngay khi component được khởi tạo
-            handler(newId) {
-                this.fetchProduct();
-                this.editStatus = false,
-                this.statusProduct = false,
-                this.popUpDialog = false
+            async handler(newId) {
+                await this.fetchProduct(); // Chờ fetchProduct hoàn thành
+                // this.editStatus = false;
+                // this.statusProduct = false;
+                // this.popUpDialog = false;
+                // this.showList = false;
             }
         },
         product: {
@@ -150,6 +152,8 @@ export default {
             if(response != null && response.code === 200) {
                 this.product = response.data;
             }
+
+            // this.showList = true;
         },
 
         changeEditStatus() {

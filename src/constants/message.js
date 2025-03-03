@@ -25,6 +25,7 @@ export const ERROR_MESSAGE = {
     email_format: 'message.error.email_format',
     email_no_spaces: 'message.error.email_no_spaces',
     term_service: 'message.error.term_service',
+    otp_wrong: 'message.error.otp_wrong',
 };
 
 export const WARN_MESSAGE = {

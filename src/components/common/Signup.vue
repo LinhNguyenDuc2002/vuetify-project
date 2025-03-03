@@ -1,11 +1,11 @@
 <template>
-    <div class="d-flex justify-between mx-16 mb-5 align-center">
+    <div class="d-flex justify-between mx-16 mb-5 align-center" style="margin-top: 3%;">
         <v-card class="mx-16 my-6 w-50 text-center" elevation="0">
             <v-img max-width="100%" src="/src/assets/draw2.webp"></v-img>
         </v-card>
 
         <v-card class="mx-16 pa-12 w-50" elevation="0" rounded="lg">
-            <v-card-title class="text-center mb-3">{{ $t('create_an_account') }}</v-card-title>
+            <v-card-title class="text-center mb-3 text-uppercase">{{ $t('create_an_account') }}</v-card-title>
 
             <v-form ref="form" @submit.prevent="checkForm">
                 <v-text-field class="mb-2" density="compact" variant="outlined" prepend-inner-icon="mdi-account-outline"
@@ -66,6 +66,8 @@
             </p>
         </v-card>
   </div>
+
+  <Loading v-if="loading" style="position: fixed; z-index: 1; top: 10%;"></Loading>
 </template>
 
 <script>
@@ -99,8 +101,9 @@ export default {
         repeatError: '',
         signupError: '',
     },
-    passwordRule: PasswordRuleMessage
-  }),
+    passwordRule: PasswordRuleMessage,
+    loading: false,
+}),
 
   methods: {
     goTo(page) {
@@ -141,12 +144,15 @@ export default {
     },
 
     async signup() {
-        console.log(this.userRegistration);
-        this.goTo('OTPPage');
-        // const response = await UserApi.signup(this.userRegistration);
-        // if(response.code === 200) {
-        //     this.goTo('OTPPage');
-        // }
+        this.loading = true;
+        
+        const response = await UserApi.signup(this.userRegistration);
+        if(response.code === 200) {
+            console.log(response.data);
+            sessionStorage.setItem("temp_key", response.data['secret_key'])
+            this.goTo('OTPPage');
+        }
+        this.loading = false;
     },
 
     handleMouseDown() {

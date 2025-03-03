@@ -1,13 +1,13 @@
 import { RouteConstant } from "@/constants/route_constant";
-import Default from "@/layouts/default.vue";
 import LoginPage from "@/pages/auth/LoginPage.vue";
 import SignupPage from "@/pages/auth/SignupPage.vue";
 import OTPPage from "@/pages/auth/OTPPage.vue";
 import index from "@/pages/index.vue";
+import DefaultLayout from "@/layouts/DefaultLayout.vue";
 
 const CommonRoutes = {
     path: RouteConstant.HOME_PAGE.path,
-    component: Default,
+    component: DefaultLayout,
     children: [
         {
             path: '',

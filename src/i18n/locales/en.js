@@ -43,7 +43,8 @@ const English = {
         error: {
             not_empty: 'Can not be empty',
             not_image: 'Must choose a image',
-            maximum_length: 'Vượt quá độ dài tối đa'
+            maximum_length: 'Vượt quá độ dài tối đa',
+            otp_wrong: 'OTP code is incorrect',
         }
     }
 
