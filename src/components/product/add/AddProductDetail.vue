@@ -7,7 +7,7 @@
                     <!-- <template v-slot:actions>
                         <v-btn class="ms-auto" text="Ok" @click="dialog = false"></v-btn>
                     </template> -->
-                    <v-card-title class="title pa-0">Add a new product type</v-card-title>
+                    <Title :title="'Add a new product type'"></Title>
 
                     <div class="d-flex justify-between align-center w-100">
                         <div class="w-50">
@@ -107,6 +107,7 @@
 </style>
 
 <script>
+import Title from '@/components/common/Title.vue';
 import { ERROR_MESSAGE } from '@/constants/message';
 import { PriceRule, QuantityRule, RequiredRule } from '@/rules/Rule';
 import '@/styles/common.css';

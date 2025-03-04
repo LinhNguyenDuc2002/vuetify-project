@@ -45,6 +45,11 @@ const English = {
             not_image: 'Must choose a image',
             maximum_length: 'Vượt quá độ dài tối đa',
             otp_wrong: 'OTP code is incorrect',
+        },
+
+        info: {
+            otp: 'We sent a verification code to {email}. <br/>Please check your email and paste the code below.',
+            create_account: ''
         }
     }
 

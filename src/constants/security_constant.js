@@ -6,3 +6,6 @@ export const PASSWORD = "password";
 
 export const ACCESS_TOKEN = 'access_token';
 export const REFRESH_TOKEN = 'refresh_token';
+export const SECRET_KEY = 'secret_key';
+export const OTP_OPTION = 'otp_option';
+export const MAIL = 'mail';

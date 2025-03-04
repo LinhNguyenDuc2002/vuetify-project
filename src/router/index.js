@@ -19,6 +19,10 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: setupLayouts(routes),
+  scrollBehavior(to, from, savedPosition) {
+    // Luôn quay lại đầu trang khi chuyển trang
+    return { top: 0 };
+  },
 })
 
 // Workaround for https://github.com/vitejs/vite/issues/11804

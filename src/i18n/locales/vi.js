@@ -67,6 +67,11 @@ const VietNam = {
             repeat_password: 'Mật khẩu không khớp',
             term_service: 'Bạn chưa đồng ý với điều khoản dịch vụ',
             otp_wrong: 'Mã OTP không chính xác',
+        },
+
+        info: {
+            otp: 'Chúng tôi đã gửi mã xác thực tới {email}. <br/>Hãy kiểm tra email của bạn và nhập mã code bên dưới.',
+            create_account: 'Tạo tài khoản thành công! <br/>Hãy đăng nhập để bắt đầu sử dụng dịch vụ của chúng tôi'
         }
     },
     rule: {

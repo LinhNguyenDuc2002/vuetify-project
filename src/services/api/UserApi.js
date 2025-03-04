@@ -1,6 +1,7 @@
 import { ENV_BASE_API } from '@/constants/env_constant';
 import BaseApi from './BaseApi';
 import * as HeaderParam from '@/constants/header_constant';
+import I18n from '@/i18n/i18n';
 
 const CONTEXT_PATH = "/api/user-service/user"
 
@@ -12,7 +13,8 @@ const UserApi = {
 
         var header = {
             [HeaderParam.CONTENT_TYPE]: 'application/json',
-            [HeaderParam.AUTHORIZATION]: `Bearer ${token}`
+            [HeaderParam.AUTHORIZATION]: `Bearer ${token}`,
+            [HeaderParam.ACCEPT_LANGUAGE]: I18n.global.locale
         }
 
         var params = {}
@@ -26,16 +28,18 @@ const UserApi = {
 
     signup: async (data) => {
         var uri = `${ENV_BASE_API}${CONTEXT_PATH}/customer`;
+        console.log(I18n.global.locale)
 
         var header = {
             [HeaderParam.CONTENT_TYPE]: 'application/json',
+            [HeaderParam.ACCEPT_LANGUAGE]: I18n.global.locale
         }
 
         const response = await BaseApi.post(uri, data, header);
         if(response == null) {
             return null;
         }
-        return response.data;
+        return response;
     },
 
     verifyOTPToCreateAccount: async (data) => {
@@ -43,6 +47,7 @@ const UserApi = {
 
         var header = {
             [HeaderParam.CONTENT_TYPE]: 'application/json',
+            [HeaderParam.ACCEPT_LANGUAGE]: I18n.global.locale
         }
 
         const response = await BaseApi.post(uri, data, header);

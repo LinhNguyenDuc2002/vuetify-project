@@ -1,8 +1,6 @@
 <template>
     <div class="d-flex justify-between mx-16 mb-5 align-center" style="margin-top: 3%;">
-        <v-card class="mx-16 my-6 w-50 text-center" elevation="0">
-            <v-img max-width="100%" src="/src/assets/draw1.webp"></v-img>
-        </v-card>
+        <Image class="mx-16 my-6 w-50 text-center" :imageUrl="imageUrl"></Image>
 
         <v-card class="mx-16 pa-12 w-50" elevation="0" rounded="lg">
             <v-card-title class="text-center mb-3 text-uppercase">{{ $t('login') }}</v-card-title>
@@ -70,7 +68,7 @@ import { PasswordLoginRule, UsernameLoginRule } from '@/rules/Rule';
 import AuthApi from '@/services/api/AuthApi';
 import { useUserStore } from '@/stores/app';
 import Loading from './Loading.vue';
-import DefaultLayout from '@/layouts/DefaultLayout.vue';
+import imageUrl from '@/assets/draw1.webp';
 import UserApi from '@/services/api/UserApi';
 
 export default {
@@ -86,6 +84,7 @@ export default {
             loginError: ''
         },
         userStore: useUserStore(),
+        imageUrl,
     }),
 
     methods: {
@@ -111,23 +110,24 @@ export default {
             const response = await AuthApi.login(this.username, this.password);
             console.log(response);
             this.loginLoading = false;
-            if(response == null || response.status !== 200) {
+            if(response != null && response.status === 200) {
+                const data = response.data;
+                sessionStorage.setItem(SecurityConstant.ACCESS_TOKEN, data.access_token);
+                sessionStorage.setItem(SecurityConstant.REFRESH_TOKEN, data.refresh_token);
+
+                if(sessionStorage.getItem(SecurityConstant.ACCESS_TOKEN)) {
+                    const userInfo = await UserApi.getLoggedInUser();
+                    if(userInfo != null && userInfo.code === 200) {
+                        const showName = `${userInfo.data.first_name} ${userInfo.data.last_name}`;
+                        this.userStore.login(showName);
+                    }
+                }
+
+                this.goTo('HomePage');
+            }
+            else {
                 this.message.loginError = ERROR_MESSAGE.login_fail;
             }
-
-            const data = response.data;
-            sessionStorage.setItem(SecurityConstant.ACCESS_TOKEN, data.access_token);
-            sessionStorage.setItem(SecurityConstant.REFRESH_TOKEN, data.refresh_token);
-
-            if(sessionStorage.getItem(SecurityConstant.ACCESS_TOKEN)) {
-                const userInfo = await UserApi.getLoggedInUser();
-                if(userInfo != null && userInfo.code === 200) {
-                    const showName = `${userInfo.data.first_name} ${userInfo.data.last_name}`;
-                    this.userStore.login(showName);
-                }
-            }
-
-            this.goTo('HomePage');
         }
     },
 }
