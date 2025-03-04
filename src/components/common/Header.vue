@@ -1,8 +1,6 @@
 <template>
     <div class="position-fixed top-0 w-100 border-thin bg-white d-flex" style="min-height: 10%; z-index: 1;">
-        <div class="left-0 h-100 pa-2 cursor-pointer position-absolute" style="width: 5%;">
-            <v-img class="h-100" src="/src/assets/logo.png"></v-img>
-        </div>
+        <Image class="left-0 h-100 pa-2 cursor-pointer position-absolute" style="width: 5%;" :imageUrl="imageUrl"></Image>
 
         <div class="d-flex h-100 align-center position-absolute" style="margin-left: 10%;">
             <p 
@@ -72,6 +70,7 @@ import { RouteConstant } from '@/constants/route_constant';
 import { useUserStore } from '@/stores/app';
 import * as SecurityConstant from '@/constants/security_constant';
 import UserApi from '@/services/api/UserApi';
+import imageUrl from '@/assets/logo.png';
 
 export default {
     data: () => ({
@@ -83,6 +82,7 @@ export default {
         loaded: false,
         loading: false,
         userInfo: null,
+        imageUrl,
     }),
 
     async beforeCreate() {

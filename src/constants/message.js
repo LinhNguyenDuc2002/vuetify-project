@@ -31,8 +31,9 @@ export const ERROR_MESSAGE = {
 export const WARN_MESSAGE = {
     email_invalid: 'message.',
     
-}
+};
 
-export const INFO_MESSAGE = [
-
-];
+export const INFO_MESSAGE = {
+    otp_message: 'message.info.otp',
+    create_account: 'message.info.create_account',
+};

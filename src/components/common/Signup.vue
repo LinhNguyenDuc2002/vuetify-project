@@ -1,8 +1,6 @@
 <template>
     <div class="d-flex justify-between mx-16 mb-5 align-center" style="margin-top: 3%;">
-        <v-card class="mx-16 my-6 w-50 text-center" elevation="0">
-            <v-img max-width="100%" src="/src/assets/draw2.webp"></v-img>
-        </v-card>
+        <Image class="mx-16 my-6 w-50 text-center" :imageUrl="imageUrl"></Image>
 
         <v-card class="mx-16 pa-12 w-50" elevation="0" rounded="lg">
             <v-card-title class="text-center mb-3 text-uppercase">{{ $t('create_an_account') }}</v-card-title>
@@ -51,12 +49,13 @@
                 <div class="form-check d-flex justify-content-center">
                     <input v-model="isChecked" class="form-check-input me-2" type="checkbox" value="" id="form2Example3cg" />
                     <label class="form-check-label" for="form2Example3g">
-                        I agree all statements in <a href="#!" class="text-blue text-decoration-none">Terms of service</a>
+                        I agree all statements in <a href="#!" class="text-blue text-decoration-none" @click.prevent="changeTermPopup(true)">Terms of service</a>
                     </label>
                 </div>
 
                 <v-btn type="submit" class="mb-8 mt-8" color="blue" size="large" variant="tonal" block>
-                    Register
+                    <span v-if="!signupLoading">Register</span>
+                    <Loading v-else></Loading>
                 </v-btn>
             </v-form>
 
@@ -65,9 +64,9 @@
                 <a href="#" @click.prevent="goTo(loginPage)" class="text-blue text-decoration-none">Login here</a>
             </p>
         </v-card>
-  </div>
+    </div>
 
-  <Loading v-if="loading" style="position: fixed; z-index: 1; top: 10%;"></Loading>
+    <Terms v-if="termPopup" :termPopup="termPopup"  @close-term-popup="changeTermPopup"></Terms>
 </template>
 
 <script>
@@ -77,6 +76,9 @@ import RulePopUp from './RulePopUp.vue';
 import { PasswordRuleMessage } from '@/rules/message';
 import { ERROR_MESSAGE } from '@/constants/message';
 import UserApi from '@/services/api/UserApi';
+import imageUrl from '@/assets/draw2.webp';
+import * as SecurityConstant from '@/constants/security_constant';
+import { OTP_TYPE } from '@/constants/variable_constant';
 
 export default {
   data: () => ({
@@ -102,12 +104,19 @@ export default {
         signupError: '',
     },
     passwordRule: PasswordRuleMessage,
-    loading: false,
+    signupLoading: false,
+    termPopup: false,
+    imageUrl,
 }),
 
   methods: {
     goTo(page) {
         this.$router.push({ name: page });
+    },
+
+    changeTermPopup(value) {
+        console.log("ok")
+        this.termPopup = value;
     },
 
     checkForm() {
@@ -139,20 +148,25 @@ export default {
         }
 
         if(!errorUsername && !errorPassword && !errorEmail && !errorPhone && !errorRepeatPassword && !check) {
-            this.signup()
+            this.signup();
         }
     },
 
     async signup() {
-        this.loading = true;
+        this.signupLoading = true;
         
         const response = await UserApi.signup(this.userRegistration);
-        if(response.code === 200) {
-            console.log(response.data);
-            sessionStorage.setItem("temp_key", response.data['secret_key'])
+        console.log(response);
+        if(response.data.code === 200) {
+            sessionStorage.setItem(SecurityConstant.SECRET_KEY, response.data.data['secret_key']);
+            sessionStorage.setItem(SecurityConstant.MAIL, response.data.data['mail']);
+            sessionStorage.setItem(SecurityConstant.OTP_OPTION, OTP_TYPE.CREATE_ACCOUNT);
             this.goTo('OTPPage');
         }
-        this.loading = false;
+        else {
+            this.message.signupError = response.data['message']
+        }
+        this.signupLoading = false;
     },
 
     handleMouseDown() {

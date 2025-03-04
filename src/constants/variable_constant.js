@@ -5,3 +5,8 @@ export const PAGINATION = [
     {id: 50, value: '50'},
     {id: 100, value: '100'},
 ];
+
+export const OTP_TYPE = {
+    CREATE_ACCOUNT: 'create_account',
+    FORGET_PASSWORD: 'forget_password'
+}

@@ -29,6 +29,13 @@ const CommonRoutes = {
             path: RouteConstant.OTP_PAGE.path,
             name: RouteConstant.OTP_PAGE.name,
             component: OTPPage,
+            beforeEnter: (to, from, next) => {
+                if (from.path === RouteConstant.SIGNUP_PAGE.path) {
+                    next();
+                } else {
+                    next(false);
+                }
+            },
         },
     ],
 };
