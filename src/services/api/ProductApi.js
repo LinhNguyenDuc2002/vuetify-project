@@ -1,6 +1,7 @@
 import { ENV_BASE_API } from '@/constants/env_constant';
 import BaseApi from './BaseApi';
 import * as HeaderParam from '@/constants/header_constant';
+import I18n from '@/i18n/i18n';
 
 const CONTEXT_PATH = "/api/product-service/product"
 
@@ -17,12 +18,13 @@ const ProductApi = {
         }
 
         var header = {
-            [HeaderParam.CONTENT_TYPE]: [HeaderParam.APPLICATION_JSON]
+            [HeaderParam.CONTENT_TYPE]: [HeaderParam.APPLICATION_JSON],
+            [HeaderParam.ACCEPT_LANGUAGE]: I18n.global.locale
         }
 
         const response = await BaseApi.get(uri, header, params);
-        if(response != null) {
-            return response.data;
+        if(response == null) {
+            return null;
         }
         return response;
     },

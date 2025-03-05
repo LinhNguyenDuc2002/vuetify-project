@@ -6,6 +6,10 @@ export const PAGINATION = [
     {id: 100, value: '100'},
 ];
 
+export const ItemPerPage = 12;
+
+export const TOTAL_PAGE_VISIBLE = 5;
+
 export const OTP_TYPE = {
     CREATE_ACCOUNT: 'create_account',
     FORGET_PASSWORD: 'forget_password'
