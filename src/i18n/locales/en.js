@@ -26,6 +26,7 @@ const English = {
         add_product: 'Add a new product',
         product_list: 'Product list'
     },
+
     product: {
         name: 'Product name',
         category: 'Category',
@@ -33,12 +34,15 @@ const English = {
         price: 'Price',
         quantity: 'Quantity',
         image: 'Image',
-        type: 'Name'
+        type: 'Name',
+        sold: 'Sold'
     },
+
     button: {
         add: 'Add',
         delete: 'Delete'
     },
+
     message: {
         error: {
             not_empty: 'Can not be empty',

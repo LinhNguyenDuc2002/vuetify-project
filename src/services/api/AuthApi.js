@@ -32,15 +32,6 @@ const AuthApi = {
         
         return response;
     },
-    
-    // otp: async (data) => {
-    //     try {
-    //         const response = await axios.post(`${BASE_API}` + CONTEXT_PATH, data);
-    //         return response.data;
-    //     } catch (error) {
-    //         throw error;
-    //     }
-    // },
 };
 
 export default AuthApi;

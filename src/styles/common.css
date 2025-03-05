@@ -72,3 +72,7 @@ thead {
 .disabled {
     color: black;
 }
+
+.price {
+    color: #E65100;
+}

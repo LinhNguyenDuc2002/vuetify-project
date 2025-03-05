@@ -28,6 +28,7 @@ const VietNam = {
         product_list: 'Danh sách sản phẩm',
         category: 'Quản lý danh mục',
     },
+
     product: {
         name: 'Tên sản phẩm',
         category: 'Danh mục',
@@ -37,12 +38,15 @@ const VietNam = {
         image: 'Ảnh',
         typeNumber: 'Số loại sản phẩm',
         status: 'Trạng thái',
-        type: 'Tên loại sản phẩm'
+        type: 'Tên loại sản phẩm',
+        sold: 'Đã bán',
     },
+
     button: {
         add: 'Thêm',
         delete: 'Xóa'
     },
+
     message: {
         error: {
             not_empty: 'Không được để trống',
@@ -74,6 +78,7 @@ const VietNam = {
             create_account: 'Tạo tài khoản thành công! <br/>Hãy đăng nhập để bắt đầu sử dụng dịch vụ của chúng tôi'
         }
     },
+
     rule: {
         password: {
             length: 'Mật khẩu phải có ít nhất 8 ký tự',
@@ -82,6 +87,7 @@ const VietNam = {
             special: 'Bao gồm ít nhất một ký tự đặc biệt (ví dụ: @, #, $, %, &, *)',
         }
     },
+
     otp: {
         title: 'Xác thực tài khoản',
         message: {
@@ -93,6 +99,7 @@ const VietNam = {
             resend: 'Gửi lại mã'
         }
     },
+
     category: {
         icon: 'Biểu tượng',
         name: 'Tên danh mục',
