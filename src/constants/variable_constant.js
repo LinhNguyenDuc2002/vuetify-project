@@ -6,7 +6,7 @@ export const PAGINATION = [
     {id: 100, value: '100'},
 ];
 
-export const ItemPerPage = 12;
+export const ITEM_OF_NUMBER_PER_PAGE = 12;
 
 export const TOTAL_PAGE_VISIBLE = 5;
 

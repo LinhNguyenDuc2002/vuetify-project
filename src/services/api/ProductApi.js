@@ -30,20 +30,16 @@ const ProductApi = {
     },
 
     get: async (id) => {
-        // const token = sessionStorage.getItem('access_token');
-
         var uri = `${ENV_BASE_API}${CONTEXT_PATH}/${id}`;
-
-        var params = {}
 
         var header = {
             [HeaderParam.CONTENT_TYPE]: [HeaderParam.APPLICATION_JSON],
-            // [HeaderParam.AUTHORIZATION]: `Bearer ${token}`
+            [HeaderParam.ACCEPT_LANGUAGE]: I18n.global.locale
         }
 
-        const response = await BaseApi.get(uri, header, params)
-        if(response != null) {
-            return response.data;
+        const response = await BaseApi.get(uri, header, null);
+        if(response == null) {
+            return null;
         }
         return response;
     },

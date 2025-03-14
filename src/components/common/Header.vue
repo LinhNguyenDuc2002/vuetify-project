@@ -30,6 +30,8 @@
                 </v-list-item>
             </v-list>
 
+            <CartDialog :cartDialog="cartDialog"></CartDialog>
+
             <v-menu v-if="isLoggedIn">
                 <template v-slot:activator="{ props }">
                     <v-avatar class="text-center h-100 d-flex justify-end align-center mx-5 cursor-pointer" style="width: 15%;" v-bind="props">
@@ -71,6 +73,8 @@ import { useUserStore } from '@/stores/app';
 import * as SecurityConstant from '@/constants/security_constant';
 import UserApi from '@/services/api/UserApi';
 import imageUrl from '@/assets/logo.png';
+import CartDialog from '../cart/CartDialog.vue';
+import { ca } from 'vuetify/locale';
 
 export default {
     data: () => ({
@@ -82,6 +86,9 @@ export default {
         loaded: false,
         loading: false,
         userInfo: null,
+        cartDialog: false,
+        notiDialog: false,
+        chatDialog: false,
         imageUrl,
     }),
 

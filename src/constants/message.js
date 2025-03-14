@@ -30,6 +30,7 @@ export const ERROR_MESSAGE = {
 
 export const WARN_MESSAGE = {
     email_invalid: 'message.',
+    login_to_check_cart: 'message.warn.login_to_check_cart',
     
 };
 

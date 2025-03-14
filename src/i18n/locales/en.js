@@ -51,6 +51,10 @@ const English = {
             otp_wrong: 'OTP code is incorrect',
         },
 
+        warn: {
+            login_to_check_cart: 'Login to ',
+        },
+
         info: {
             otp: 'We sent a verification code to {email}. <br/>Please check your email and paste the code below.',
             create_account: ''

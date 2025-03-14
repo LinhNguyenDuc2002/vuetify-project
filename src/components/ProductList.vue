@@ -1,7 +1,7 @@
 <template>
     <div class="bg-grey-lighten-3 w-100">
         <v-row v-if="!loading" justify="start" class="py-10" style="margin-left: 128px; margin-right: 128px;">
-            <v-col cols="2" v-for="(index, item) in products" :key="index">
+            <v-col cols="2" v-for="(item, index) in products" :key="index">
                 <ProductItem :product="item"></ProductItem>
             </v-col>
         </v-row>
@@ -24,14 +24,14 @@
 </template>
 
 <script>
-import { ItemPerPage } from '@/constants/variable_constant';
+import { ITEM_OF_NUMBER_PER_PAGE } from '@/constants/variable_constant';
 import ProductApi from '@/services/api/ProductApi';
 import ProductItem from './product/ProductItem.vue';
 
 export default {
     data() {
         return {
-            number: ItemPerPage,
+            number: ITEM_OF_NUMBER_PER_PAGE,
             loading: true,
             products: [],
             page: 1,
@@ -40,7 +40,7 @@ export default {
     },
 
     mounted() {
-        this.fetchProduct(this.page, null, null, null);
+        this.fetchProduct(this.page -1, null, null, null);
     },
 
     methods: {
@@ -49,15 +49,15 @@ export default {
             const data = response.data;
             if(data !== null && data.code === 200) {
                 this.products = data.data.elements;
+                console.log(this.products);
                 this.page = data.page_number;
                 this.lengh = data.total_page;
                 this.loading = false;
             }
-            console.log(response);
         },
 
         async nextPage(value) {
-            await this.fetchProduct(value, null, null, null);
+            await this.fetchProduct(value - 1, null, null, null);
         }
     }
 }

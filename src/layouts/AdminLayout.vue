@@ -5,7 +5,7 @@
 
       <ToolBar></ToolBar>
 
-      <router-view style="margin-left: 20%;" class="pa-10"/>
+      <router-view style="margin-left: 20%;" class="bg-grey-lighten-3"/>
 
       <Footer style="margin-left: 20%;"></Footer>
     </v-main>

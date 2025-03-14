@@ -1,8 +1,28 @@
 <template>
     <div>
         <v-form ref="form" @submit.prevent="checkForm">
-            <div class="d-flex justify-between align-center w-100 h-100">
-                <div class="h-100 w-50 mr-auto">
+            <div class="pa-10 bg-white rounded mb-4">
+                <p class="sub-title">Thông tin cơ bản</p>
+
+                <div class="w-100 h-100">
+                    <div class="w-100 h-100 mb-5">
+                        <div class="d-flex mb-3 w-100" style="flex-wrap: wrap;">
+                            <div v-for="(item, index) in images" :key="index" class="position-relative cursor-pointer border-thin rounded d-flex mr-3" style="height: 90px; width: 90px;">
+                                <v-icon size="20" class="position-absolute ma-1 right-0" @click="removeImage(index)">mdi-window-close</v-icon>
+                                <v-img max-width="100%" max-height="100%" :src="item" alt="Product image"></v-img>
+                            </div>
+
+                            <div class="mr-5">
+                                <input type="file" id="file-input" multiple accept="image/*" @change="handleFileUpload">
+                                <v-btn class="dashed-border pa-3 h-auto w-auto" style="min-height: 90px; min-width: 90px;" @click="openFileDialog" elevation="0">
+                                    <v-icon size="30" color="#03A9F4">mdi-image-plus-outline</v-icon>
+                                </v-btn>
+                            </div>
+                        </div>
+
+                        <p class="w-100 error-message">{{ message.imageMessage }}</p>
+                    </div>
+
                     <div class="text-subtitle-1 text-medium-emphasis">{{ $t('product.name') }}</div>
                     <v-text-field v-model="product.name" density="compact" :placeholder="$t('product.name')"
                         :error-messages="message.nameError"
@@ -23,40 +43,104 @@
                     </v-select>
                 </div>
 
-                <div class="w-50 ml-16 h-100">
-                    <div class="position-relative d-flex justify-between align-center mb-5">
-                        <div class="mr-5">
-                            <input type="file" id="file-input" multiple accept="image/*" @change="handleFileUpload">
-                            <v-btn @click="openFileDialog" color="blue" elevation="0">Chọn ảnh</v-btn>
-                        </div>
-
-                        <p class="h-100 text-center error-message">{{ message.imageMessage }}</p>
-                    </div>
-
-                    <div class="preview" style="min-height: 85px">
-                        <div v-for="(item, index) in images" :key="index" class="position-relative cursor-pointer border-thin rounded d-flex">
-                            <v-icon size="20" class="position-absolute ma-1 right-0" @click="removeImage(index)" style="z-index: 1;">mdi-window-close</v-icon>
-                            <v-img class="position-absolute h-100 w-100" :src="item" alt="Product image"></v-img>
-                        </div>
-                    </div>
+                <div class="w-100">
+                    <div class="text-subtitle-1 text-medium-emphasis">{{ $t('product.description') }}</div>
+                    <v-col class="pa-0" cols="12" sm="6" style="max-width: 100%;">
+                        <v-textarea
+                            v-model="product.description"
+                            class="w-100"
+                            variant="outlined"
+                            auto-grow
+                            shaped>
+                        </v-textarea>
+                    </v-col>
                 </div>
             </div>
 
-            <div class="w-100">
-                <div class="text-subtitle-1 text-medium-emphasis">{{ $t('product.description') }}</div>
-                <v-col class="pa-0" cols="12" sm="6" style="max-width: 100%;">
-                    <v-textarea
-                        v-model="product.description"
-                        class="w-100"
-                        variant="outlined"
-                        auto-grow
-                        shaped>
-                    </v-textarea>
-                </v-col>
+            <div class="pa-10 bg-white rounded mb-4">
+                <p class="sub-title">Thông tin chi tiết</p>
             </div>
 
-            <p class="error-message">{{ message.detailsError }}</p>
-            <ProductDetailTable :details="product.product_details" @update-details="setDetails"></ProductDetailTable>
+            <div class="pa-10 bg-white rounded">
+                <p class="sub-title">Thông tin bán hàng</p>
+
+                <div v-if="typeName.length > 0" class="mb-5">
+                    <div v-for="(type, index) in typeName" :key="index" class="bg-grey-lighten-3 position-relative pa-5 mb-3">
+                        <v-icon size="20" class="position-absolute mr-5 right-0 cursor-pointer" @click="closeType(index)">mdi-window-close</v-icon>
+
+                        <div class="w-50">
+                            <div class="text-subtitle-1 text-medium-emphasis">{{ `Phân loại ${index + 1}` }}</div>
+                            <v-text-field v-model="type.name" density="compact" :placeholder="$t('product.name')"
+                                :error-messages="message.nameError"
+                                variant="outlined" class="mb-3">
+                            </v-text-field>
+                        </div>
+
+                        <div class="d-flex justify-space-between" style="flex-wrap: wrap;">
+                            <div v-if="index === 0" v-for="(item, subindex) in product.product_types" :key="subindex" class="d-flex align-center" style="width: 45%;">
+                                <div class="w-100 mr-3">
+                                    <div class="text-subtitle-1 text-medium-emphasis">{{ `Tùy chọn ${subindex + 1}` }}</div>
+                                    <v-text-field v-model="item.name" density="compact" :placeholder="$t('product.name')"
+                                        :error-messages="message.nameError"
+                                        @input="addSelection(index)"
+                                        variant="outlined" class="mb-3">
+                                    </v-text-field>
+                                </div>
+
+                                <v-icon v-if="subindex != product.product_types.length - 1" class="cursor-pointer" @click="deleteSelection(index, subindex)" :class="{ 'disabled': a !== 2 }">
+                                    mdi-trash-can-outline
+                                </v-icon>
+                            </div>
+
+                            <div v-if="index === 1" v-for="(item, subindex) in product.product_types[0].types" :key="subindex" class="d-flex align-center" style="width: 45%;">
+                                <div class="w-100 mr-3">
+                                    <div class="text-subtitle-1 text-medium-emphasis">{{ `Tùy chọn ${subindex + 1}` }}</div>
+                                    <v-text-field v-model="item.name" density="compact" :placeholder="$t('product.name')"
+                                        :error-messages="message.nameError"
+                                        @input="addSelection(index)"
+                                        variant="outlined" class="mb-3">
+                                    </v-text-field>
+                                </div>
+
+                                <v-icon v-if="subindex != product.product_types[0].types.length - 1" class="cursor-pointer" @click="deleteSelection(index, subindex)" :class="{ 'disabled': a !== 2 }">
+                                    mdi-trash-can-outline
+                                </v-icon>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div v-if="typeName.length < 2" class="mb-5">
+                    <v-btn class="btn mr-5" style="width: 40%; height: 50px;" size="large" elevation="0" @click="addType()">
+                        <v-icon class="mr-3" size="20">mdi-plus</v-icon>Thêm nhóm phân loại
+                    </v-btn>
+                </div>
+
+                <div v-if="typeName.length > 0" class="mb-5">
+                    <ProductTypeTable :types="typeName" :product_types="product.product_types" @update-details="setDetails"></ProductTypeTable>
+                    <p class="error-message">{{ message.detailsError }}</p>
+                </div>
+
+                <div v-else class="w-50">
+                    <div class="text-subtitle-1 text-medium-emphasis">Đơn giá</div>
+                    <v-text-field v-model="product.name" density="compact" :placeholder="$t('product.name')"
+                        :error-messages="message.nameError"
+                        variant="outlined" class="mb-3">
+                    </v-text-field>
+
+                    <div class="text-subtitle-1 text-medium-emphasis">Kho hàng</div>
+                    <v-text-field v-model="product.name" density="compact" :placeholder="$t('product.name')"
+                        :error-messages="message.nameError"
+                        variant="outlined" class="mb-3">
+                    </v-text-field>
+                </div>
+
+                <div>
+                    <v-btn class="btn mr-5" style="width: 40%; height: 50px;" size="large" elevation="0">
+                        <v-icon class="mr-3" size="20">mdi-plus</v-icon>Thêm mã giảm giá
+                    </v-btn>
+                </div>
+            </div>
 
             <div class="d-flex w-100 my-5 justify-end">
                 <v-btn style="width: 20%;" color="blue" type="submit">Thêm sản phẩm</v-btn>
@@ -68,12 +152,6 @@
 <style>
 input[type="file"] {
     display: none;
-}
-
-.preview {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
 }
 </style>
 
@@ -91,7 +169,7 @@ export default {
                 description: '',
                 category_id: null,
                 images: [],
-                product_details: []
+                product_types: [],
             },
             images: [],
             categories: [],
@@ -101,12 +179,13 @@ export default {
                 imageMessage: '',
                 detailsError: '',
             },
+            typeName: [],
         }
     },
 
     watch: {
-        'product.product_details.length': function() {
-            if(this.product.product_details.length > 0) {
+        'product.product_types.length': function() {
+            if(this.product.product_types.length > 0) {
                 this.message.detailsError = '';
             }
         }
@@ -120,8 +199,114 @@ export default {
             }
         },
 
+        addType() {
+            if(this.typeName.length === 0) {
+                this.initProductTypes(0);
+            }
+            else if(this.typeName.length === 1) {
+                this.initProductTypes(1);
+            }
+            this.typeName.push({
+                name: '',
+            })
+        },
+
+        initProductTypes(index) {
+            if(index === 0) {
+                let types = [];
+                if(this.product.product_types.length > 0) {
+                    for(let i=0; i<this.product.product_types[0].types.length; i++) {
+                        const typeForm = {
+                            name: this.product.product_types[0].types[i].name,
+                            price: null,
+                            quantity: null,
+                        };
+                        types.push(typeForm);
+                    }
+                }
+
+                const productTypeForm = {
+                    name: '',
+                    image: null,
+                    price: null,
+                    quantity: null,
+                    types: types
+                };
+                this.product.product_types.push(productTypeForm);
+            }
+            else if(index === 1) {
+                const typeForm = {
+                    name: '',
+                    price: null,
+                    quantity: null,
+                };
+                for(let i=0; i<this.product.product_types.length; i++) {
+                    this.product.product_types[i].types.push(typeForm);
+                }
+            }
+            console.log(this.product);
+        },
+
+        closeType(index) {
+            this.typeName.splice(index, 1);
+            if(index === 0) {
+                if(this.product.product_types[0].types.length > 0) {
+                    this.product.product_types = [];
+                    const subType = this.product.product_types[0].types;
+                    for(let i=0; i<subType; i++) {
+                        const productTypeForm = {
+                            name: subType.name,
+                            image: null,
+                            price: null,
+                            quantity: null,
+                            types: []
+                        };
+
+                        this.product.product_types.push(productTypeForm);
+                    }
+                }
+                else {
+                    this.product.product_types = [];
+                }
+            }
+            else if(index === 1) {
+                for(let i=0; i<this.product.product_types.length; i++) {
+                    this.product.product_types[i].types = [];
+                }
+            }
+            console.log(this.typeName)
+        },
+
+        addSelection(index) {
+            if(index === 0) {
+                const lnt = this.product.product_types.length;
+                const value = this.product.product_types[lnt - 1].name;
+                if(value.length > 0) {
+                    this.initProductTypes(0);
+                }
+            }
+            else if(index === 1) {
+                const lnt = this.product.product_types[0].types.length;
+                const value = this.product.product_types[0].types[lnt - 1].name;
+                if(value.length > 0) {
+                    this.initProductTypes(1);
+                }
+            }
+        },
+
         openFileDialog() {
             document.getElementById('file-input').click();
+        },
+
+        deleteSelection(index, subindex) {
+            if(index === 0) {
+                this.product.product_types.splice(subindex, 1);
+            }
+            else if(index === 1) {
+                for(let i=0; i<this.product.product_types.length; i++) {
+                    this.product.product_types[i].types.splice(subindex, 1);
+                }
+            }
         },
         
         handleFileUpload(event) {
@@ -146,8 +331,8 @@ export default {
             this.product.images.splice(index, 1);
         },
 
-        setDetails(updatedDetails) {
-            this.product.product_details = updatedDetails;
+        setDetails(product_types) {
+            this.product.product_types = product_types;
         },
 
         checkForm() {
@@ -163,11 +348,11 @@ export default {
                 validImage = true;
             }
 
-            if(this.product.product_details.length === 0) {
+            if(this.product.product_types.length === 0) {
                 this.message.detailsError = this.$t(ERROR_MESSAGE.required_product_detail);
             }
 
-            if(!errorName && !errorCategory && !validImage && this.product.product_details.length > 0) {
+            if(!errorName && !errorCategory && !validImage && this.product.product_types.length > 0) {
                 this.addProduct()
             }
         },
@@ -187,7 +372,7 @@ export default {
                 formData.append(`images[${index}]`, item);
             });
 
-            this.product.product_details.forEach((item, index) => {
+            this.product.product_types.forEach((item, index) => {
                 formData.append(`productDetails[${index}].name`, item.name);
                 formData.append(`productDetails[${index}].description`, item.description);
                 formData.append(`productDetails[${index}].quantity`, item.quantity);
