@@ -34,7 +34,7 @@ const VietNam = {
         category: 'Danh mục',
         description: 'Mô tả',
         price: 'Đơn giá',
-        quantity: 'Số lượng',
+        quantity: 'Kho hàng',
         image: 'Ảnh',
         typeNumber: 'Số loại sản phẩm',
         status: 'Trạng thái',
@@ -50,10 +50,9 @@ const VietNam = {
     message: {
         error: {
             not_empty: 'Không được để trống',
-            not_image: 'Bắt buộc chọn ảnh sản phẩm',
             maximum_image_capacity: 'Số lượng ảnh vượt quá cho phép',
-            maximum_length: 'Vượt quá độ dài tối đa',
-            required_select: 'Bắt buộc chọn danh mục',
+            maximum_length: 'Vượt quá {length} ký tự',
+            required_select: 'Bắt buộc chọn một danh mục',
             required_product_detail: 'Bắt buộc phải có tối thiểu một loại sản phẩm',
             username_not_empty: 'Tên đăng nhập không được để trống',
             username_no_spaces: 'Tên đăng nhập không thể chứa khoảng trắng',
@@ -71,6 +70,19 @@ const VietNam = {
             repeat_password: 'Mật khẩu không khớp',
             term_service: 'Bạn chưa đồng ý với điều khoản dịch vụ',
             otp_wrong: 'Mã OTP không chính xác',
+            minimum_price: 'Đơn giá tối thiểu 0 đồng',
+            maximum_price: 'Đơn giá tối đa là {price}',
+            must_be_number: 'Ký tự không hợp lệ',
+            minimum_quantity: 'Số lượng tối thiểu là 0',
+            maximum_quantity: 'Số lượng tối đa là {quantity}',
+            must_be_integer: 'Số lượng không hợp lệ',
+            required_file: 'Bắt buộc chọn ảnh minh họa sản phẩm',
+            capacity_file: 'Dung lượng ảnh phải nhỏ hơn {size}MB',
+            type_file: 'Định dạng file phải là các dạng JPEG, PNG hoặc PDF',
+        },
+
+        warn: {
+            login_to_check_cart: 'Đăng nhập để xem Giỏ hàng',
         },
 
         info: {

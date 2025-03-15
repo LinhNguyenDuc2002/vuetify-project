@@ -4,6 +4,7 @@ import SignupPage from "@/pages/auth/SignupPage.vue";
 import OTPPage from "@/pages/auth/OTPPage.vue";
 import index from "@/pages/index.vue";
 import DefaultLayout from "@/layouts/DefaultLayout.vue";
+import ProductDetailPage from "@/pages/product/ProductDetailPage.vue";
 
 const CommonRoutes = {
     path: RouteConstant.HOME_PAGE.path,
@@ -36,6 +37,11 @@ const CommonRoutes = {
                     next(false);
                 }
             },
+        },
+        {
+            path: RouteConstant.PRODUCT_DETAIL_PAGE.path,
+            name: RouteConstant.PRODUCT_DETAIL_PAGE.name,
+            component: ProductDetailPage,
         },
     ],
 };

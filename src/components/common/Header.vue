@@ -1,5 +1,5 @@
 <template>
-    <div class="position-fixed top-0 w-100 border-thin bg-white d-flex" style="height: 10%; z-index: 1;">
+    <div class="position-fixed top-0 w-100 border-thin bg-white d-flex" style="height: 10%; z-index: 2;">
         <Image class="left-0 h-100 pa-2 cursor-pointer position-absolute" style="width: 5%;" :imageUrl="imageUrl"></Image>
 
         <div class="d-flex h-100 align-center position-absolute" style="margin-left: 10%;">
@@ -29,6 +29,8 @@
                     <v-icon class="cursor-pointer" size="25">{{ item.icon }}</v-icon>
                 </v-list-item>
             </v-list>
+
+            <CartDialog :cartDialog="cartDialog"></CartDialog>
 
             <v-menu v-if="isLoggedIn">
                 <template v-slot:activator="{ props }">
@@ -71,6 +73,8 @@ import { useUserStore } from '@/stores/app';
 import * as SecurityConstant from '@/constants/security_constant';
 import UserApi from '@/services/api/UserApi';
 import imageUrl from '@/assets/logo.png';
+import CartDialog from '../cart/CartDialog.vue';
+import { ca } from 'vuetify/locale';
 
 export default {
     data: () => ({
@@ -82,6 +86,9 @@ export default {
         loaded: false,
         loading: false,
         userInfo: null,
+        cartDialog: false,
+        notiDialog: false,
+        chatDialog: false,
         imageUrl,
     }),
 

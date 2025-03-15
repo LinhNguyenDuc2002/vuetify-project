@@ -1,26 +1,32 @@
 import { ERROR_MESSAGE } from "@/constants/message";
 
-export const RequiredRule = [
-    v => !!v || ERROR_MESSAGE.not_empty,
-    v => (v.length <= 255) || ERROR_MESSAGE.maximum_length
+export const RequiredRule = (maxLength, t) => [
+    v => !!v || t(ERROR_MESSAGE.not_empty),
+    v => (v.length <= maxLength) || t(ERROR_MESSAGE.maximum_length, { length: maxLength })
 ];
 
-export const SelectRule = [
-    v => !!v || ERROR_MESSAGE.required_select,
+export const SelectRule = (t) => [
+    v => !!v || t(ERROR_MESSAGE.required_select),
 ];
 
-export const PriceRule = [
-    v => !!v || ERROR_MESSAGE.not_empty,
-    v => !isNaN(Number(v)) || ERROR_MESSAGE.must_be_number,
-    v => (Number(v) >= 0) || ERROR_MESSAGE.minimum_value,
-    v => (Number(v) <= 1000000000000) || ERROR_MESSAGE.maximum_value
+export const FileRule = (size, t) => [
+    v => !!v || t(ERROR_MESSAGE.required_file),
+    v => v.size <= size * 1000000 || t(ERROR_MESSAGE.capacity_file, { size: size }),
+    v => ['image/jpeg', 'image/png', 'application/pdf'].includes(v.type) || t(ERROR_MESSAGE.type_file),
 ];
 
-export const QuantityRule = [
-    v => !!v || ERROR_MESSAGE.not_empty,
-    v => Number.isInteger(Number(v)) || ERROR_MESSAGE.must_be_integer,
-    v => (Number(v) >= 0) || ERROR_MESSAGE.minimum_value,
-    v => (Number(v) <= 1000000000) || ERROR_MESSAGE.maximum_value
+export const PriceRule = (t) => [
+    v => !!v || t(ERROR_MESSAGE.not_empty),
+    v => !isNaN(Number(v)) || t(ERROR_MESSAGE.must_be_number),
+    v => (Number(v) >= 0) || t(ERROR_MESSAGE.minimum_price),
+    v => (Number(v) <= 1000000000000) || t(ERROR_MESSAGE.maximum_price, { price: 1000000000000 })
+];
+
+export const QuantityRule = (t) => [
+    v => !!v || t(ERROR_MESSAGE.not_empty),
+    v => Number.isInteger(Number(v)) || t(ERROR_MESSAGE.must_be_integer),
+    v => (Number(v) >= 0) || t(ERROR_MESSAGE.minimum_quantity),
+    v => (Number(v) <= 1000000000) || t(ERROR_MESSAGE.maximum_quantity, { quantity: 1000000000 })
 ];
 
 export const UsernameLoginRule = [

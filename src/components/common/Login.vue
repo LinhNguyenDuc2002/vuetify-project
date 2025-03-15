@@ -1,8 +1,8 @@
 <template>
-    <div class="d-flex justify-between mx-16 mb-5 align-center" style="margin-top: 3%;">
+    <div class="d-flex justify-between mx-16 mb-5 align-center" style="margin-top: 5%;">
         <Image class="mx-16 my-6 w-50 text-center" :imageUrl="imageUrl"></Image>
 
-        <v-card class="mx-16 pa-12 w-50" elevation="0" rounded="lg">
+        <v-card class="mx-16 px-12 pt-12 w-50" elevation="0" rounded="lg">
             <v-card-title class="text-center mb-3 text-uppercase">{{ $t('login') }}</v-card-title>
 
             <v-form ref="form" @submit.prevent="checkForm">

@@ -1,5 +1,5 @@
 <template>
-    <div class="title">
+    <div class="title pa-3 rounded bg-white">
         <p v-if="title">{{ title }}</p>
     </div>
 </template>
