@@ -39,25 +39,30 @@ export const PasswordLoginRule = [
     v => !/\s/.test(v) || ERROR_MESSAGE.password_not_empty,
 ];
 
-export const UsernameRule = [
-    v => !!v || ERROR_MESSAGE.username_not_empty,
-    v => !/\s/.test(v) || ERROR_MESSAGE.username_no_spaces,
-    v => (v.length <= 255) || ERROR_MESSAGE.maximum_length
+export const UsernameRule = (t) => [
+    v => !!v || t(ERROR_MESSAGE.username_not_empty),
+    v => !/\s/.test(v) || t(ERROR_MESSAGE.username_no_spaces),
+    v => (v.length <= 255) || t(ERROR_MESSAGE.maximum_length)
 ];
 
-export const PasswordRule = [
-    v => !!v || ERROR_MESSAGE.password_not_empty,
-    v => !/\s/.test(v) || ERROR_MESSAGE.password_no_spaces,
-    v => (v && v.length >= 8) || ERROR_MESSAGE.password_length,
-    v => /[A-Z]/.test(v) || ERROR_MESSAGE.password_uppercase,
-    v => /[a-z]/.test(v) || ERROR_MESSAGE.password_lowercase,
-    v => /[0-9]/.test(v) || ERROR_MESSAGE.password_number,
-    v => /[!@#$%^&*(),.?":{}|<>]/.test(v) || ERROR_MESSAGE.password_special,
-    v => (v.length <= 255) || ERROR_MESSAGE.maximum_length
+export const PasswordRule = (t) => [
+    v => !!v || t(ERROR_MESSAGE.password_not_empty),
+    v => !/\s/.test(v) || t(ERROR_MESSAGE.password_no_spaces),
+    v => (v && v.length >= 8) || t(ERROR_MESSAGE.password_length),
+    v => /[A-Z]/.test(v) || t(ERROR_MESSAGE.password_uppercase),
+    v => /[a-z]/.test(v) || t(ERROR_MESSAGE.password_lowercase),
+    v => /[0-9]/.test(v) || t(ERROR_MESSAGE.password_number),
+    v => /[!@#$%^&*(),.?":{}|<>]/.test(v) || t(ERROR_MESSAGE.password_special),
+    v => (v.length <= 255) || t(ERROR_MESSAGE.maximum_length)
 ];
 
-export const EmailRule = [
-    v => !!v || ERROR_MESSAGE.email_not_empty,
-    v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || ERROR_MESSAGE.email_invalid,
-    v => !/\s/.test(v) || ERROR_MESSAGE.email_format,
+export const RepeatPasswordRule = (password, t) => [
+    v => !!v || t(ERROR_MESSAGE.password_not_empty),
+    v => (v === password) || t(ERROR_MESSAGE.repeat_password),
+];
+
+export const EmailRule = (t) => [
+    v => !!v || t(ERROR_MESSAGE.email_not_empty),
+    v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || t(ERROR_MESSAGE.email_invalid),
+    v => !/\s/.test(v) || t(ERROR_MESSAGE.email_format),
 ];
