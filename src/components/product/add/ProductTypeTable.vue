@@ -40,58 +40,80 @@
                         <tr>
                             <td :rowspan="(item.types.length === 1) ? 1 : (item.types.length - 1)" class="pa-3 text-center">
                                 <p class="mb-3">{{ item.name }}</p>
-                                <div class="mb-3">
-                                    <input type="file" id="file-input" multiple accept="image/*" @change="handleFileUpload">
-                                    <v-btn class="dashed-border pa-3 h-auto w-auto" style="min-height: 90px; min-width: 90px;" @click="openFileDialog" elevation="0">
-                                        <v-icon size="30" color="#03A9F4">mdi-image-plus-outline</v-icon>
-                                    </v-btn>
-                                </div>
-                                <div class="mb-3 d-flex justify-center">
+                                <div v-if="item.image !== null" class="mb-3 d-flex justify-center">
                                     <div class="position-relative cursor-pointer border-thin rounded d-flex" style="height: 90px; width: 90px;">
-                                        <v-icon size="20" class="position-absolute ma-1 right-0" @click="removeImage(index)">mdi-window-close</v-icon>
-                                        <v-img max-width="100%" max-height="100%" :src="item" alt="Product image"></v-img>
+                                        <v-icon size="15" class="position-absolute ma-1 right-0" @click="removeImage(index)" style="z-index: 1;">mdi-window-close</v-icon>
+                                        <v-img max-width="100%" max-height="100%" :src="createObjectURL(item.image)" alt="Product image"></v-img>
                                     </div>
                                 </div>
-
-                                <!-- <p class="h-100 text-center error-message">{{ message.imageMessage }}</p> -->
+                                <div v-else class="mb-3">
+                                    <v-file-input hide-input prepend-icon="" id="file-input-type" accept="image/*" @change="(event) => handleFileUpload(event, index)">
+                                        <template #prepend>
+                                            <v-btn class="dashed-border pa-3 h-auto w-auto" style="min-height: 90px; min-width: 90px;" @click="openFileDialog" elevation="0">
+                                                <v-icon size="30" color="#03A9F4">mdi-image-plus-outline</v-icon>
+                                            </v-btn>
+                                        </template>
+                                    </v-file-input>
+                                </div>
+                                <p class="h-100 text-center error-message">{{ imageMessage }}</p>
                             </td>
                             <td class="px-3">{{ item.types[0].name }}</td>
-                            <td class="px-3"></td>
-                            <td class="px-3"></td>
-                            <td class="px-3"></td>
+                            <td class="pa-3">
+                                <v-text-field type="number" v-model="item.types[0].price" density="compact" variant="outlined">
+                                </v-text-field>
+                            </td>
+                            <td class="pa-3">
+                                <v-text-field type="number" v-model="item.types[0].quantity" density="compact" variant="outlined">
+                                </v-text-field>
+                            </td>
                         </tr>
 
                         <tr v-if="item.types.length > 1" v-for="(subItem, subIndex) in item.types.slice(1, item.types.length - 1)">
                             <td class="px-3">{{ subItem.name }}</td>
-                            <td class="px-3"></td>
-                            <td class="px-3"></td>
-                            <td class="px-3"></td>
+                            <td class="pa-3">
+                                <v-text-field type="number" v-model="subItem.price" density="compact" variant="outlined"
+                                    :rules="priceRule">
+                                </v-text-field>
+                            </td>
+                            <td class="pa-3">
+                                <v-text-field type="number" v-model="subItem.quantity" density="compact" variant="outlined"
+                                    :rules="quantityRule">
+                                </v-text-field>
+                            </td>
                         </tr>
                     </template>
 
                     <template v-else>
-                        <tr v-for="(item, index) in product_types.slice(0, product_types.length - 1)" @click="">
+                        <tr v-for="(item, index) in product_types.slice(0, product_types.length - 1)">
                             <td class="pa-3 text-center">
                                 <p class="mb-3">{{ item.name }}</p>
-                                
-                                <div class="mb-3">
-                                    <input type="file" id="file-input" multiple accept="image/*" @change="handleFileUpload">
-                                    <v-btn class="dashed-border pa-3 h-auto w-auto" style="min-height: 90px; min-width: 90px;" @click="openFileDialog" elevation="0">
-                                        <v-icon size="30" color="#03A9F4">mdi-image-plus-outline</v-icon>
-                                    </v-btn>
-                                </div>
-                                <div class="mb-3 d-flex justify-center">
+                                <div v-if="item.image !== null" class="mb-3 d-flex justify-center">
                                     <div class="position-relative cursor-pointer border-thin rounded d-flex" style="height: 90px; width: 90px;">
-                                        <v-icon size="20" class="position-absolute ma-1 right-0" @click="removeImage(index)">mdi-window-close</v-icon>
-                                        <v-img max-width="100%" max-height="100%" alt="Product image"></v-img>
+                                        <v-icon size="15" class="position-absolute ma-1 right-0" @click="removeImage(index)" style="z-index: 1;">mdi-window-close</v-icon>
+                                        <v-img max-width="100%" max-height="100%" :src="createObjectURL(item.image)" alt="Product image"></v-img>
                                     </div>
                                 </div>
-
-                                <!-- <p class="h-100 text-center error-message">{{ message.imageMessage }}</p> -->
+                                <div v-else class="mb-3">
+                                    <v-file-input hide-input prepend-icon="" id="file-input-type" accept="image/*" @change="(event) => handleFileUpload(event, index)">
+                                        <template #prepend>
+                                            <v-btn class="dashed-border pa-3 h-auto w-auto" style="min-height: 90px; min-width: 90px;" @click="openFileDialog" elevation="0">
+                                                <v-icon size="30" color="#03A9F4">mdi-image-plus-outline</v-icon>
+                                            </v-btn>
+                                        </template>
+                                    </v-file-input>
+                                </div>
+                                <p class="h-100 text-center error-message">{{ imageMessage }}</p>
                             </td>
-                            <td class="px-3"></td>
-                            <td class="px-3"></td>
-                            <td class="px-3"></td>
+                            <td class="pa-3">
+                                <v-text-field type="number" v-model="item.price" density="compact" variant="outlined"
+                                    :rules="priceRule">
+                                </v-text-field>
+                            </td>
+                            <td class="pa-3">
+                                <v-text-field type="number" v-model="item.quantity" density="compact" variant="outlined"
+                                    :rules="quantityRule">
+                                </v-text-field>
+                            </td>
                         </tr>
                     </template>
                 </tbody>
@@ -101,16 +123,17 @@
 </template>
 
 <script>
+import { PriceRule, QuantityRule, FileRule } from '@/rules/Rule';
 
 export default {
     data() {
         return {
             headers: [
-                {text: 'product.type'},
                 {text: 'product.price'},
                 {text: 'product.quantity'},
             ],
-            product_types: [],
+            imageMessage: '',
+            fileRule: FileRule(2, this.$t),
         }
     },
 
@@ -126,38 +149,41 @@ export default {
         }
     },
 
+    computed: {
+        priceRule() {
+            return PriceRule(this.$t);
+        },
+        quantityRule() {
+            return QuantityRule(this.$t);
+        },
+    },
+
     methods: {
-        initializeProductTypes() {
-            for (let i = 0; i < this.types[0].selections.length; i++) {
-                this.product_types.push({
-                    image: null,
-                    first_type: this.types[0].selections[i],
-                    price: null,
-                    quantity: null,
+        openFileDialog() {
+            document.getElementById('file-input-type').click();
+        },
+
+        handleFileUpload(event, index) {
+            const file = event.target.files[0];
+            if (file) {
+                const isValid = this.fileRule.every(rule => {
+                    const result = rule(file);
+                    if (result !== true) {
+                        this.imageMessage = result;
+                        return false; // Dừng vòng lặp khi có lỗi
+                    }
+                    return true; // Tiếp tục nếu không có lỗi
                 });
+
+                if (isValid) {
+                    this.imageMessage = '';
+                    this.$emit('update-product-type-image', index, file);
+                }
             }
         },
 
-        handleFileUpload(event) {
-            // const files = event.target.files;
-            // if((files.length + this.product.images.length) > 4) {
-            //     this.message.imageMessage = this.$t(ERROR_MESSAGE.maximum_image_capacity);
-            //     return;
-            // }
-            // const fileArray = Array.from(files);
-
-            // fileArray.forEach(file => {
-            //     const url = URL.createObjectURL(file);
-            //     this.images.push(url);
-            //     this.product.images.push(file);
-            // });
-            // this.message.imageMessage = '';
-        },
-
         removeImage(index) {
-            URL.revokeObjectURL(this.images[index]);
-            this.images.splice(index, 1);
-            this.product.images.splice(index, 1);
+            this.$emit('update-product-type-image', index, null);
         },
 
         toggleSelectAll() {

@@ -7,16 +7,19 @@
                 <div class="w-100 h-100">
                     <div class="w-100 h-100 mb-5">
                         <div class="d-flex mb-3 w-100" style="flex-wrap: wrap;">
-                            <div v-for="(item, index) in images" :key="index" class="position-relative cursor-pointer border-thin rounded d-flex mr-3" style="height: 90px; width: 90px;">
-                                <v-icon size="20" class="position-absolute ma-1 right-0" @click="removeImage(index)">mdi-window-close</v-icon>
-                                <v-img max-width="100%" max-height="100%" :src="item" alt="Product image"></v-img>
+                            <div v-for="(item, index) in product.images" :key="index" class="position-relative cursor-pointer border-thin rounded d-flex mr-3" style="height: 90px; width: 90px;">
+                                <v-icon size="15" class="position-absolute ma-1 right-0" @click="removeImage(index)" style="z-index: 1;">mdi-window-close</v-icon>
+                                <v-img max-width="100%" max-height="100%" :src="createObjectURL(item)" alt="Product image"></v-img>
                             </div>
 
                             <div class="mr-5">
-                                <input type="file" id="file-input" multiple accept="image/*" @change="handleFileUpload">
-                                <v-btn class="dashed-border pa-3 h-auto w-auto" style="min-height: 90px; min-width: 90px;" @click="openFileDialog" elevation="0">
-                                    <v-icon size="30" color="#03A9F4">mdi-image-plus-outline</v-icon>
-                                </v-btn>
+                                <v-file-input hide-input prepend-icon="" v-model="images" id="file-input" multiple accept="image/*" @change="handleFileUpload">
+                                    <template #prepend>
+                                        <v-btn class="dashed-border pa-3 h-auto w-auto" style="min-height: 90px; min-width: 90px;" @click="openFileDialog" elevation="0">
+                                            <v-icon size="30" color="#03A9F4">mdi-image-plus-outline</v-icon>
+                                        </v-btn>
+                                    </template>
+                                </v-file-input>
                             </div>
                         </div>
 
@@ -26,7 +29,11 @@
                     <div class="text-subtitle-1 text-medium-emphasis">{{ $t('product.name') }}</div>
                     <v-text-field v-model="product.name" density="compact" :placeholder="$t('product.name')"
                         :error-messages="message.nameError"
+                        :rules="requiredRule(100)"
                         variant="outlined" class="mb-3">
+                        <template v-slot:append-inner>
+                            <span class="text-note">{{ product.name.length }}/100</span>
+                        </template>
                     </v-text-field>
 
                     <div class="text-subtitle-1 text-medium-emphasis">{{ $t('product.category') }}</div>
@@ -37,6 +44,7 @@
                         item-value="id"
                         item-title="name"
                         density="compact"
+                        :rules="selectRule"
                         :error-messages="message.categoryError"
                         :placeholder="$t('product.category')"
                         variant="outlined">
@@ -71,8 +79,11 @@
                         <div class="w-50">
                             <div class="text-subtitle-1 text-medium-emphasis">{{ `Phân loại ${index + 1}` }}</div>
                             <v-text-field v-model="type.name" density="compact" :placeholder="$t('product.name')"
-                                :error-messages="message.nameError"
+                                :rules="requiredRule(20)" :maxlength="20"
                                 variant="outlined" class="mb-3">
+                                <template v-slot:append-inner>
+                                    <span class="text-note">{{ type.name.length }}/20</span>
+                                </template>
                             </v-text-field>
                         </div>
 
@@ -82,12 +93,16 @@
                                     <div class="text-subtitle-1 text-medium-emphasis">{{ `Tùy chọn ${subindex + 1}` }}</div>
                                     <v-text-field v-model="item.name" density="compact" :placeholder="$t('product.name')"
                                         :error-messages="message.nameError"
+                                        :rules="(subindex < product.product_types.length - 1 || subindex === 0) ? requiredRule(20) : []"
                                         @input="addSelection(index)"
                                         variant="outlined" class="mb-3">
+                                        <template v-slot:append-inner>
+                                            <span class="text-note">{{ item.name.length }}/20</span>
+                                        </template>
                                     </v-text-field>
                                 </div>
 
-                                <v-icon v-if="subindex != product.product_types.length - 1" class="cursor-pointer" @click="deleteSelection(index, subindex)" :class="{ 'disabled': a !== 2 }">
+                                <v-icon v-if="subindex < product.product_types.length - 1" class="cursor-pointer" @click="deleteSelection(index, subindex)">
                                     mdi-trash-can-outline
                                 </v-icon>
                             </div>
@@ -97,12 +112,16 @@
                                     <div class="text-subtitle-1 text-medium-emphasis">{{ `Tùy chọn ${subindex + 1}` }}</div>
                                     <v-text-field v-model="item.name" density="compact" :placeholder="$t('product.name')"
                                         :error-messages="message.nameError"
+                                        :rules="(subindex < product.product_types.length - 1 || subindex === 0) ? requiredRule(20) : []"
                                         @input="addSelection(index)"
                                         variant="outlined" class="mb-3">
+                                        <template v-slot:append-inner>
+                                            <span class="text-note">{{ item.name.length }}/20</span>
+                                        </template>
                                     </v-text-field>
                                 </div>
 
-                                <v-icon v-if="subindex != product.product_types[0].types.length - 1" class="cursor-pointer" @click="deleteSelection(index, subindex)" :class="{ 'disabled': a !== 2 }">
+                                <v-icon v-if="subindex < product.product_types[0].types.length - 1" class="cursor-pointer" @click="deleteSelection(index, subindex)">
                                     mdi-trash-can-outline
                                 </v-icon>
                             </div>
@@ -117,20 +136,25 @@
                 </div>
 
                 <div v-if="typeName.length > 0" class="mb-5">
-                    <ProductTypeTable :types="typeName" :product_types="product.product_types" @update-details="setDetails"></ProductTypeTable>
+                    <ProductTypeTable 
+                        :types="typeName" :product_types="product.product_types" 
+                        @update-details="setDetails" @update-product-type-image="updateProductTypeImage">
+                    </ProductTypeTable>
                     <p class="error-message">{{ message.detailsError }}</p>
                 </div>
 
                 <div v-else class="w-50">
-                    <div class="text-subtitle-1 text-medium-emphasis">Đơn giá</div>
-                    <v-text-field v-model="product.name" density="compact" :placeholder="$t('product.name')"
+                    <div class="text-subtitle-1 text-medium-emphasis">{{ $t('product.price') }}</div>
+                    <v-text-field v-model="product.price" density="compact" :placeholder="$t('product.price')"
                         :error-messages="message.nameError"
+                        :rules="priceRule"
                         variant="outlined" class="mb-3">
                     </v-text-field>
 
-                    <div class="text-subtitle-1 text-medium-emphasis">Kho hàng</div>
-                    <v-text-field v-model="product.name" density="compact" :placeholder="$t('product.name')"
+                    <div class="text-subtitle-1 text-medium-emphasis">{{ $t('product.quantity') }}</div>
+                    <v-text-field v-model="product.quantity" density="compact" :placeholder="$t('product.quantity')"
                         :error-messages="message.nameError"
+                        :rules="quantityRule"
                         variant="outlined" class="mb-3">
                     </v-text-field>
                 </div>
@@ -157,7 +181,7 @@ input[type="file"] {
 
 <script>
 import CategoryApi from '@/services/api/CategoryApi';
-import { RequiredRule, SelectRule } from '../../../rules/Rule';
+import { RequiredRule, SelectRule, PriceRule, QuantityRule, FileRule } from '../../../rules/Rule';
 import { ERROR_MESSAGE } from '../../../constants/message';
 import ProductApi from '@/services/api/ProductApi';
 
@@ -166,6 +190,8 @@ export default {
         return {
             product: {
                 name: '',
+                price: null,
+                quantity: null,
                 description: '',
                 category_id: null,
                 images: [],
@@ -180,6 +206,19 @@ export default {
                 detailsError: '',
             },
             typeName: [],
+            fileRule: FileRule(2, this.$t),
+        }
+    },
+
+    computed: {
+        priceRule() {
+            return PriceRule(this.$t);
+        },
+        quantityRule() {
+            return QuantityRule(this.$t);
+        },
+        selectRule() {
+            return SelectRule(this.$t);
         }
     },
 
@@ -192,6 +231,10 @@ export default {
     },
 
     methods: {
+        requiredRule(maxLength) {
+            return RequiredRule(maxLength, this.$t);
+        },
+
         async fetchCategory() {
             const response = await CategoryApi.getAll('');
             if(response != null && response.code === 200) {
@@ -200,15 +243,16 @@ export default {
         },
 
         addType() {
-            if(this.typeName.length === 0) {
-                this.initProductTypes(0);
-            }
-            else if(this.typeName.length === 1) {
-                this.initProductTypes(1);
-            }
             this.typeName.push({
                 name: '',
-            })
+            });
+
+            if(this.typeName.length === 1) {
+                this.initProductTypes(0);
+            }
+            else if(this.typeName.length === 2) {
+                this.initProductTypes(1);
+            }
         },
 
         initProductTypes(index) {
@@ -244,7 +288,6 @@ export default {
                     this.product.product_types[i].types.push(typeForm);
                 }
             }
-            console.log(this.product);
         },
 
         closeType(index) {
@@ -274,7 +317,6 @@ export default {
                     this.product.product_types[i].types = [];
                 }
             }
-            console.log(this.typeName)
         },
 
         addSelection(index) {
@@ -308,26 +350,46 @@ export default {
                 }
             }
         },
+
+        updateProductTypeImage(index, file) {
+            this.product.product_types[index].image = file;
+        },
         
         handleFileUpload(event) {
-            const files = event.target.files;
-            if((files.length + this.product.images.length) > 4) {
-                this.message.imageMessage = this.$t(ERROR_MESSAGE.maximum_image_capacity);
-                return;
-            }
-            const fileArray = Array.from(files);
+            let size = 0;
+            if (this.images.length > 0) {
+                for (const file of this.images) {
+                    const isValid = this.fileRule.every(rule => {
+                        const result = rule(file);
+                        if (result !== true) {
+                            this.message.imageMessage = result;
+                            return false; // Dừng vòng lặp khi có lỗi
+                        }
+                        return true; // Tiếp tục nếu không có lỗi
+                    });
 
-            fileArray.forEach(file => {
-                const url = URL.createObjectURL(file);
-                this.images.push(url);
-                this.product.images.push(file);
-            });
-            this.message.imageMessage = '';
+                    if (!isValid) {
+                        return; // Nếu không hợp lệ, dừng xử lý
+                    }
+                    size += file.size;
+                }
+               
+
+                if(size > 10000000) {
+                    this.message.imageMessage = "lỗi";
+                    return;
+                }
+
+                this.message.imageMessage = '';
+                this.product.images = this.images;
+            }
+        },
+
+        createObjectURL(file) {
+            return URL.createObjectURL(file);
         },
 
         removeImage(index) {
-            URL.revokeObjectURL(this.images[index]);
-            this.images.splice(index, 1);
             this.product.images.splice(index, 1);
         },
 
@@ -335,25 +397,16 @@ export default {
             this.product.product_types = product_types;
         },
 
-        checkForm() {
-            const errorName = RequiredRule.map(rule => rule(this.product.name)).find(error => error !== true);
-            this.message.nameError = errorName ? this.$t(errorName) : '';
+        async checkForm() {
+            // let checkImage = true;
+            // if(this.product.images.length === 0) {
+            //     this.message.imageMessage = this.$t(ERROR_MESSAGE.not_image);
+            //     checkImage = false;
+            // }
 
-            const errorCategory = SelectRule.map(rule => rule(this.product.category_id)).find(error => error !== true);
-            this.message.categoryError = errorCategory ? this.$t(errorCategory) : '';
-
-            let validImage = false;
-            if(this.product.images.length === 0) {
-                this.message.imageMessage = this.$t(ERROR_MESSAGE.not_image);
-                validImage = true;
-            }
-
-            if(this.product.product_types.length === 0) {
-                this.message.detailsError = this.$t(ERROR_MESSAGE.required_product_detail);
-            }
-
-            if(!errorName && !errorCategory && !validImage && this.product.product_types.length > 0) {
-                this.addProduct()
+            const isValid = await this.$refs.form.validate();
+            if(isValid.valid) {
+                console.log(this.product);
             }
         },
 

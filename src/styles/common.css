@@ -91,3 +91,8 @@ thead {
 .dashed-border {
     border: 1px dashed #03A9F4;
 }
+
+.text-note {
+    font-size: 15px;
+    color: gray;
+}
