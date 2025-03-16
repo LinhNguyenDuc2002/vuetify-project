@@ -9,19 +9,22 @@
                 <v-text-field class="mb-2" density="compact" variant="outlined" prepend-inner-icon="mdi-account-outline"
                     v-model="userRegistration.username"
                     :placeholder="$t('username')"
-                    :error-messages="$t(message.usernameError)">
+                    :error-messages="$t(message.usernameError)"
+                    :rules="usernameRule">
                 </v-text-field>
 
                 <v-text-field class="mb-2" density="compact" prepend-inner-icon="mdi-email-outline" variant="outlined"
                     v-model="userRegistration.email"
                     :placeholder="$t('mail_address')"
-                    :error-messages="$t(message.emailError)">
+                    :error-messages="$t(message.emailError)"
+                    :rules="emailRule">
                 </v-text-field>
 
                 <v-text-field class="mb-2" density="compact" variant="outlined" prepend-inner-icon="mdi-phone-in-talk-outline"
                     v-model="userRegistration.phone"
                     :placeholder="$t('phone_number')"
-                    :error-messages="$t(message.phoneError)">
+                    :error-messages="$t(message.phoneError)"
+                    :rules="requiredRule(10)">
                 </v-text-field>
 
                 <v-text-field class="mb-2" density="compact" prepend-inner-icon="mdi-lock-outline" variant="outlined"
@@ -32,7 +35,8 @@
                     @blur="ruleDialog = false"
                     :placeholder="$t('password')"
                     @click:append-inner="visible1 = !visible1"
-                    :error-messages="$t(message.passwordError)">
+                    :error-messages="$t(message.passwordError)"
+                    :rules="passwordRule">
                 </v-text-field>
                 <RulePopUp v-if="ruleDialog" :items=passwordRule></RulePopUp>
 
@@ -41,7 +45,8 @@
                     :placeholder="$t('repeat_your_password')" 
                     :append-inner-icon="visible2 ? 'mdi-eye-off' : 'mdi-eye'" :type="visible2 ? 'text' : 'password'"
                     :error-messages="$t(message.repeatError)"
-                    @click:append-inner="visible2 = !visible2">
+                    @click:append-inner="visible2 = !visible2"
+                    :rules="repeatPasswordRule">
                 </v-text-field>
 
                 <p v-if="message.signupError" class="h-100 error-message mb-2">{{ $t(message.signupError) }}</p>
@@ -71,7 +76,7 @@
 
 <script>
 import { RouteConstant } from '@/constants/route_constant';
-import { EmailRule, PasswordRule, RequiredRule, UsernameRule } from '@/rules/Rule';
+import { EmailRule, PasswordRule, RepeatPasswordRule, RequiredRule, UsernameRule } from '@/rules/Rule';
 import RulePopUp from './RulePopUp.vue';
 import { PasswordRuleMessage } from '@/rules/message';
 import { ERROR_MESSAGE } from '@/constants/message';
@@ -81,105 +86,105 @@ import * as SecurityConstant from '@/constants/security_constant';
 import { OTP_TYPE } from '@/constants/variable_constant';
 
 export default {
-  data: () => ({
-    loginPage: RouteConstant.LOGIN_PAGE.name,
-    visible1: false,
-    visible2: false,
-    ruleDialog: false,
-    clickTimeout: null,
-    isChecked: false,
-    userRegistration: {
-        username: '',
-        password: '',
-        email: '',
-        phone: '',
+    data: () => ({
+        loginPage: RouteConstant.LOGIN_PAGE.name,
+        visible1: false,
+        visible2: false,
+        ruleDialog: false,
+        clickTimeout: null,
+        isChecked: false,
+        userRegistration: {
+            username: '',
+            password: '',
+            email: '',
+            phone: '',
+        },
+        repeatPassword: '',
+        message: {
+            usernameError: '',
+            emailError: '',
+            phoneError: '',
+            passwordError: '',
+            repeatError: '',
+            signupError: '',
+        },
+        passwordRule: PasswordRuleMessage,
+        signupLoading: false,
+        termPopup: false,
+        imageUrl,
+    }),
+
+    computed: {
+        usernameRule() {
+            return UsernameRule(this.$t);
+        },
+        passwordRule() {
+            return PasswordRule(this.$t);
+        },
+        emailRule() {
+            return EmailRule(this.$t);
+        },
+        repeatPasswordRule() {
+            return RepeatPasswordRule(this.userRegistration.password, this.$t);
+        },
     },
-    repeatPassword: '',
-    message: {
-        usernameError: '',
-        emailError: '',
-        phoneError: '',
-        passwordError: '',
-        repeatError: '',
-        signupError: '',
-    },
-    passwordRule: PasswordRuleMessage,
-    signupLoading: false,
-    termPopup: false,
-    imageUrl,
-}),
 
-  methods: {
-    goTo(page) {
-        this.$router.push({ name: page });
-    },
+    methods: {
+        requiredRule(size) {
+            return RequiredRule(size, this.$t);
+        },
 
-    changeTermPopup(value) {
-        console.log("ok")
-        this.termPopup = value;
-    },
+        goTo(page) {
+            this.$router.push({ name: page });
+        },
 
-    checkForm() {
-        const errorUsername = UsernameRule.map(rule => rule(this.userRegistration.username)).find(error => error !== true);
-        this.message.usernameError = errorUsername ? errorUsername : '';
+        changeTermPopup(value) {
+            this.termPopup = value;
+        },
 
-        const errorPassword = PasswordRule.map(rule => rule(this.userRegistration.password)).find(error => error !== true);
-        this.message.passwordError = errorPassword ? errorPassword : '';
-
-        const errorEmail = EmailRule.map(rule => rule(this.userRegistration.email)).find(error => error !== true);
-        this.message.emailError = errorEmail ? errorEmail : '';
-
-        const errorPhone = RequiredRule.map(rule => rule(this.userRegistration.phone)).find(error => error !== true);
-        this.message.phoneError = errorPhone ? errorPhone : '';
-
-        const errorRepeatPassword = RequiredRule.map(rule => rule(this.repeatPassword)).find(error => error !== true);
-        this.message.repeatError = errorRepeatPassword ? errorRepeatPassword : '';
-
-        let check = false;
-        if(!errorRepeatPassword) {
-            if(this.userRegistration.password !== this.repeatPassword) {
-                this.message.signupError = ERROR_MESSAGE.repeat_password;
-                check = true;
+        async checkForm() {
+            const isValid = await this.$refs.form.validate();
+            if(isValid.valid) {
+                let check = true;
+                if(!this.isChecked) {
+                    this.message.signupError = ERROR_MESSAGE.term_service;
+                    check = false;
+                }
+                
+                if(check) {
+                    this.signup();
+                }
             }
-            else if(!this.isChecked) {
-                this.message.signupError = ERROR_MESSAGE.term_service;
-                check = true;
+        },
+
+        async signup() {
+            this.signupLoading = true;
+            
+            const response = await UserApi.signup(this.userRegistration);
+            console.log(response);
+            if(response.data.code === 200) {
+                sessionStorage.setItem(SecurityConstant.SECRET_KEY, response.data.data['secret_key']);
+                sessionStorage.setItem(SecurityConstant.MAIL, response.data.data['mail']);
+                sessionStorage.setItem(SecurityConstant.OTP_OPTION, OTP_TYPE.CREATE_ACCOUNT);
+                this.goTo('OTPPage');
             }
-        }
+            else {
+                this.message.signupError = response.data['message']
+            }
+            this.signupLoading = false;
+        },
 
-        if(!errorUsername && !errorPassword && !errorEmail && !errorPhone && !errorRepeatPassword && !check) {
-            this.signup();
-        }
-    },
-
-    async signup() {
-        this.signupLoading = true;
-        
-        const response = await UserApi.signup(this.userRegistration);
-        console.log(response);
-        if(response.data.code === 200) {
-            sessionStorage.setItem(SecurityConstant.SECRET_KEY, response.data.data['secret_key']);
-            sessionStorage.setItem(SecurityConstant.MAIL, response.data.data['mail']);
-            sessionStorage.setItem(SecurityConstant.OTP_OPTION, OTP_TYPE.CREATE_ACCOUNT);
-            this.goTo('OTPPage');
-        }
-        else {
-            this.message.signupError = response.data['message']
-        }
-        this.signupLoading = false;
-    },
-
-    handleMouseDown() {
-        if (this.clickTimeout) {
-            clearTimeout(this.clickTimeout);
-            this.clickTimeout = null;
-            this.ruleDialog = true;
-        } else {
-            this.clickTimeout = setTimeout(() => {
-                this.clickTimeout = null; 
-            }, 300);
-        }
-    },
-  }
+        handleMouseDown() {
+            if (this.clickTimeout) {
+                clearTimeout(this.clickTimeout);
+                this.clickTimeout = null;
+                this.ruleDialog = true;
+            } else {
+                this.clickTimeout = setTimeout(() => {
+                    this.clickTimeout = null; 
+                }, 300);
+            }
+        },
+    }
 }
 </script>
