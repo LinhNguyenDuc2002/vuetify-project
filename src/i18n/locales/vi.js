@@ -77,8 +77,10 @@ const VietNam = {
             maximum_quantity: 'Số lượng tối đa là {quantity}',
             must_be_integer: 'Số lượng không hợp lệ',
             required_file: 'Bắt buộc chọn ảnh minh họa sản phẩm',
+            required_type_file: 'Hãy chọn ảnh minh họa cho mỗi loại sản phẩm',
             capacity_file: 'Dung lượng ảnh phải nhỏ hơn {size}MB',
             type_file: 'Định dạng file phải là các dạng JPEG, PNG hoặc PDF',
+            existed_selection: 'Tùy chọn này đã tồn tại'
         },
 
         warn: {

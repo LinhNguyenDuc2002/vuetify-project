@@ -5,13 +5,19 @@ export const RequiredRule = (maxLength, t) => [
     v => (v.length <= maxLength) || t(ERROR_MESSAGE.maximum_length, { length: maxLength })
 ];
 
+export const SelectionRule = (list, maxLength, t) => [
+    v => !!v || t(ERROR_MESSAGE.not_empty),
+    v => (v.length <= maxLength) || t(ERROR_MESSAGE.maximum_length, { length: maxLength }),
+    v => !list.includes(v.toLowerCase()) || t(ERROR_MESSAGE.existed_selection)
+];
+
 export const SelectRule = (t) => [
     v => !!v || t(ERROR_MESSAGE.required_select),
 ];
 
 export const FileRule = (size, t) => [
     v => !!v || t(ERROR_MESSAGE.required_file),
-    v => v.size <= size * 1000000 || t(ERROR_MESSAGE.capacity_file, { size: size }),
+    v => v && v.size <= size * 1000000 || t(ERROR_MESSAGE.capacity_file, { size: size }),
     v => ['image/jpeg', 'image/png', 'application/pdf'].includes(v.type) || t(ERROR_MESSAGE.type_file),
 ];
 

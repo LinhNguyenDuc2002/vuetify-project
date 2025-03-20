@@ -29,8 +29,10 @@ export const ERROR_MESSAGE = {
     term_service: 'message.error.term_service',
     otp_wrong: 'message.error.otp_wrong',
     required_file: 'message.error.required_file',
+    required_type_file:'message.error.required_type_file',
     capacity_file: 'message.error.capacity_file',
-    type_file: 'message.error.type_file'
+    type_file: 'message.error.type_file',
+    existed_selection: 'message.error.existed_selection',
 };
 
 export const WARN_MESSAGE = {

@@ -38,7 +38,7 @@
                 <tbody>
                     <template v-if="types.length > 1" v-for="(item, index) in product_types.slice(0, product_types.length - 1)">
                         <tr>
-                            <td :rowspan="(item.types.length === 1) ? 1 : (item.types.length - 1)" class="pa-3 text-center">
+                            <td :rowspan="(item.types.length === 1) ? 1 : (item.types.length - 1)" class="pa-3 text-center" width="30%">
                                 <p class="mb-3">{{ item.name }}</p>
                                 <div v-if="item.image !== null" class="mb-3 d-flex justify-center">
                                     <div class="position-relative cursor-pointer border-thin rounded d-flex" style="height: 90px; width: 90px;">
@@ -47,15 +47,16 @@
                                     </div>
                                 </div>
                                 <div v-else class="mb-3">
-                                    <v-file-input hide-input prepend-icon="" id="file-input-type" accept="image/*" @change="(event) => handleFileUpload(event, index)">
+                                    <v-file-input hide-input prepend-icon="" :id="`file-input-${index}`" accept="image/*" 
+                                    @change="(event) => handleFileUpload(event, index)">
                                         <template #prepend>
-                                            <v-btn class="dashed-border pa-3 h-auto w-auto" style="min-height: 90px; min-width: 90px;" @click="openFileDialog" elevation="0">
+                                            <v-btn class="dashed-border pa-3 h-auto w-auto" style="min-height: 90px; min-width: 90px;" @click="openFileDialog(index)" elevation="0">
                                                 <v-icon size="30" color="#03A9F4">mdi-image-plus-outline</v-icon>
                                             </v-btn>
                                         </template>
                                     </v-file-input>
                                 </div>
-                                <p class="h-100 text-center error-message">{{ imageMessage }}</p>
+                                <p class="h-100 text-center error-message">{{ imageMessage[index] }}</p>
                             </td>
                             <td class="px-3">{{ item.types[0].name }}</td>
                             <td class="pa-3">
@@ -85,7 +86,7 @@
 
                     <template v-else>
                         <tr v-for="(item, index) in product_types.slice(0, product_types.length - 1)">
-                            <td class="pa-3 text-center">
+                            <td class="pa-3 text-center" width="30%">
                                 <p class="mb-3">{{ item.name }}</p>
                                 <div v-if="item.image !== null" class="mb-3 d-flex justify-center">
                                     <div class="position-relative cursor-pointer border-thin rounded d-flex" style="height: 90px; width: 90px;">
@@ -94,15 +95,16 @@
                                     </div>
                                 </div>
                                 <div v-else class="mb-3">
-                                    <v-file-input hide-input prepend-icon="" id="file-input-type" accept="image/*" @change="(event) => handleFileUpload(event, index)">
+                                    <v-file-input hide-input prepend-icon="" :id="`file-input-${index}`" accept="image/*" 
+                                        @change="(event) => handleFileUpload(event, index)">
                                         <template #prepend>
-                                            <v-btn class="dashed-border pa-3 h-auto w-auto" style="min-height: 90px; min-width: 90px;" @click="openFileDialog" elevation="0">
+                                            <v-btn class="dashed-border pa-3 h-auto w-auto" style="min-height: 90px; min-width: 90px;" @click="openFileDialog(index)" elevation="0">
                                                 <v-icon size="30" color="#03A9F4">mdi-image-plus-outline</v-icon>
                                             </v-btn>
                                         </template>
                                     </v-file-input>
                                 </div>
-                                <p class="h-100 text-center error-message">{{ imageMessage }}</p>
+                                <p class="h-100 text-center error-message">{{ imageMessage[index] }}</p>
                             </td>
                             <td class="pa-3">
                                 <v-text-field type="number" v-model="item.price" density="compact" variant="outlined"
@@ -123,6 +125,7 @@
 </template>
 
 <script>
+import { ERROR_MESSAGE } from '@/constants/message';
 import { PriceRule, QuantityRule, FileRule } from '@/rules/Rule';
 
 export default {
@@ -132,8 +135,7 @@ export default {
                 {text: 'product.price'},
                 {text: 'product.quantity'},
             ],
-            imageMessage: '',
-            fileRule: FileRule(2, this.$t),
+            imageMessage: [],
         }
     },
 
@@ -156,11 +158,22 @@ export default {
         quantityRule() {
             return QuantityRule(this.$t);
         },
+        fileRule() {
+            return FileRule(2, this.$t);
+        }
+    },
+
+    watch: {
+        product_types: {
+            handler(newVal) {
+                this.imageMessage = new Array(newVal.length).fill('');
+            }
+        }
     },
 
     methods: {
-        openFileDialog() {
-            document.getElementById('file-input-type').click();
+        openFileDialog(index) {
+            document.getElementById(`file-input-${index}`).click();
         },
 
         handleFileUpload(event, index) {
@@ -169,14 +182,14 @@ export default {
                 const isValid = this.fileRule.every(rule => {
                     const result = rule(file);
                     if (result !== true) {
-                        this.imageMessage = result;
+                        this.imageMessage[index] = result;
                         return false; // Dừng vòng lặp khi có lỗi
                     }
                     return true; // Tiếp tục nếu không có lỗi
                 });
 
                 if (isValid) {
-                    this.imageMessage = '';
+                    this.imageMessage[index] = '';
                     this.$emit('update-product-type-image', index, file);
                 }
             }
@@ -184,14 +197,6 @@ export default {
 
         removeImage(index) {
             this.$emit('update-product-type-image', index, null);
-        },
-
-        toggleSelectAll() {
-            if (this.selectAll) {
-                this.selected = this.details.map((item, index) => index);
-            } else {
-                this.selected = [];
-            }
         },
 
         createObjectURL(file) {

@@ -51,7 +51,8 @@ const ProductApi = {
 
         var header = {
             [HeaderParam.CONTENT_TYPE]: [HeaderParam.APPLICATION_FORM_DATA],
-            // [HeaderParam.AUTHORIZATION]: `Bearer ${token}`
+            // [HeaderParam.AUTHORIZATION]: `Bearer ${token}`,
+            [HeaderParam.ACCEPT_LANGUAGE]: I18n.global.locale
         }
 
         const response = await BaseApi.post(uri, data, header)

@@ -13,7 +13,8 @@
                             </div>
 
                             <div class="mr-5">
-                                <v-file-input hide-input prepend-icon="" v-model="images" id="file-input" multiple accept="image/*" @change="handleFileUpload">
+                                <v-file-input hide-input prepend-icon="" v-model="images" id="file-input" multiple accept="image/*" 
+                                    @change="handleFileUpload">
                                     <template #prepend>
                                         <v-btn class="dashed-border pa-3 h-auto w-auto" style="min-height: 90px; min-width: 90px;" @click="openFileDialog" elevation="0">
                                             <v-icon size="30" color="#03A9F4">mdi-image-plus-outline</v-icon>
@@ -39,7 +40,7 @@
                     <div class="text-subtitle-1 text-medium-emphasis">{{ $t('product.category') }}</div>
                     <v-select
                         class="mb-3"
-                        v-model="product.category_id"
+                        v-model="product.categoryId"
                         :items="categories"
                         item-value="id"
                         item-title="name"
@@ -72,14 +73,14 @@
             <div class="pa-10 bg-white rounded">
                 <p class="sub-title">Thông tin bán hàng</p>
 
-                <div v-if="typeName.length > 0" class="mb-5">
-                    <div v-for="(type, index) in typeName" :key="index" class="bg-grey-lighten-3 position-relative pa-5 mb-3">
+                <div v-if="types.length > 0" class="mb-5">
+                    <div v-for="(type, index) in types" :key="index" class="bg-grey-lighten-3 position-relative pa-5 mb-3">
                         <v-icon size="20" class="position-absolute mr-5 right-0 cursor-pointer" @click="closeType(index)">mdi-window-close</v-icon>
 
                         <div class="w-50">
                             <div class="text-subtitle-1 text-medium-emphasis">{{ `Phân loại ${index + 1}` }}</div>
                             <v-text-field v-model="type.name" density="compact" :placeholder="$t('product.name')"
-                                :rules="requiredRule(20)" :maxlength="20"
+                                :rules="(index === 1) ? selectionRule(2, 0, 20) : requiredRule(20)" :maxlength="20"
                                 variant="outlined" class="mb-3">
                                 <template v-slot:append-inner>
                                     <span class="text-note">{{ type.name.length }}/20</span>
@@ -88,40 +89,21 @@
                         </div>
 
                         <div class="d-flex justify-space-between" style="flex-wrap: wrap;">
-                            <div v-if="index === 0" v-for="(item, subindex) in product.product_types" :key="subindex" class="d-flex align-center" style="width: 45%;">
+                            <div v-for="(item, subindex) in type.attributes" :key="subindex" class="d-flex align-center" style="width: 45%;">
                                 <div class="w-100 mr-3">
                                     <div class="text-subtitle-1 text-medium-emphasis">{{ `Tùy chọn ${subindex + 1}` }}</div>
-                                    <v-text-field v-model="item.name" density="compact" :placeholder="$t('product.name')"
+                                    <v-text-field v-model="item.value" density="compact" :placeholder="$t('product.name')"
                                         :error-messages="message.nameError"
-                                        :rules="(subindex < product.product_types.length - 1 || subindex === 0) ? requiredRule(20) : []"
+                                        :rules="(subindex < type.attributes.length - 1 || subindex === 0) ? selectionRule(index, subindex, 20) : []"
                                         @input="addSelection(index)"
                                         variant="outlined" class="mb-3">
                                         <template v-slot:append-inner>
-                                            <span class="text-note">{{ item.name.length }}/20</span>
+                                            <span class="text-note">{{ item.value.length }}/20</span>
                                         </template>
                                     </v-text-field>
                                 </div>
 
-                                <v-icon v-if="subindex < product.product_types.length - 1" class="cursor-pointer" @click="deleteSelection(index, subindex)">
-                                    mdi-trash-can-outline
-                                </v-icon>
-                            </div>
-
-                            <div v-if="index === 1" v-for="(item, subindex) in product.product_types[0].types" :key="subindex" class="d-flex align-center" style="width: 45%;">
-                                <div class="w-100 mr-3">
-                                    <div class="text-subtitle-1 text-medium-emphasis">{{ `Tùy chọn ${subindex + 1}` }}</div>
-                                    <v-text-field v-model="item.name" density="compact" :placeholder="$t('product.name')"
-                                        :error-messages="message.nameError"
-                                        :rules="(subindex < product.product_types.length - 1 || subindex === 0) ? requiredRule(20) : []"
-                                        @input="addSelection(index)"
-                                        variant="outlined" class="mb-3">
-                                        <template v-slot:append-inner>
-                                            <span class="text-note">{{ item.name.length }}/20</span>
-                                        </template>
-                                    </v-text-field>
-                                </div>
-
-                                <v-icon v-if="subindex < product.product_types[0].types.length - 1" class="cursor-pointer" @click="deleteSelection(index, subindex)">
+                                <v-icon v-if="subindex < type.attributes.length - 1" class="cursor-pointer" @click="deleteSelection(index, subindex)">
                                     mdi-trash-can-outline
                                 </v-icon>
                             </div>
@@ -129,18 +111,18 @@
                     </div>
                 </div>
 
-                <div v-if="typeName.length < 2" class="mb-5">
+                <div v-if="types.length < 2" class="mb-5">
                     <v-btn class="btn mr-5" style="width: 40%; height: 50px;" size="large" elevation="0" @click="addType()">
                         <v-icon class="mr-3" size="20">mdi-plus</v-icon>Thêm nhóm phân loại
                     </v-btn>
                 </div>
 
-                <div v-if="typeName.length > 0" class="mb-5">
+                <div v-if="types.length > 0" class="mb-5">
                     <ProductTypeTable 
-                        :types="typeName" :product_types="product.product_types" 
+                        :types="types" :product_types="product.productTypes" 
                         @update-details="setDetails" @update-product-type-image="updateProductTypeImage">
                     </ProductTypeTable>
-                    <p class="error-message">{{ message.detailsError }}</p>
+                    <p class="mt-3 error-message">{{ errorMessage }}</p>
                 </div>
 
                 <div v-else class="w-50">
@@ -181,9 +163,10 @@ input[type="file"] {
 
 <script>
 import CategoryApi from '@/services/api/CategoryApi';
-import { RequiredRule, SelectRule, PriceRule, QuantityRule, FileRule } from '../../../rules/Rule';
+import { RequiredRule, SelectRule, PriceRule, QuantityRule, FileRule, SelectionRule } from '../../../rules/Rule';
 import { ERROR_MESSAGE } from '../../../constants/message';
 import ProductApi from '@/services/api/ProductApi';
+import { da } from 'vuetify/locale';
 
 export default {
     data () {
@@ -193,9 +176,9 @@ export default {
                 price: null,
                 quantity: null,
                 description: '',
-                category_id: null,
+                categoryId: null,
                 images: [],
-                product_types: [],
+                productTypes: [],
             },
             images: [],
             categories: [],
@@ -203,10 +186,9 @@ export default {
                 nameError: '',
                 categoryError: '',
                 imageMessage: '',
-                detailsError: '',
             },
-            typeName: [],
-            fileRule: FileRule(2, this.$t),
+            types: [],
+            errorMessage: ''
         }
     },
 
@@ -219,12 +201,15 @@ export default {
         },
         selectRule() {
             return SelectRule(this.$t);
-        }
+        },
+        fileRule() {
+            return FileRule(2, this.$t);
+        },
     },
 
     watch: {
-        'product.product_types.length': function() {
-            if(this.product.product_types.length > 0) {
+        'product.productTypes.length': function() {
+            if(this.product.productTypes.length > 0) {
                 this.message.detailsError = '';
             }
         }
@@ -233,6 +218,19 @@ export default {
     methods: {
         requiredRule(maxLength) {
             return RequiredRule(maxLength, this.$t);
+        },
+        selectionRule(index, subindex, maxLength) {
+            let list = [];
+            if(index < 2) {
+                list = this.types[index].attributes
+                .slice(0, this.types[index].attributes.length - 1)
+                .filter((_, i) => i !== subindex)
+                .map(att => att.value.toLowerCase());
+            }
+            else {
+                list.push(this.types[0].name.toLowerCase());
+            }
+            return SelectionRule(list, maxLength, this.$t);
         },
 
         async fetchCategory() {
@@ -243,95 +241,108 @@ export default {
         },
 
         addType() {
-            this.typeName.push({
+            this.types.push({
                 name: '',
+                attributes: [
+                    {value: ''}
+                ]
             });
 
-            if(this.typeName.length === 1) {
-                this.initProductTypes(0);
-            }
-            else if(this.typeName.length === 2) {
-                this.initProductTypes(1);
-            }
+            this.initProductTypes(this.types.length - 1);
         },
 
         initProductTypes(index) {
-            if(index === 0) {
-                let types = [];
-                if(this.product.product_types.length > 0) {
-                    for(let i=0; i<this.product.product_types[0].types.length; i++) {
-                        const typeForm = {
-                            name: this.product.product_types[0].types[i].name,
-                            price: null,
-                            quantity: null,
-                        };
-                        types.push(typeForm);
+            let types = [];
+            const lnt = this.product.productTypes.length;
+
+            for(let i=0; i<this.types[0].attributes.length; i++) {
+                if(lnt > i) {
+                    this.product.productTypes[i].name = this.types[0].attributes[i].value;
+
+                    if(this.types.length > 1) {
+                        for(let j=0; j<this.types[1].attributes.length; j++) {
+                            const value = this.types[1].attributes[j].value;
+
+                            if(this.product.productTypes[i].types.length > j) {
+                                this.product.productTypes[i].types[j].name = value;
+                            }
+
+                            if(i === 0) {
+                                const typeForm = {
+                                    name: value,
+                                    price: null,
+                                    quantity: null,
+                                };
+                                types.push(typeForm);
+                            }
+                        }
                     }
                 }
+            }
 
-                const productTypeForm = {
-                    name: '',
-                    image: null,
-                    price: null,
-                    quantity: null,
-                    types: types
-                };
-                this.product.product_types.push(productTypeForm);
+            if(index === 0) {
+                this.product.productTypes.push(
+                    {
+                        name: '',
+                        image: null,
+                        price: null,
+                        quantity: null,
+                        types: types
+                    }
+                );
             }
             else if(index === 1) {
-                const typeForm = {
-                    name: '',
-                    price: null,
-                    quantity: null,
-                };
-                for(let i=0; i<this.product.product_types.length; i++) {
-                    this.product.product_types[i].types.push(typeForm);
+                for(let i=0; i<lnt; i++) {
+                    this.product.productTypes[i].types.push(
+                        {
+                            name: '',
+                            price: null,
+                            quantity: null,
+                        }
+                    );
                 }
             }
         },
 
         closeType(index) {
-            this.typeName.splice(index, 1);
+            this.types.splice(index, 1);
             if(index === 0) {
-                if(this.product.product_types[0].types.length > 0) {
-                    this.product.product_types = [];
-                    const subType = this.product.product_types[0].types;
-                    for(let i=0; i<subType; i++) {
+                if(this.types.length > 0) {
+                    this.product.productTypes = [];
+                    const subType = this.types[0].attributes;
+                    for(let i=0; i<subType.length; i++) {
                         const productTypeForm = {
-                            name: subType.name,
+                            name: subType[i].value,
                             image: null,
                             price: null,
                             quantity: null,
                             types: []
                         };
 
-                        this.product.product_types.push(productTypeForm);
+                        this.product.productTypes.push(productTypeForm);
                     }
                 }
                 else {
-                    this.product.product_types = [];
+                    this.product.productTypes = [];
                 }
             }
             else if(index === 1) {
-                for(let i=0; i<this.product.product_types.length; i++) {
-                    this.product.product_types[i].types = [];
+                for(let i=0; i<this.product.productTypes.length; i++) {
+                    this.product.productTypes[i].types = [];
                 }
             }
         },
 
         addSelection(index) {
-            if(index === 0) {
-                const lnt = this.product.product_types.length;
-                const value = this.product.product_types[lnt - 1].name;
+            if(index < 2) {
+                const lnt = this.types[index].attributes.length;
+                const value = this.types[index].attributes[lnt - 1].value;
                 if(value.length > 0) {
-                    this.initProductTypes(0);
+                    this.types[index].attributes.push({value: ''});
+                    this.initProductTypes(index);
                 }
-            }
-            else if(index === 1) {
-                const lnt = this.product.product_types[0].types.length;
-                const value = this.product.product_types[0].types[lnt - 1].name;
-                if(value.length > 0) {
-                    this.initProductTypes(1);
+                else {
+                    this.initProductTypes(2);
                 }
             }
         },
@@ -341,18 +352,19 @@ export default {
         },
 
         deleteSelection(index, subindex) {
+            this.types[index].attributes.splice(subindex, 1);
             if(index === 0) {
-                this.product.product_types.splice(subindex, 1);
+                this.product.productTypes.splice(subindex, 1);
             }
             else if(index === 1) {
-                for(let i=0; i<this.product.product_types.length; i++) {
-                    this.product.product_types[i].types.splice(subindex, 1);
+                for(let i=0; i<this.product.productTypes.length; i++) {
+                    this.product.productTypes[i].types.splice(subindex, 1);
                 }
             }
         },
 
         updateProductTypeImage(index, file) {
-            this.product.product_types[index].image = file;
+            this.product.productTypes[index].image = file;
         },
         
         handleFileUpload(event) {
@@ -375,7 +387,7 @@ export default {
                 }
                
 
-                if(size > 10000000) {
+                if(size > 1000000) {
                     this.message.imageMessage = "lỗi";
                     return;
                 }
@@ -393,48 +405,74 @@ export default {
             this.product.images.splice(index, 1);
         },
 
-        setDetails(product_types) {
-            this.product.product_types = product_types;
-        },
-
         async checkForm() {
-            // let checkImage = true;
-            // if(this.product.images.length === 0) {
-            //     this.message.imageMessage = this.$t(ERROR_MESSAGE.not_image);
-            //     checkImage = false;
-            // }
+            let checkImage = true;
+            if(this.product.images.length === 0) {
+                this.message.imageMessage = this.$t(ERROR_MESSAGE.required_file);
+                checkImage = false;
+            }
+
+            for(let i=0; i<this.product.productTypes.length - 1; i++) {
+                if(this.product.productTypes[i].image === null) {
+                    this.errorMessage = this.$t(ERROR_MESSAGE.required_type_file);
+                    checkImage = false;
+                    break;
+                }
+            }
 
             const isValid = await this.$refs.form.validate();
-            if(isValid.valid) {
-                console.log(this.product);
+            if(isValid.valid && checkImage) {
+                this.errorMessage = '';
+                this.message.imageMessage = '';
+                this.addProduct();
             }
         },
 
-        setDetailMessage(message) {
-            this.message.detailsError = message;
+        async addProduct() {
+            for(let i=0; i<this.types.length; i++) {
+                this.types[i].attributes.pop();
+            }
+            this.product.productTypes.pop();
+            for(let i=0; i<this.product.productTypes.length; i++) {
+                this.product.productTypes[i].types.pop();
+            }
+            
+            let data = {
+                product: this.product,
+                types: this.types
+            }
+            const formData = this.objectToFormData(data);
+            const response = await ProductApi.add(formData);
+            console.log(response);
         },
 
-        async addProduct() {
-            console.log(this.product)
-            let formData = new FormData();
-            formData.append('name', this.product.name);
-            formData.append('description', this.product.description);
-            formData.append('categoryId', this.product.category_id);
+        objectToFormData(obj, formData = new FormData(), parentKey = '') {
+            for (const key in obj) {
+                const propName = parentKey ? `${parentKey}.${key}` : key;
 
-            this.product.images.forEach((item, index) => {
-                formData.append(`images[${index}]`, item);
-            });
-
-            this.product.product_types.forEach((item, index) => {
-                formData.append(`productDetails[${index}].name`, item.name);
-                formData.append(`productDetails[${index}].description`, item.description);
-                formData.append(`productDetails[${index}].quantity`, item.quantity);
-                formData.append(`productDetails[${index}].price`, item.price);
-                formData.append(`productDetails[${index}].image`, item.image);
-            });
-        
-            const response = await ProductApi.add(formData);
-        }
+                if (key === 'images') {
+                    for (let i = 0; i < obj[key].length; i++) {
+                        formData.append(`${propName}[${i}]`, obj[key][i]);
+                    }
+                } else if (key === 'image') {
+                    formData.append(propName, obj[key]);
+                } else if (Array.isArray(obj[key])) {
+                    // Nếu là mảng, đệ quy cho từng phần tử
+                    obj[key].forEach((item, index) => {
+                        this.objectToFormData(item, formData, `${propName}[${index}]`);
+                    });
+                } else if (typeof obj[key] === 'object' && obj[key] !== null) {
+                    // Nếu là đối tượng, đệ quy
+                    this.objectToFormData(obj[key], formData, propName);
+                } else {
+                    // Thêm vào FormData
+                    if(obj[key] !== null) {
+                        formData.append(propName, obj[key]);
+                    }
+                }
+            }
+            return formData;
+        },
     },
 
     mounted() {
