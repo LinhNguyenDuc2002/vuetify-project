@@ -40,7 +40,7 @@
                     <div class="text-subtitle-1 text-medium-emphasis">{{ $t('product.category') }}</div>
                     <v-select
                         class="mb-3"
-                        v-model="product.category_id"
+                        v-model="product.categoryId"
                         :items="categories"
                         item-value="id"
                         item-title="name"
@@ -119,7 +119,7 @@
 
                 <div v-if="types.length > 0" class="mb-5">
                     <ProductTypeTable 
-                        :types="types" :product_types="product.product_types" 
+                        :types="types" :product_types="product.productTypes" 
                         @update-details="setDetails" @update-product-type-image="updateProductTypeImage">
                     </ProductTypeTable>
                     <p class="mt-3 error-message">{{ errorMessage }}</p>
@@ -166,6 +166,7 @@ import CategoryApi from '@/services/api/CategoryApi';
 import { RequiredRule, SelectRule, PriceRule, QuantityRule, FileRule, SelectionRule } from '../../../rules/Rule';
 import { ERROR_MESSAGE } from '../../../constants/message';
 import ProductApi from '@/services/api/ProductApi';
+import { da } from 'vuetify/locale';
 
 export default {
     data () {
@@ -175,9 +176,9 @@ export default {
                 price: null,
                 quantity: null,
                 description: '',
-                category_id: null,
+                categoryId: null,
                 images: [],
-                product_types: [],
+                productTypes: [],
             },
             images: [],
             categories: [],
@@ -207,8 +208,8 @@ export default {
     },
 
     watch: {
-        'product.product_types.length': function() {
-            if(this.product.product_types.length > 0) {
+        'product.productTypes.length': function() {
+            if(this.product.productTypes.length > 0) {
                 this.message.detailsError = '';
             }
         }
@@ -252,18 +253,18 @@ export default {
 
         initProductTypes(index) {
             let types = [];
-            const lnt = this.product.product_types.length;
+            const lnt = this.product.productTypes.length;
 
             for(let i=0; i<this.types[0].attributes.length; i++) {
                 if(lnt > i) {
-                    this.product.product_types[i].name = this.types[0].attributes[i].value;
+                    this.product.productTypes[i].name = this.types[0].attributes[i].value;
 
                     if(this.types.length > 1) {
                         for(let j=0; j<this.types[1].attributes.length; j++) {
                             const value = this.types[1].attributes[j].value;
 
-                            if(this.product.product_types[i].types.length > j) {
-                                this.product.product_types[i].types[j].name = value;
+                            if(this.product.productTypes[i].types.length > j) {
+                                this.product.productTypes[i].types[j].name = value;
                             }
 
                             if(i === 0) {
@@ -280,7 +281,7 @@ export default {
             }
 
             if(index === 0) {
-                this.product.product_types.push(
+                this.product.productTypes.push(
                     {
                         name: '',
                         image: null,
@@ -292,7 +293,7 @@ export default {
             }
             else if(index === 1) {
                 for(let i=0; i<lnt; i++) {
-                    this.product.product_types[i].types.push(
+                    this.product.productTypes[i].types.push(
                         {
                             name: '',
                             price: null,
@@ -307,7 +308,7 @@ export default {
             this.types.splice(index, 1);
             if(index === 0) {
                 if(this.types.length > 0) {
-                    this.product.product_types = [];
+                    this.product.productTypes = [];
                     const subType = this.types[0].attributes;
                     for(let i=0; i<subType.length; i++) {
                         const productTypeForm = {
@@ -318,16 +319,16 @@ export default {
                             types: []
                         };
 
-                        this.product.product_types.push(productTypeForm);
+                        this.product.productTypes.push(productTypeForm);
                     }
                 }
                 else {
-                    this.product.product_types = [];
+                    this.product.productTypes = [];
                 }
             }
             else if(index === 1) {
-                for(let i=0; i<this.product.product_types.length; i++) {
-                    this.product.product_types[i].types = [];
+                for(let i=0; i<this.product.productTypes.length; i++) {
+                    this.product.productTypes[i].types = [];
                 }
             }
         },
@@ -353,17 +354,17 @@ export default {
         deleteSelection(index, subindex) {
             this.types[index].attributes.splice(subindex, 1);
             if(index === 0) {
-                this.product.product_types.splice(subindex, 1);
+                this.product.productTypes.splice(subindex, 1);
             }
             else if(index === 1) {
-                for(let i=0; i<this.product.product_types.length; i++) {
-                    this.product.product_types[i].types.splice(subindex, 1);
+                for(let i=0; i<this.product.productTypes.length; i++) {
+                    this.product.productTypes[i].types.splice(subindex, 1);
                 }
             }
         },
 
         updateProductTypeImage(index, file) {
-            this.product.product_types[index].image = file;
+            this.product.productTypes[index].image = file;
         },
         
         handleFileUpload(event) {
@@ -411,8 +412,8 @@ export default {
                 checkImage = false;
             }
 
-            for(let i=0; i<this.product.product_types.length - 1; i++) {
-                if(this.product.product_types[i].image === null) {
+            for(let i=0; i<this.product.productTypes.length - 1; i++) {
+                if(this.product.productTypes[i].image === null) {
                     this.errorMessage = this.$t(ERROR_MESSAGE.required_type_file);
                     checkImage = false;
                     break;
@@ -428,26 +429,50 @@ export default {
         },
 
         async addProduct() {
-            console.log(this.product)
-            // let formData = new FormData();
-            // formData.append('name', this.product.name);
-            // formData.append('description', this.product.description);
-            // formData.append('categoryId', this.product.category_id);
+            for(let i=0; i<this.types.length; i++) {
+                this.types[i].attributes.pop();
+            }
+            this.product.productTypes.pop();
+            for(let i=0; i<this.product.productTypes.length; i++) {
+                this.product.productTypes[i].types.pop();
+            }
+            
+            let data = {
+                product: this.product,
+                types: this.types
+            }
+            const formData = this.objectToFormData(data);
+            const response = await ProductApi.add(formData);
+            console.log(response);
+        },
 
-            // this.product.images.forEach((item, index) => {
-            //     formData.append(`images[${index}]`, item);
-            // });
+        objectToFormData(obj, formData = new FormData(), parentKey = '') {
+            for (const key in obj) {
+                const propName = parentKey ? `${parentKey}.${key}` : key;
 
-            // this.product.product_types.forEach((item, index) => {
-            //     formData.append(`productDetails[${index}].name`, item.name);
-            //     formData.append(`productDetails[${index}].description`, item.description);
-            //     formData.append(`productDetails[${index}].quantity`, item.quantity);
-            //     formData.append(`productDetails[${index}].price`, item.price);
-            //     formData.append(`productDetails[${index}].image`, item.image);
-            // });
-        
-            // const response = await ProductApi.add(formData);
-        }
+                if (key === 'images') {
+                    for (let i = 0; i < obj[key].length; i++) {
+                        formData.append(`${propName}[${i}]`, obj[key][i]);
+                    }
+                } else if (key === 'image') {
+                    formData.append(propName, obj[key]);
+                } else if (Array.isArray(obj[key])) {
+                    // Nếu là mảng, đệ quy cho từng phần tử
+                    obj[key].forEach((item, index) => {
+                        this.objectToFormData(item, formData, `${propName}[${index}]`);
+                    });
+                } else if (typeof obj[key] === 'object' && obj[key] !== null) {
+                    // Nếu là đối tượng, đệ quy
+                    this.objectToFormData(obj[key], formData, propName);
+                } else {
+                    // Thêm vào FormData
+                    if(obj[key] !== null) {
+                        formData.append(propName, obj[key]);
+                    }
+                }
+            }
+            return formData;
+        },
     },
 
     mounted() {

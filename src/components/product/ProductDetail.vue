@@ -7,13 +7,15 @@
 
                     <v-sheet class="w-100" elevation="0">
                         <v-slide-group v-model="model" class="pa-3" center-active show-arrows>
-                            <v-slide-group-item v-for="n in 15" :key="n" v-slot="{ isSelected, toggle }">
-                                <v-card  :color="isSelected ? 'primary' : 'grey-lighten-1'" class="ma-2 border-thin" height="80" width="80" @click="toggle">
-                                    <div class="d-flex fill-height align-center justify-center">
-                                        <v-scale-transition>
-                                            <v-icon v-if="isSelected" color="white" icon="mdi-close-circle-outline" size="48"></v-icon>
-                                        </v-scale-transition>
-                                    </div>
+                            <v-slide-group-item v-for="item in product.image_urls" v-slot="{ isSelected, toggle }">
+                                <v-card :class="isSelected ? 'border-chosen' : ''" class="ma-2 border-thin" height="80" width="80" @click="toggle" elevation="0">
+                                    <Image :imageUrl="item"></Image>
+                                </v-card>
+                            </v-slide-group-item>
+
+                            <v-slide-group-item v-for="item in product.product_types" v-slot="{ isSelected, toggle }">
+                                <v-card :class="isSelected ? 'border-chosen' : ''" class="ma-2 border-thin" height="80" width="80" @click="toggle" elevation="0">
+                                    <Image :imageUrl="item.image_url"></Image>
                                 </v-card>
                             </v-slide-group-item>
                         </v-slide-group>
@@ -56,35 +58,15 @@
                         </div>
                     </div>
 
-                    <div class="d-flex mb-5">
+                    <div v-for="(item, index) in product.features" class="d-flex mb-5">
                         <div class="mr-3" style="width: 15%;">
-                            <p>Phân loại</p>
+                            <p>{{ item.name }}</p>
                         </div>
 
-                        <div class="d-flex" style="width: 85%; max-height: 50%; flex-wrap: wrap;">
+                        <div v-for="attribute in item.attributes" class="d-flex" style="width: 85%; max-height: 50%; flex-wrap: wrap;">
                             <div class="d-flex cursor-pointer pa-2 mx-2 mb-2 align-center border-chosen" style="height: 50px; width: fit-content">
                                 <Image :imageUrl="imageUrl" class="mr-2" style="width: 30px;"></Image>
-                                <p>aaaaa bbb </p>
-                            </div>
-                            <div class="d-flex border-thin cursor-pointer pa-2 mx-2 mb-2 align-center" style="height: 50px; width: fit-content">
-                                <Image :imageUrl="imageUrl" class="mr-2" style="width: 30px;"></Image>
-                                <p>aaaaa  c</p>
-                            </div>
-                            <div class="d-flex border-thin cursor-pointer pa-2 mx-2 mb-2 align-center" style="height: 50px; width: fit-content">
-                                <Image :imageUrl="imageUrl" class="mr-2" style="width: 30px;"></Image>
-                                <p>aaaaa</p>
-                            </div>
-                            <div class="d-flex border-thin cursor-pointer pa-2 mx-2 mb-2 align-center" style="height: 50px; width: fit-content">
-                                <Image :imageUrl="imageUrl" class="mr-2" style="width: 30px;"></Image>
-                                <p>aaaaa bbb </p>
-                            </div>
-                            <div class="d-flex border-thin cursor-pointer pa-2 mx-2 mb-2 align-center" style="height: 50px; width: fit-content">
-                                <Image :imageUrl="imageUrl" class="mr-2" style="width: 30px;"></Image>
-                                <p>aaaaa  c</p>
-                            </div>
-                            <div class="d-flex border-thin cursor-pointer pa-2 mx-2 mb-2 align-center" style="height: 50px; width: fit-content">
-                                <Image :imageUrl="imageUrl" class="mr-2" style="width: 30px;"></Image>
-                                <p>aaaaa</p>
+                                <p>{{ attribute.value }}</p>
                             </div>
                         </div>
                     </div>
