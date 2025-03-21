@@ -7,15 +7,18 @@
 
                     <v-sheet class="w-100" elevation="0">
                         <v-slide-group v-model="model" class="pa-3" center-active show-arrows>
-                            <v-slide-group-item v-for="item in product.image_urls" v-slot="{ isSelected, toggle }">
-                                <v-card :class="isSelected ? 'border-chosen' : ''" class="ma-2 border-thin" height="80" width="80" @click="toggle" elevation="0">
-                                    <Image :imageUrl="item"></Image>
+                            <v-slide-group-item v-for="item in product.image_urls" v-slot="{ isSelected, toggle }" @click="changeImage(item)">
+                                <v-card :class="isSelected ? 'border-chosen' : 'border-thin'" class="d-flex justify-center align-center ma-2 pa-2" height="80" width="80" @click="toggle" elevation="0">
+                                    <Image :imageUrl="item" style="width: 100%;"></Image>
                                 </v-card>
                             </v-slide-group-item>
 
-                            <v-slide-group-item v-for="item in product.product_types" v-slot="{ isSelected, toggle }">
-                                <v-card :class="isSelected ? 'border-chosen' : ''" class="ma-2 border-thin" height="80" width="80" @click="toggle" elevation="0">
-                                    <Image :imageUrl="item.image_url"></Image>
+                            <v-slide-group-item v-if="product.features" v-for="item in product.features[0].attributes" v-slot="{ isSelected, toggle }" 
+                                @click="changeImage(this.product.product_types.find(product_type => product_type.types[0].id === item.id).image_url)">
+                                <v-card :class="isSelected ? 'border-chosen' : 'border-thin'" class="d-flex justify-center align-center ma-2 pa-2" height="80" width="80" @click="toggle" elevation="0">
+                                    <Image :imageUrl="this.product.product_types.find(product_type => product_type.types[0].id === item.id).image_url" 
+                                        style="width: 100%;">
+                                    </Image>
                                 </v-card>
                             </v-slide-group-item>
                         </v-slide-group>
@@ -49,8 +52,8 @@
 
                     <div class="d-flex justify-space-between mb-5">
                         <div>
-                            <p class="strikethrough price" style="font-size: 15px;">{{ formatVND(125000000) }}</p>
-                            <p class="price" style="font-size: 20px;">{{ formatVND(123000000) }}</p>
+                            <!-- <p class="strikethrough price" style="font-size: 15px;">{{ formatVND(125000000) }}</p> -->
+                            <p class="price" style="font-size: 20px;">{{ formatVND(price) }}</p>
                         </div>
 
                         <div class="mr-16 d-flex align-end">
@@ -58,15 +61,31 @@
                         </div>
                     </div>
 
-                    <div v-for="(item, index) in product.features" class="d-flex mb-5">
+                    <div v-for="(item, index) in product.features" :key="index" class="d-flex mb-5">
                         <div class="mr-3" style="width: 15%;">
                             <p>{{ item.name }}</p>
                         </div>
 
-                        <div v-for="attribute in item.attributes" class="d-flex" style="width: 85%; max-height: 50%; flex-wrap: wrap;">
-                            <div class="d-flex cursor-pointer pa-2 mx-2 mb-2 align-center border-chosen" style="height: 50px; width: fit-content">
-                                <Image :imageUrl="imageUrl" class="mr-2" style="width: 30px;"></Image>
-                                <p>{{ attribute.value }}</p>
+                        <div v-if="index === 0" class="d-flex" style="width: 85%; max-height: 50%; flex-wrap: wrap;">
+                            <div v-for="type in item.attributes"
+                                :class="(type.id === type1) ? 'border-chosen' : 'border-thin'" class="d-flex cursor-pointer pa-2 mx-2 mb-2 align-center" style="height: 50px; width: fit-content"
+                                @click="handleClickProduct(index, type.id)">
+                                <Image :imageUrl="this.product.product_types.find(product_type => product_type.types[0].id === type.id).image_url" 
+                                    class="mr-2" style="width: 30px;">
+                                </Image>
+                                <p>{{ type.value }}</p>
+                            </div>
+                        </div>
+
+                        <div v-else class="d-flex" style="width: 85%; max-height: 50%; flex-wrap: wrap;">
+                            <div v-for="type in item.attributes" :key="type.id"
+                                :class="{
+                                    'bg-grey-lighten-3': !typeList2.includes(type.id),
+                                    'border-chosen': type.id === type2, 'border-thin': type.id !== type2
+                                }"
+                                class="d-flex cursor-pointer pa-2 mx-2 mb-2 align-center" style="height: 50px; width: fit-content"
+                                @click="handleClickProduct(index, type.id)">
+                                <p>{{ type.value }}</p>
                             </div>
                         </div>
                     </div>
@@ -83,8 +102,12 @@
                         </div>
 
                         <div>
-                            <p class="h-100 text-center" style="color: red;">{{ message }}</p>
+                            <p class="h-100 text-center" style="color: grey;">{{ quantity }} sản phẩm</p>
                         </div>
+                    </div>
+
+                    <div class="mb-5">
+                        <p class="h-100" style="color: red;">{{ message }}</p>
                     </div>
 
                     <div class="h-auto d-flex mt-auto">
@@ -116,17 +139,22 @@
 
 <script>
 import { ref } from 'vue';
-import imageUrl from '@/assets/draw1.webp';
 import { formatVND } from '@/services/util/StringUtil';
 import ProductApi from '@/services/api/ProductApi';
 
 export default {
     data: () => ({
         model: ref(null),
-        imageUrl,
+        imageUrl: null,
         product: {},
+        typeList1: [],
+        typeList2: [],
+        price: 0,
+        quantity: 0,
+        type1: '',
+        type2: '',
         number: 0,
-        message: ''
+        message: '',
     }),
 
     computed: {
@@ -135,8 +163,17 @@ export default {
         }
     },
 
-    mounted() {
-        this.fetchProduct();
+    async mounted() {
+        await this.fetchProduct();
+
+        if(this.product.product_types.length > 0) {
+            this.type1 = this.product.product_types.find(type => type.quantity > 0).types[0].id;
+            this.updateListType2();
+        }
+        else {
+            this.quantity = this.product.quantity;
+            this.price = this.product.price;
+        }
     },
 
     methods: {
@@ -171,6 +208,42 @@ export default {
                 this.product = body.data;
             }
             console.log(response);
+        },
+
+        updateListType2() {
+            if(this.product.product_types[0].types.length > 1) {
+                this.typeList2 = this.product.product_types
+                    .filter(type => type.quantity > 0 && type.types[0].id === this.type1)
+                    .map(type => type.types[1].id);
+                this.type2 = this.typeList2[0];
+                const foundType = this.product.product_types.find(type => type.types[0].id === this.type1 && type.types[1].id === this.type2);
+                this.imageUrl = foundType.image_url;
+                this.quantity = foundType.quantity;
+                this.price = foundType.price;
+            }
+            else {
+                const foundType = this.product.product_types.find(type => type.types[0].id === this.type1);
+                this.imageUrl = foundType.image_url;
+                this.quantity = foundType.quantity;
+                this.price = foundType.price;
+            }
+        },
+
+        changeImage(value) {
+            this.imageUrl = value;
+        },
+
+        handleClickProduct(index, value) {
+            if(index === 0) {
+                this.type1 = value;
+                this.updateListType2();
+            }
+            else {
+                this.type2 = value;
+                const foundType = this.product.product_types.find(type => type.types[0].id === this.type1 && type.types[1].id === this.type2);
+                this.quantity = foundType.quantity;
+                this.price = foundType.price;
+            }
         }
     }
 }
