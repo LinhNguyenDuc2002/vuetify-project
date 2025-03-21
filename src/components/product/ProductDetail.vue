@@ -8,14 +8,14 @@
                     <v-sheet class="w-100" elevation="0">
                         <v-slide-group v-model="model" class="pa-3" center-active show-arrows>
                             <v-slide-group-item v-for="item in product.image_urls" v-slot="{ isSelected, toggle }">
-                                <v-card :class="isSelected ? 'border-chosen' : ''" class="ma-2 border-thin pa-2" height="80" width="80" @click="toggle" elevation="0">
-                                    <Image :imageUrl="item"></Image>
+                                <v-card :class="isSelected ? 'border-chosen' : ''" class="d-flex justify-center align-center ma-2 border-thin pa-2" height="80" width="80" @click="toggle" elevation="0">
+                                    <Image :imageUrl="item" style="width: 100%;"></Image>
                                 </v-card>
                             </v-slide-group-item>
 
                             <v-slide-group-item v-for="item in product.product_types" v-slot="{ isSelected, toggle }">
-                                <v-card :class="isSelected ? 'border-chosen' : ''" class="ma-2 border-thin pa-2" height="80" width="80" @click="toggle" elevation="0">
-                                    <Image :imageUrl="item.image_url"></Image>
+                                <v-card :class="isSelected ? 'border-chosen' : ''" class="d-flex justify-center align-center ma-2 border-thin pa-2" height="80" width="80" @click="toggle" elevation="0">
+                                    <Image :imageUrl="item.image_url" style="width: 100%;"></Image>
                                 </v-card>
                             </v-slide-group-item>
                         </v-slide-group>
@@ -63,19 +63,20 @@
                             <p>{{ item.name }}</p>
                         </div>
 
-                        <div v-if="index === 0" v-for="type in product.product_types" :key="type.attribute_id"
-                            class="d-flex" style="width: 85%; max-height: 50%; flex-wrap: wrap;">
-                            <div :class="(type.attribute_id === type1) ? 'border-chosen' : ''" class="d-flex cursor-pointer pa-2 mx-2 mb-2 align-center border-chosen" style="height: 50px; width: fit-content"
+                        <div v-if="index === 0" class="d-flex" style="width: 85%; max-height: 50%; flex-wrap: wrap;">
+                            <div v-for="type in product.product_types" :key="type.attribute_id"
+                                :class="(type.attribute_id === type1) ? 'border-chosen' : 'border-thin'" class="d-flex cursor-pointer pa-2 mx-2 mb-2 align-center" style="height: 50px; width: fit-content"
                                 @click="handleClickProduct(index)">
                                 <Image :imageUrl="type.image_url" class="mr-2" style="width: 30px;"></Image>
                                 <p>{{ type.name }}</p>
                             </div>
                         </div>
 
-                        <div v-else v-for="type in item.attributes" :key="type.id" class="d-flex" style="width: 85%; max-height: 50%; flex-wrap: wrap;">
-                            <div :class="{
+                        <div v-else class="d-flex" style="width: 85%; max-height: 50%; flex-wrap: wrap;">
+                            <div v-for="type in item.attributes" :key="type.id"
+                                :class="{
                                     'bg-grey-lighten-3': !typeList.includes(type.id),
-                                    'border-chosen': type.id === type2
+                                    'border-chosen': type.id === type2, 'border-thin': type.id !== type2
                                 }"
                                 class="d-flex cursor-pointer pa-2 mx-2 mb-2 align-center" style="height: 50px; width: fit-content"
                                 @click="handleClickProduct(index)">
@@ -173,6 +174,7 @@ export default {
             .filter(type => type.quantity > 0)
             .map(type => type.attribute_id);
             this.type2 = this.typeList[0];
+            console.log(this.type2);
             const foundType = await this.product.product_types[0].types.find(type => type.attribute_id === this.type2);
             this.quantity = foundType.quantity;
             this.price = foundType.price;
