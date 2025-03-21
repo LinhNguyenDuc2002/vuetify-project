@@ -7,15 +7,18 @@
 
                     <v-sheet class="w-100" elevation="0">
                         <v-slide-group v-model="model" class="pa-3" center-active show-arrows>
-                            <v-slide-group-item v-for="item in product.image_urls" v-slot="{ isSelected, toggle }">
-                                <v-card :class="isSelected ? 'border-chosen' : ''" class="d-flex justify-center align-center ma-2 border-thin pa-2" height="80" width="80" @click="toggle" elevation="0">
+                            <v-slide-group-item v-for="item in product.image_urls" v-slot="{ isSelected, toggle }" @click="changeImage(item)">
+                                <v-card :class="isSelected ? 'border-chosen' : 'border-thin'" class="d-flex justify-center align-center ma-2 pa-2" height="80" width="80" @click="toggle" elevation="0">
                                     <Image :imageUrl="item" style="width: 100%;"></Image>
                                 </v-card>
                             </v-slide-group-item>
 
-                            <v-slide-group-item v-for="item in product.product_types" v-slot="{ isSelected, toggle }">
-                                <v-card :class="isSelected ? 'border-chosen' : ''" class="d-flex justify-center align-center ma-2 border-thin pa-2" height="80" width="80" @click="toggle" elevation="0">
-                                    <Image :imageUrl="item.image_url" style="width: 100%;"></Image>
+                            <v-slide-group-item v-if="product.features" v-for="item in product.features[0].attributes" v-slot="{ isSelected, toggle }" 
+                                @click="changeImage(this.product.product_types.find(product_type => product_type.types[0].id === item.id).image_url)">
+                                <v-card :class="isSelected ? 'border-chosen' : 'border-thin'" class="d-flex justify-center align-center ma-2 pa-2" height="80" width="80" @click="toggle" elevation="0">
+                                    <Image :imageUrl="this.product.product_types.find(product_type => product_type.types[0].id === item.id).image_url" 
+                                        style="width: 100%;">
+                                    </Image>
                                 </v-card>
                             </v-slide-group-item>
                         </v-slide-group>
@@ -64,22 +67,24 @@
                         </div>
 
                         <div v-if="index === 0" class="d-flex" style="width: 85%; max-height: 50%; flex-wrap: wrap;">
-                            <div v-for="type in product.product_types" :key="type.attribute_id"
-                                :class="(type.attribute_id === type1) ? 'border-chosen' : 'border-thin'" class="d-flex cursor-pointer pa-2 mx-2 mb-2 align-center" style="height: 50px; width: fit-content"
-                                @click="handleClickProduct(index)">
-                                <Image :imageUrl="type.image_url" class="mr-2" style="width: 30px;"></Image>
-                                <p>{{ type.name }}</p>
+                            <div v-for="type in item.attributes"
+                                :class="(type.id === type1) ? 'border-chosen' : 'border-thin'" class="d-flex cursor-pointer pa-2 mx-2 mb-2 align-center" style="height: 50px; width: fit-content"
+                                @click="handleClickProduct(index, type.id)">
+                                <Image :imageUrl="this.product.product_types.find(product_type => product_type.types[0].id === type.id).image_url" 
+                                    class="mr-2" style="width: 30px;">
+                                </Image>
+                                <p>{{ type.value }}</p>
                             </div>
                         </div>
 
                         <div v-else class="d-flex" style="width: 85%; max-height: 50%; flex-wrap: wrap;">
                             <div v-for="type in item.attributes" :key="type.id"
                                 :class="{
-                                    'bg-grey-lighten-3': !typeList.includes(type.id),
+                                    'bg-grey-lighten-3': !typeList2.includes(type.id),
                                     'border-chosen': type.id === type2, 'border-thin': type.id !== type2
                                 }"
                                 class="d-flex cursor-pointer pa-2 mx-2 mb-2 align-center" style="height: 50px; width: fit-content"
-                                @click="handleClickProduct(index)">
+                                @click="handleClickProduct(index, type.id)">
                                 <p>{{ type.value }}</p>
                             </div>
                         </div>
@@ -142,13 +147,14 @@ export default {
         model: ref(null),
         imageUrl: null,
         product: {},
-        type1: '',
-        type2: '',
-        typeList: [],
+        typeList1: [],
+        typeList2: [],
         price: 0,
         quantity: 0,
+        type1: '',
+        type2: '',
         number: 0,
-        message: ''
+        message: '',
     }),
 
     computed: {
@@ -159,30 +165,14 @@ export default {
 
     async mounted() {
         await this.fetchProduct();
-        this.imageUrl = this.product.image_urls[0];
+
         if(this.product.product_types.length > 0) {
-            this.type1 = this.product.product_types[0].attribute_id;
+            this.type1 = this.product.product_types.find(type => type.quantity > 0).types[0].id;
+            this.updateListType2();
         }
         else {
             this.quantity = this.product.quantity;
             this.price = this.product.price;
-            return;
-        }
-        
-        if(this.product.product_types[0].types.length > 0) {
-            this.typeList = this.product.product_types[0].types
-            .filter(type => type.quantity > 0)
-            .map(type => type.attribute_id);
-            this.type2 = this.typeList[0];
-            console.log(this.type2);
-            const foundType = await this.product.product_types[0].types.find(type => type.attribute_id === this.type2);
-            this.quantity = foundType.quantity;
-            this.price = foundType.price;
-        }
-        else {
-            const foundType = this.product.product_types.find(type => type.attribute_id === this.type1);
-            this.quantity = foundType.quantity;
-            this.price = foundType.price;
         }
     },
 
@@ -220,12 +210,39 @@ export default {
             console.log(response);
         },
 
-        handleClickProduct(index) {
-            if(index === 0) {
-
+        updateListType2() {
+            if(this.product.product_types[0].types.length > 1) {
+                this.typeList2 = this.product.product_types
+                    .filter(type => type.quantity > 0 && type.types[0].id === this.type1)
+                    .map(type => type.types[1].id);
+                this.type2 = this.typeList2[0];
+                const foundType = this.product.product_types.find(type => type.types[0].id === this.type1 && type.types[1].id === this.type2);
+                this.imageUrl = foundType.image_url;
+                this.quantity = foundType.quantity;
+                this.price = foundType.price;
             }
             else {
+                const foundType = this.product.product_types.find(type => type.types[0].id === this.type1);
+                this.imageUrl = foundType.image_url;
+                this.quantity = foundType.quantity;
+                this.price = foundType.price;
+            }
+        },
 
+        changeImage(value) {
+            this.imageUrl = value;
+        },
+
+        handleClickProduct(index, value) {
+            if(index === 0) {
+                this.type1 = value;
+                this.updateListType2();
+            }
+            else {
+                this.type2 = value;
+                const foundType = this.product.product_types.find(type => type.types[0].id === this.type1 && type.types[1].id === this.type2);
+                this.quantity = foundType.quantity;
+                this.price = foundType.price;
             }
         }
     }
