@@ -15,9 +15,15 @@
                 </v-text-field>
             </div>
 
-            <v-btn class="btn mr-5" style="width: 15%; height: 40px;" size="large" elevation="0" @click="changeOpenDialog(true)">
-                <v-icon class="mr-3" size="20">mdi-plus</v-icon>{{ $t('button.add') }}
-            </v-btn>
+            <div class="w-25 d-flex justify-end align-center">
+                <v-btn class="btn mr-5" style="width: 45%; height: 40px;" size="large" elevation="0" @click="changeOpenDialog(true)">
+                    <v-icon class="mr-3" size="20">mdi-plus</v-icon>{{ $t('button.add') }}
+                </v-btn>
+
+                <v-btn class="btn" style="width: 45%; height: 40px;" size="large" elevation="0" @click="deleteSelected()">
+                    <v-icon class="mr-3" size="20">mdi-trash-can-outline</v-icon>{{ $t('button.delete') }}
+                </v-btn>
+            </div>
         </div>
 
         <div class="border-thin">

@@ -1,7 +1,7 @@
 <template>
     <div class="bg-grey-lighten-3 w-100">
         <div style="padding-top: 6%; padding-bottom: 3%; margin-left: 128px; margin-right: 128px;">
-            <div class="d-flex bg-white pa-5 justify-space-between">
+            <div class="d-flex bg-white pa-5 justify-space-between mb-5">
                 <div style="width: 40%;">
                     <Image :imageUrl="imageUrl" class="d-flex border-thin text-center" style="height: 400px;"></Image>
 
@@ -124,17 +124,25 @@
                 </div>
             </div>
 
-            <div>
-                <p>Chi tiết sản phẩm</p>
+            <div class="bg-white pa-5 mb-5">
+                <div class="mb-5 w-100">
+                    <p class="sub-title bg-grey-lighten-3 w-100 rounded pa-3">Chi tiết sản phẩm</p>
+
+                    <v-card>
+                        <p>a</p>
+
+                        <p>a</p>
+
+                        <p>a</p>
+                    </v-card>
+                </div>
+
+                <div class="w-100">
+                    <p class="sub-title bg-grey-lighten-3 w-100 rounded pa-3">Mô tả sản phẩm</p>
+                </div>
             </div>
 
-            <div>
-                <p>Đánh giá</p>
-            </div>
-
-            <div>
-                
-            </div>
+            <Comment></Comment>
         </div>
     </div>
 </template>
@@ -144,6 +152,7 @@ import { ref } from 'vue';
 import { formatVND } from '@/services/util/StringUtil';
 import ProductApi from '@/services/api/ProductApi';
 import { ERROR_MESSAGE } from '@/constants/message';
+import Comment from '../comment/Comment.vue';
 
 export default {
     data: () => ({
