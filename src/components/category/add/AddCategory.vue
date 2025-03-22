@@ -70,6 +70,13 @@ export default {
         }
     },
 
+    props: {
+        categoryDialog: {
+            type: Boolean,
+            required: true
+        }
+    },
+
     watch: {
         'product.product_details.length': function() {
             if(this.product.product_details.length > 0) {
@@ -163,10 +170,6 @@ export default {
         
             const response = await ProductApi.add(formData);
         }
-    },
-
-    // mounted() {
-    //     this.fetchCategory();
-    // }
+    }
 }
 </script>

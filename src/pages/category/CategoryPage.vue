@@ -4,7 +4,7 @@ import Title from '@/components/common/Title.vue';
 </script>
 
 <template>
-    <div style="left: 20%">
+    <div class="pa-4" style="margin-top: 70px;">
         <Title title="Danh mục sản phẩm"></Title>
 
         <CategoryTable></CategoryTable>

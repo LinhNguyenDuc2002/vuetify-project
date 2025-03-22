@@ -10,7 +10,7 @@
             <div class="d-flex justify-space-between">
                 <div>
                     <p class="strikethrough price" style="font-size: 12px;">{{ formatVND(product.price) }}</p>
-                    <p class="price" style="font-size: 15px;">{{ formattedPrice() }}</p>
+                    <p class="price" style="font-size: 14px;">{{ formattedPrice() }}</p>
                 </div>
                 <p class="d-flex align-end" style="font-size: 10px;">{{ $t('product.sold') }}: {{ product.sold }}</p>
             </div>

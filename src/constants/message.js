@@ -33,6 +33,7 @@ export const ERROR_MESSAGE = {
     capacity_file: 'message.error.capacity_file',
     type_file: 'message.error.type_file',
     existed_selection: 'message.error.existed_selection',
+    quantity_not_enough: 'message.error.quantity_not_enough',
 };
 
 export const WARN_MESSAGE = {

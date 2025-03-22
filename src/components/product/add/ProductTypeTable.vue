@@ -27,11 +27,11 @@
         </div> -->
 
         <div class="border-thin">
-            <table class="w-100 my-table">
+            <table class="w-100">
                 <thead>
                     <tr>
-                        <th v-for="(type, index) in types" class="text-start pl-3">{{ type.name || `Phân loại ${index + 1}` }}</th>
-                        <th v-for="header in headers" class="text-start pl-3">{{ $t(header.text) }}</th>
+                        <th v-for="(type, index) in types" class="text-start pa-3">{{ type.name || `Phân loại ${index + 1}` }}</th>
+                        <th v-for="header in headers" class="text-start pa-3">{{ $t(header.text) }}</th>
                     </tr>
                 </thead>
 
@@ -210,11 +210,6 @@ export default {
 </script>
 
 <style>
-th, td {
-    border: 1px solid #ccc; /* Viền cho các ô */
-    padding: 10px; /* Thêm khoảng cách bên trong ô */
-}
-
 table {
   width: 100%;
   border-collapse: collapse; /* Xóa khoảng cách giữa các viền */
