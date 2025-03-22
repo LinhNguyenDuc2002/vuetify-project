@@ -1,5 +1,5 @@
 <template>
-    <div class="mt-5">
+    <div class="pa-10 bg-white rounded mb-4">
         <div class="d-flex justify-between align-center mb-5">
             <div class="w-25 mr-auto">
                 <v-text-field
@@ -15,13 +15,19 @@
                 </v-text-field>
             </div>
 
-            <v-btn style="width: 15%;" color="blue" @click="changeOpenDialog(true)">
-                <v-icon class="mr-3">mdi-plus</v-icon>{{ $t('button.add') }}
-            </v-btn>
+            <div class="w-25 d-flex justify-end align-center">
+                <v-btn class="btn mr-5" style="width: 45%; height: 40px;" size="large" elevation="0" @click="changeOpenDialog(true)">
+                    <v-icon class="mr-3" size="20">mdi-plus</v-icon>{{ $t('button.add') }}
+                </v-btn>
+
+                <v-btn class="btn" style="width: 45%; height: 40px;" size="large" elevation="0" @click="deleteSelected()">
+                    <v-icon class="mr-3" size="20">mdi-trash-can-outline</v-icon>{{ $t('button.delete') }}
+                </v-btn>
+            </div>
         </div>
 
         <div class="border-thin">
-            <table class="w-100 my-table">
+            <table class="w-100">
                 <thead>
                     <tr>
                         <th style="width: 5%;">
@@ -63,11 +69,12 @@
         </div>
     </div>
 
-    <!-- <AddCategory></AddCategory> -->
+    <AddCategory v-if="dialog" :categoryDialog="dialog"></AddCategory>
 </template>
 
 <script>
 import CategoryApi from '@/services/api/CategoryApi';
+import { fa } from 'vuetify/locale';
 
 export default {
     data() {
@@ -79,6 +86,7 @@ export default {
             page: 1,
             total: 0,
             search: '',
+            dialog: false
         }
     },
 
@@ -116,6 +124,10 @@ export default {
 
         updatePage(page) {
             this.page = page;
+        },
+
+        changeOpenDialog(value) {
+            this.dialog = value;
         }
     },
 

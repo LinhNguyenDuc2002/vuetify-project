@@ -46,6 +46,11 @@ thead {
     background-color: #FAFAFA;
 } */
 
+th, td {
+    border: 1px solid #ccc;
+    /* padding: 10px; */
+}
+
 .arrow {
     color: gray
 }

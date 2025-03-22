@@ -1,5 +1,5 @@
 <template>
-    <div class="mt-5" ref="table">
+    <div class="pa-10 bg-white rounded mb-4">
         <div class="d-flex justify-between align-center mb-5">
             <div class="w-25 mr-auto">
                 <v-text-field
@@ -15,13 +15,13 @@
                 </v-text-field>
             </div>
 
-            <div class="w-25 d-flex justify-between align-center">
-                <v-btn class="mr-auto" style="width: 45%;" color="blue" @click="changeOpenDialog(true)">
+            <div class="w-25 d-flex justify-end align-center">
+                <!-- <v-btn class="mr-auto" style="width: 45%;" color="blue" @click="changeOpenDialog(true)">
                     <v-icon class="mr-3">mdi-plus</v-icon>{{ $t('button.add') }}
-                </v-btn>
+                </v-btn> -->
 
-                <v-btn style="width: 45%;" color="blue" @click="deleteSelected()">
-                    <v-icon class="mr-3">mdi-trash-can-outline</v-icon>{{ $t('button.delete') }}
+                <v-btn class="btn" style="width: 45%; height: 40px;" size="large" elevation="0" @click="deleteSelected()">
+                    <v-icon class="mr-3" size="20">mdi-trash-can-outline</v-icon>{{ $t('button.delete') }}
                 </v-btn>
             </div>
         </div>

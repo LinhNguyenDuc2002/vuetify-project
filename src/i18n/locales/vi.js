@@ -30,6 +30,7 @@ const VietNam = {
     },
 
     product: {
+        value: 'sản phẩm',
         name: 'Tên sản phẩm',
         category: 'Danh mục',
         description: 'Mô tả',
@@ -40,11 +41,14 @@ const VietNam = {
         status: 'Trạng thái',
         type: 'Tên loại sản phẩm',
         sold: 'Đã bán',
+        available_number: 'Số lượng'
     },
 
     button: {
         add: 'Thêm',
-        delete: 'Xóa'
+        delete: 'Xóa',
+        add_cart: 'Thêm vào giỏ hàng',
+        buy_now: 'Mua ngay'
     },
 
     message: {
@@ -80,7 +84,8 @@ const VietNam = {
             required_type_file: 'Hãy chọn ảnh minh họa cho mỗi loại sản phẩm',
             capacity_file: 'Dung lượng ảnh phải nhỏ hơn {size}MB',
             type_file: 'Định dạng file phải là các dạng JPEG, PNG hoặc PDF',
-            existed_selection: 'Tùy chọn này đã tồn tại'
+            existed_selection: 'Tùy chọn này đã tồn tại',
+            quantity_not_enough: 'Sản phẩm không đủ'
         },
 
         warn: {

@@ -7,6 +7,12 @@ export const ToolBarItems = [
     },
 
     {
+        title: 'toolbar.category',
+        icon: 'mdi-shape-outline',
+        path: RouteConstant.CATEGORY_TABLE_PAGE.path
+    },
+
+    {
         title: 'toolbar.product',
         icon: 'mdi-shopping-outline',
         child: [
@@ -22,21 +28,11 @@ export const ToolBarItems = [
             },
         ]
     },
-
-    {
-        title: 'toolbar.category',
-        icon: 'mdi-shape-outline',
-        path: RouteConstant.CATEGORY_TABLE_PAGE.path
-    },
     
     {
         title: 'mail_address',
         icon: 'mdi-chevron-up-circle',
-        child: {
-            
-        }
     },
-    
     {
         title: 'toolbar.dashboard',
         icon: 'mdi-view-dashboard-outline',
@@ -44,37 +40,22 @@ export const ToolBarItems = [
     {
         title: 'repeat_your_password',
         icon: 'mdi-chevron-up-circle',
-        child: {
-            
-        }
     },
     {
         title: 'sign_in_with_google',
         icon: 'mdi-chevron-up-circle',
-        child: {
-            
-        }
     },
     {
         title: 'sign_in_with_facebook',
         icon: 'mdi-chevron-up-circle',
-        child: {
-            
-        }
     },
     {
         title: 'create_an_account',
         icon: 'mdi-chevron-up-circle',
-        child: {
-            
-        }
     },
     {
         title: 'mail_address',
         icon: 'mdi-chevron-up-circle',
-        child: {
-            
-        }
     },
 ];
 

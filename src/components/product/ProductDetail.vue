@@ -1,21 +1,23 @@
 <template>
     <div class="bg-grey-lighten-3 w-100">
         <div style="padding-top: 6%; padding-bottom: 3%; margin-left: 128px; margin-right: 128px;">
-            <div class="d-flex bg-white pa-5 justify-space-between">
+            <div class="d-flex bg-white pa-5 justify-space-between mb-5">
                 <div style="width: 40%;">
                     <Image :imageUrl="imageUrl" class="d-flex border-thin text-center" style="height: 400px;"></Image>
 
                     <v-sheet class="w-100" elevation="0">
                         <v-slide-group v-model="model" class="pa-3" center-active show-arrows>
-                            <v-slide-group-item v-for="item in product.image_urls" v-slot="{ isSelected, toggle }" @click="changeImage(item)">
-                                <v-card :class="isSelected ? 'border-chosen' : 'border-thin'" class="d-flex justify-center align-center ma-2 pa-2" height="80" width="80" @click="toggle" elevation="0">
+                            <v-slide-group-item v-for="item in product.image_urls">
+                                <v-card :class="(item === imageUrl) ? 'border-chosen' : 'border-thin'" class="d-flex justify-center align-center ma-2 pa-2" height="80" width="80" elevation="0"
+                                    @click="changeImage(item)">
                                     <Image :imageUrl="item" style="width: 100%;"></Image>
                                 </v-card>
                             </v-slide-group-item>
 
-                            <v-slide-group-item v-if="product.features" v-for="item in product.features[0].attributes" v-slot="{ isSelected, toggle }" 
-                                @click="changeImage(this.product.product_types.find(product_type => product_type.types[0].id === item.id).image_url)">
-                                <v-card :class="isSelected ? 'border-chosen' : 'border-thin'" class="d-flex justify-center align-center ma-2 pa-2" height="80" width="80" @click="toggle" elevation="0">
+                            <v-slide-group-item v-if="product.features" v-for="item in product.features[0].attributes">
+                                <v-card :class="(this.product.product_types.find(product_type => product_type.types[0].id === item.id).image_url === imageUrl) ? 'border-chosen' : 'border-thin'" 
+                                    class="d-flex justify-center align-center ma-2 pa-2" height="80" width="80" elevation="0"
+                                    @click="changeImage(this.product.product_types.find(product_type => product_type.types[0].id === item.id).image_url)">
                                     <Image :imageUrl="this.product.product_types.find(product_type => product_type.types[0].id === item.id).image_url" 
                                         style="width: 100%;">
                                     </Image>
@@ -84,7 +86,7 @@
                                     'border-chosen': type.id === type2, 'border-thin': type.id !== type2
                                 }"
                                 class="d-flex cursor-pointer pa-2 mx-2 mb-2 align-center" style="height: 50px; width: fit-content"
-                                @click="handleClickProduct(index, type.id)">
+                                @click="handleClickProduct(index, type.id)" >
                                 <p>{{ type.value }}</p>
                             </div>
                         </div>
@@ -92,7 +94,7 @@
 
                     <div class="d-flex mb-5">
                         <div class="mr-3" style="width: 15%;">
-                            <p>Số lượng</p>
+                            <p>{{ $t('product.available_number') }}</p>
                         </div>
 
                         <div class="d-flex mr-3" style="height: 40px;">
@@ -102,37 +104,45 @@
                         </div>
 
                         <div>
-                            <p class="h-100 text-center" style="color: grey;">{{ quantity }} sản phẩm</p>
+                            <p class="h-100 text-center" style="color: grey;">{{ quantity }} {{ $t('product.value') }}</p>
                         </div>
                     </div>
 
                     <div class="mb-5">
-                        <p class="h-100" style="color: red;">{{ message }}</p>
+                        <p class="h-100 error-message" style="color: red;">{{ message }}</p>
                     </div>
 
                     <div class="h-auto d-flex mt-auto">
-                        <v-btn class="btn mr-5" style="width: 40%; height: 50px;" size="large" elevation="0">
-                            <v-icon class="mr-3" size="20">mdi-cart-plus</v-icon>Thêm vào giỏ hàng
+                        <v-btn class="btn mr-5" style="width: 40%; height: 50px;" size="large" elevation="0" @click="addToCart()">
+                            <v-icon class="mr-3" size="20">mdi-cart-plus</v-icon>{{ $t('button.add_cart') }}
                         </v-btn>
 
-                        <v-btn style="width: 40%; height: 50px;" color="blue" size="large" variant="tonal" elevation="0">
-                            Mua ngay
+                        <v-btn style="width: 40%; height: 50px;" color="blue" size="large" variant="tonal" elevation="0"
+                            @click="buyNow()">{{ $t('button.buy_now') }}
                         </v-btn>
                     </div>
                 </div>
             </div>
 
-            <div>
-                <p>Chi tiết sản phẩm</p>
+            <div class="bg-white pa-5 mb-5">
+                <div class="mb-5 w-100">
+                    <p class="sub-title bg-grey-lighten-3 w-100 rounded pa-3">Chi tiết sản phẩm</p>
+
+                    <v-card>
+                        <p>a</p>
+
+                        <p>a</p>
+
+                        <p>a</p>
+                    </v-card>
+                </div>
+
+                <div class="w-100">
+                    <p class="sub-title bg-grey-lighten-3 w-100 rounded pa-3">Mô tả sản phẩm</p>
+                </div>
             </div>
 
-            <div>
-                <p>Đánh giá</p>
-            </div>
-
-            <div>
-                
-            </div>
+            <Comment></Comment>
         </div>
     </div>
 </template>
@@ -141,6 +151,8 @@
 import { ref } from 'vue';
 import { formatVND } from '@/services/util/StringUtil';
 import ProductApi from '@/services/api/ProductApi';
+import { ERROR_MESSAGE } from '@/constants/message';
+import Comment from '../comment/Comment.vue';
 
 export default {
     data: () => ({
@@ -182,11 +194,13 @@ export default {
         },
 
         increase() {
-            if(this.number >= this.product.quantity) {
-                this.message = 'Sản phẩm không đủ';
-            }
-            else {
+            if(this.number <= this.quantity) {
                 this.number += 1;
+                
+            }
+            
+            if(this.number > this.quantity) {
+                this.message = this.$t(ERROR_MESSAGE.quantity_not_enough);
             }
         },
 
@@ -230,6 +244,7 @@ export default {
         },
 
         changeImage(value) {
+            // console.log("Ok");
             this.imageUrl = value;
         },
 
@@ -239,11 +254,21 @@ export default {
                 this.updateListType2();
             }
             else {
-                this.type2 = value;
-                const foundType = this.product.product_types.find(type => type.types[0].id === this.type1 && type.types[1].id === this.type2);
-                this.quantity = foundType.quantity;
-                this.price = foundType.price;
+                if(this.typeList2.includes(value)) {
+                    this.type2 = value;
+                    const foundType = this.product.product_types.find(type => type.types[0].id === this.type1 && type.types[1].id === this.type2);
+                    this.quantity = foundType.quantity;
+                    this.price = foundType.price;
+                }
             }
+        },
+
+        buyNow() {
+            
+        },
+
+        addToCart() {
+            
         }
     }
 }
