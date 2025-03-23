@@ -139,6 +139,8 @@
 
                 <div class="w-100">
                     <p class="sub-title bg-grey-lighten-3 w-100 rounded pa-3">Mô tả sản phẩm</p>
+
+                    <div v-html="product.description" class="px-3"></div>
                 </div>
             </div>
 
@@ -178,11 +180,12 @@ export default {
     async mounted() {
         await this.fetchProduct();
 
-        if(this.product.product_types.length > 0) {
+        if(this.product.product_types && this.product.product_types.length > 0) {
             this.type1 = this.product.product_types.find(type => type.quantity > 0).types[0].id;
             this.updateListType2();
         }
         else {
+            this.imageUrl = this.product.image_urls[0];
             this.quantity = this.product.quantity;
             this.price = this.product.price;
         }
