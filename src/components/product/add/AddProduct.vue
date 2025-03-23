@@ -16,7 +16,7 @@
                                 <v-file-input hide-input prepend-icon="" v-model="images" id="file-input" multiple accept="image/*" 
                                     @change="handleFileUpload">
                                     <template #prepend>
-                                        <v-btn class="dashed-border pa-3 h-auto w-auto" style="min-height: 90px; min-width: 90px;" @click="openFileDialog" elevation="0">
+                                        <v-btn class="dashed-border pa-3 h-auto w-auto" style="min-height: 90px; min-width: 90px;" @click="openFileDialog('file-input')" elevation="0">
                                             <v-icon size="30" color="#03A9F4">mdi-image-plus-outline</v-icon>
                                         </v-btn>
                                     </template>
@@ -55,13 +55,22 @@
                 <div class="w-100">
                     <div class="text-subtitle-1 text-medium-emphasis">{{ $t('product.description') }}</div>
                     <v-col class="pa-0" cols="12" sm="6" style="max-width: 100%;">
-                        <v-textarea
+                        <!-- <v-textarea
                             v-model="product.description"
                             class="w-100"
                             variant="outlined"
                             auto-grow
                             shaped>
-                        </v-textarea>
+                        </v-textarea> -->
+                        <div class="editor" id="editor" contenteditable="true"></div>
+                        <v-file-input hide-input prepend-icon="" id="file-insert" multiple accept="image/*" style="width: fit-content;"
+                            @change="insertImage">
+                            <template #prepend>
+                                <v-btn class="btn w-100" style="height: 40px;" size="large" elevation="0" @click="openFileDialog('file-insert')">
+                                    Chèn ảnh
+                                </v-btn>
+                            </template>
+                        </v-file-input>
                     </v-col>
                 </div>
             </div>
@@ -159,6 +168,16 @@
 input[type="file"] {
     display: none;
 }
+
+.editor {
+    width: 100%;
+    height: 500px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    overflow: auto;
+    background-color: #f9f9f9;
+    margin-bottom: 10px;
+}
 </style>
 
 <script>
@@ -166,7 +185,6 @@ import CategoryApi from '@/services/api/CategoryApi';
 import { RequiredRule, SelectRule, PriceRule, QuantityRule, FileRule, SelectionRule } from '../../../rules/Rule';
 import { ERROR_MESSAGE } from '../../../constants/message';
 import ProductApi from '@/services/api/ProductApi';
-import { da } from 'vuetify/locale';
 
 export default {
     data () {
@@ -347,8 +365,25 @@ export default {
             }
         },
 
-        openFileDialog() {
-            document.getElementById('file-input').click();
+        openFileDialog(id) {
+            document.getElementById(id).click();
+        },
+
+        insertImage(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.style.maxWidth = '100%';
+                img.style.height = 'auto';
+                document.getElementById('editor').appendChild(img);
+            };
+            
+            if (file) {
+                reader.readAsDataURL(file);
+            }
         },
 
         deleteSelection(index, subindex) {
@@ -436,6 +471,8 @@ export default {
             for(let i=0; i<this.product.productTypes.length; i++) {
                 this.product.productTypes[i].types.pop();
             }
+
+            this.product.description = document.getElementById('editor').innerHTML;
             
             let data = {
                 product: this.product,
