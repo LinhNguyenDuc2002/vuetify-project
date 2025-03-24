@@ -1,7 +1,7 @@
 <template>
-    <div class="title pa-3 rounded bg-white">
+    <v-card class="title pa-3 rounded bg-white">
         <p v-if="title">{{ title }}</p>
-    </div>
+    </v-card>
 </template>
 
 <script>

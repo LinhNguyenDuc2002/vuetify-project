@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-form ref="form" @submit.prevent="checkForm">
-            <div class="pa-10 bg-white rounded mb-4">
+            <v-card class="pa-10 bg-white rounded mb-4">
                 <p class="sub-title">Thông tin cơ bản</p>
 
                 <div class="w-100 h-100">
@@ -73,13 +73,13 @@
                         </v-file-input>
                     </v-col>
                 </div>
-            </div>
+            </v-card>
 
-            <div class="pa-10 bg-white rounded mb-4">
+            <v-card class="pa-10 bg-white rounded mb-4">
                 <p class="sub-title">Thông tin chi tiết</p>
-            </div>
+            </v-card>
 
-            <div class="pa-10 bg-white rounded">
+            <v-card class="pa-10 bg-white rounded">
                 <p class="sub-title">Thông tin bán hàng</p>
 
                 <div v-if="types.length > 0" class="mb-5">
@@ -155,7 +155,7 @@
                         <v-icon class="mr-3" size="20">mdi-plus</v-icon>Thêm mã giảm giá
                     </v-btn>
                 </div>
-            </div>
+            </v-card>
 
             <div class="d-flex w-100 my-5 justify-end">
                 <v-btn style="width: 20%;" color="blue" type="submit">Thêm sản phẩm</v-btn>

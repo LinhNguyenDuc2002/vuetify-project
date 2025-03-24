@@ -48,18 +48,23 @@
 <script>
 import '@/styles/common.css';
 import { ref } from 'vue'
-import { ToolBarItems } from '@/constants/label_constant';
 import ChildToolBar from './ChildToolBar.vue';
 
 export default {
     data: () => ({
-        toolBarItems: ToolBarItems,
         activeIndex: 0,
         activeChild: false,
         activeParent: true,
         panel: ref([0, 1]),
         disabled: ref(false)
     }),
+
+    props: {
+        toolBarItems: {
+            type: Array,
+            required: true
+        }
+    },
 
     methods: {
         selectItem(index, path, child) {

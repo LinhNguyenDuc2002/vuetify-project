@@ -16,7 +16,7 @@ const VietNam = {
     about: 'Về chúng tôi',
     search: 'Tìm kiếm',
     view_orders: 'Xem đơn hàng',
-    edit_profile: 'Sửa thông tin hồ sơ',
+    my_account: 'Tài khoản của tôi',
     settings: 'Cài đặt',
     help: 'Trợ giúp',
     logout: 'Đăng xuất',
@@ -27,6 +27,7 @@ const VietNam = {
         add_product: 'Thêm sản phẩm',
         product_list: 'Danh sách sản phẩm',
         category: 'Quản lý danh mục',
+        profile: 'Hồ sơ',
     },
 
     product: {
