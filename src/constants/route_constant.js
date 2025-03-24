@@ -1,10 +1,13 @@
 const HOME_PATH = "";
 const ADMIN_PATH = "/admin";
+const USER_PATH = "/user"
 
 const LOGIN_PATH = HOME_PATH + "/login";
 const SIGNUP_PATH = HOME_PATH + "/signup";
 const OTP_PATH = HOME_PATH + "/verify-otp";
 const PRODUCT_DETAIL_PATH = HOME_PATH + "/product/:id";
+
+const USER_DETAIL_PATH = USER_PATH + "/account/profile";
 
 const ADD_PRODUCT_PATH = ADMIN_PATH + "/product/add";
 const PRODUCT_LIST_PATH = ADMIN_PATH + "/product/all";
@@ -30,6 +33,15 @@ export const RouteConstant = {
     PRODUCT_DETAIL_PAGE: {
         path: PRODUCT_DETAIL_PATH,
         name: 'ProductDetailPage'
+    },
+
+    // Authenticate
+    USER_HOME_PAGE: {
+        path: USER_PATH,
+    },
+    USER_DETAIL_PAGE: {
+        path: USER_DETAIL_PATH,
+        name: 'UserDetailPage'
     },
 
     // Admin

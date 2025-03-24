@@ -40,8 +40,8 @@
                 </template>
 
                 <v-list class="pa-3" min-width="250px">
-                    <v-list-item class="cursor-pointer">{{ userInfo }}</v-list-item>
-                    <hr class="my-1">
+                    <!-- <v-list-item class="cursor-pointer">{{ userInfo }}</v-list-item>
+                    <hr class="my-1"> -->
                     <v-list-item v-for="(item, index) in menuItems" :key="index" :value="index">
                         <v-row class="w-100 h-100" @click="handleClick(item.name)" no-gutters>
                             <v-col cols="2">

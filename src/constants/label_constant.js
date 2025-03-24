@@ -1,6 +1,6 @@
 import { RouteConstant } from "./route_constant";
 
-export const ToolBarItems = [
+export const AdminToolBarItems = [
     {
         title: 'toolbar.home',
         icon: 'mdi-home-outline',
@@ -59,6 +59,24 @@ export const ToolBarItems = [
     },
 ];
 
+export const UserToolBarItems = [
+    {
+        title: 'my_account',
+        icon: 'mdi-account-outline',
+        child: [
+            {
+                title: 'toolbar.profile',
+                icon: 'mdi-account-edit-outline',
+                path: RouteConstant.USER_DETAIL_PAGE.path
+            },
+        ]
+    },
+    {
+        title: 'view_orders',
+        icon: 'mdi-list-box-outline',
+    },
+];
+
 export const HeaderItems = [
     {
         title: 'home',
@@ -97,20 +115,23 @@ export const AdminHeaderIconItems = [
 
 export const MenuItems = [
     {
+        title: 'my_account',
+        icon: 'mdi-account-outline',
+        path: ''
+    },
+    {
         title: 'view_orders',
         icon: 'mdi-list-box-outline',
+        path: ''
     },
-    {
-        title: 'edit_profile',
-        icon: 'mdi-account-edit-outline',
-    },
-    {
-        title: 'settings',
-        icon: 'mdi-cog-outline',
-    },
+    // {
+    //     title: 'settings',
+    //     icon: 'mdi-cog-outline',
+    // },
     {
         title: 'help',
         icon: 'mdi-help-circle-outline',
+        path: ''
     },
     {
         title: 'logout',

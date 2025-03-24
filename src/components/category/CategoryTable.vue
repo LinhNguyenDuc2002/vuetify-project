@@ -1,5 +1,5 @@
 <template>
-    <div class="pa-10 bg-white rounded mb-4">
+    <v-card class="pa-10 bg-white rounded mb-4">
         <div class="d-flex justify-between align-center mb-5">
             <div class="w-25 mr-auto">
                 <v-text-field
@@ -67,7 +67,7 @@
 
             <PaginationTable :size="size" :page="page" :total="total" @update-size="updateSize" @update-page="updatePage"></PaginationTable>
         </div>
-    </div>
+    </v-card>
 
     <AddCategory v-if="dialog" :categoryDialog="dialog"></AddCategory>
 </template>
