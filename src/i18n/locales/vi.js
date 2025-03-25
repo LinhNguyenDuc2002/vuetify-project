@@ -28,6 +28,9 @@ const VietNam = {
         product_list: 'Danh sách sản phẩm',
         category: 'Quản lý danh mục',
         profile: 'Hồ sơ',
+        my_account: 'Tài khoản của tôi',
+        address: 'Địa chỉ',
+        change_password: 'Đổi mật khẩu'
     },
 
     product: {

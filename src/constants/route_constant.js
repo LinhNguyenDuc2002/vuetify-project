@@ -8,6 +8,8 @@ const OTP_PATH = HOME_PATH + "/verify-otp";
 const PRODUCT_DETAIL_PATH = HOME_PATH + "/product/:id";
 
 const USER_DETAIL_PATH = USER_PATH + "/account/profile";
+const ADDRESS_DETAIL_PATH = USER_PATH + "/account/address";
+const CHANGE_PASSWORD_PATH = USER_PATH + "/account/password";
 
 const ADD_PRODUCT_PATH = ADMIN_PATH + "/product/add";
 const PRODUCT_LIST_PATH = ADMIN_PATH + "/product/all";
@@ -42,6 +44,14 @@ export const RouteConstant = {
     USER_DETAIL_PAGE: {
         path: USER_DETAIL_PATH,
         name: 'UserDetailPage'
+    },
+    ADDRESS_DETAIL_PAGE: {
+        path: ADDRESS_DETAIL_PATH,
+        name: 'AddressDetailPage'
+    },
+    CHANGE_PASSWORD_PAGE: {
+        path: CHANGE_PASSWORD_PATH,
+        name: 'ChangePasswordPage'
     },
 
     // Admin

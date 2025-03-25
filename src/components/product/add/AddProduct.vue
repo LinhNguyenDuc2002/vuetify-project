@@ -55,13 +55,6 @@
                 <div class="w-100">
                     <div class="text-subtitle-1 text-medium-emphasis">{{ $t('product.description') }}</div>
                     <v-col class="pa-0" cols="12" sm="6" style="max-width: 100%;">
-                        <!-- <v-textarea
-                            v-model="product.description"
-                            class="w-100"
-                            variant="outlined"
-                            auto-grow
-                            shaped>
-                        </v-textarea> -->
                         <div class="editor" id="editor" contenteditable="true"></div>
                         <v-file-input hide-input prepend-icon="" id="file-insert" multiple accept="image/*" style="width: fit-content;"
                             @change="insertImage">
