@@ -61,13 +61,23 @@ export const AdminToolBarItems = [
 
 export const UserToolBarItems = [
     {
-        title: 'my_account',
+        title: 'toolbar.my_account',
         icon: 'mdi-account-outline',
         child: [
             {
                 title: 'toolbar.profile',
                 icon: 'mdi-account-edit-outline',
                 path: RouteConstant.USER_DETAIL_PAGE.path
+            },
+            {
+                title: 'toolbar.address',
+                icon: 'mdi-map-marker-outline',
+                path: RouteConstant.ADDRESS_DETAIL_PAGE.path
+            },
+            {
+                title: 'toolbar.change_password',
+                icon: 'mdi-onepassword',
+                path: RouteConstant.CHANGE_PASSWORD_PAGE.path
             },
         ]
     },
