@@ -79,6 +79,11 @@ export const UserToolBarItems = [
                 icon: 'mdi-onepassword',
                 path: RouteConstant.CHANGE_PASSWORD_PAGE.path
             },
+            {
+                title: 'toolbar.change_email',
+                icon: 'mdi-email-outline',
+                path: RouteConstant.CHANGE_EMAIL_PAGE.path
+            },
         ]
     },
     {

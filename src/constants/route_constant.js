@@ -10,6 +10,7 @@ const PRODUCT_DETAIL_PATH = HOME_PATH + "/product/:id";
 const USER_DETAIL_PATH = USER_PATH + "/account/profile";
 const ADDRESS_DETAIL_PATH = USER_PATH + "/account/address";
 const CHANGE_PASSWORD_PATH = USER_PATH + "/account/password";
+const CHANGE_EMAIL_PATH = USER_PATH + "/account/email"
 
 const ADD_PRODUCT_PATH = ADMIN_PATH + "/product/add";
 const PRODUCT_LIST_PATH = ADMIN_PATH + "/product/all";
@@ -52,6 +53,10 @@ export const RouteConstant = {
     CHANGE_PASSWORD_PAGE: {
         path: CHANGE_PASSWORD_PATH,
         name: 'ChangePasswordPage'
+    },
+    CHANGE_EMAIL_PAGE: {
+        path: CHANGE_EMAIL_PATH,
+        name: 'ChangeEmailPage'
     },
 
     // Admin
