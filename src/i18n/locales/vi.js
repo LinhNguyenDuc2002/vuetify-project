@@ -30,7 +30,8 @@ const VietNam = {
         profile: 'Hồ sơ',
         my_account: 'Tài khoản của tôi',
         address: 'Địa chỉ',
-        change_password: 'Đổi mật khẩu'
+        change_password: 'Đổi mật khẩu',
+        change_email: 'Đổi email'
     },
 
     product: {

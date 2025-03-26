@@ -20,10 +20,10 @@ const UserApi = {
         var params = {}
 
         const response = await BaseApi.get(uri, header, params);
-        if(response == null) {
+        if(response === null) {
             return null;
         }
-        return response.data;
+        return response;
     },
 
     signup: async (data) => {
