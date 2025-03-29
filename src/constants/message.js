@@ -34,6 +34,10 @@ export const ERROR_MESSAGE = {
     type_file: 'message.error.type_file',
     existed_selection: 'message.error.existed_selection',
     quantity_not_enough: 'message.error.quantity_not_enough',
+    required_birthday: 'message.error.required_birthday',
+    date_invalid: 'message.error.date_invalid',
+    age_not_enough: 'message.error.age_not_enough',
+    required_radio: 'message.error.required_radio' 
 };
 
 export const WARN_MESSAGE = {

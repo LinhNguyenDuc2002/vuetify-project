@@ -47,7 +47,8 @@ const UserApi = {
 
         var header = {
             [HeaderParam.CONTENT_TYPE]: 'application/json',
-            [HeaderParam.ACCEPT_LANGUAGE]: I18n.global.locale
+            [HeaderParam.ACCEPT_LANGUAGE]: I18n.global.locale,
+
         }
 
         const response = await BaseApi.post(uri, data, header);
@@ -55,6 +56,23 @@ const UserApi = {
             return null;
         }
         return response.data;
+    },
+
+    update: async (data) => {
+        const token = sessionStorage.getItem('access_token');
+        var uri = `${ENV_BASE_API}${CONTEXT_PATH}`;
+
+        var header = {
+            [HeaderParam.CONTENT_TYPE]: [HeaderParam.APPLICATION_FORM_DATA],
+            [HeaderParam.AUTHORIZATION]: `Bearer ${token}`,
+            [HeaderParam.ACCEPT_LANGUAGE]: I18n.global.locale
+        }
+
+        const response = await BaseApi.put(uri, data, header);
+        if(response == null) {
+            return null;
+        }
+        return response;
     }
 };
 

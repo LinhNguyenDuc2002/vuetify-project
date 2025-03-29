@@ -90,7 +90,11 @@ const VietNam = {
             capacity_file: 'Dung lượng ảnh phải nhỏ hơn {size}MB',
             type_file: 'Định dạng file phải là các dạng JPEG, PNG hoặc PDF',
             existed_selection: 'Tùy chọn này đã tồn tại',
-            quantity_not_enough: 'Sản phẩm không đủ'
+            quantity_not_enough: 'Sản phẩm không đủ',
+            required_birthday: 'Ngày sinh là bắt buộc',
+            date_invalid: 'Vui lòng nhập một ngày hợp lệ',
+            age_not_enough: 'Bạn phải ít nhất 18 tuổi',
+            required_radio: 'Bắt buộc phải chọn',
         },
 
         warn: {
