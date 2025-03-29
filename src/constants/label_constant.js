@@ -132,7 +132,7 @@ export const MenuItems = [
     {
         title: 'my_account',
         icon: 'mdi-account-outline',
-        path: ''
+        name: RouteConstant.USER_DETAIL_PAGE.name
     },
     {
         title: 'view_orders',

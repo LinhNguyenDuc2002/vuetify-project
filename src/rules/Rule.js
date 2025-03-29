@@ -72,3 +72,22 @@ export const EmailRule = (t) => [
     v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || t(ERROR_MESSAGE.email_invalid),
     v => !/\s/.test(v) || t(ERROR_MESSAGE.email_format),
 ];
+
+export const BirthdayRule = (t) => [
+    v => !!v || t(ERROR_MESSAGE.required_birthday),
+    v => {
+        const date = new Date(v);
+        return !isNaN(date.getTime()) || t(ERROR_MESSAGE.date_invalid);
+    },
+    v => {
+        const today = new Date();
+        const birthDate = new Date(v);
+        const age = today.getFullYear() - birthDate.getFullYear();
+        const monthDifference = today.getMonth() - birthDate.getMonth();
+        return age > 18 || (age === 18 && monthDifference >= 0) || t(ERROR_MESSAGE.age_not_enough);
+    }
+];
+
+export const RadioRule = (t) => [
+    v => !!v || t(ERROR_MESSAGE.required_radio),
+];

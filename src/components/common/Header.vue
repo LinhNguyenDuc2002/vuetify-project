@@ -95,7 +95,7 @@ export default {
     async beforeCreate() {
         if(sessionStorage.getItem(SecurityConstant.ACCESS_TOKEN)) {
             const userFrom = await UserApi.getLoggedInUser();
-            if(userFrom != null && userFrom.code === 200) {
+            if(userFrom.data != null && userFrom.data.code === 200) {
                 const showName = `${userFrom.data.first_name} ${userFrom.data.last_name}`;
                 this.userStore.login(showName);
                 this.userInfo = showName;
@@ -144,6 +144,9 @@ export default {
         handleClick(name) {
             if(name === 'logout') {
                 this.logout();
+            }
+            else {
+                this.goTo(name)
             }
         },
 
