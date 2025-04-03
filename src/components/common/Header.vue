@@ -139,6 +139,7 @@ export default {
             this.userStore.logout();
             sessionStorage.removeItem(SecurityConstant.ACCESS_TOKEN);
             sessionStorage.removeItem(SecurityConstant.REFRESH_TOKEN);
+            this.$router.push({ name: 'HomePage' });
         },
 
         handleClick(name) {
