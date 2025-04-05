@@ -67,9 +67,9 @@
                 </div>
  
                 <Loading v-if="loading" style="z-index: 1; background: grey; opacity: 0.3;" class="position-absolute top-0 right-0"></Loading>
-                <v-dialog v-model="success" class="position-absolute top-0 right-0 h-100 w-100" persistent>
+                <!-- <v-dialog v-model="success" class="position-absolute top-0 right-0 h-100 w-100" persistent>
                     <Success :message="$t('message.info.create_account')"></Success>
-                </v-dialog>
+                </v-dialog> -->
             </v-card>
         </v-form>
     </div>
@@ -79,7 +79,7 @@
 import { RequiredRule, BirthdayRule, FileRule, RadioRule, SelectRule } from '@/rules/Rule';
 import AddressApi from '@/services/api/AddressApi';
 import Loading from '../common/Loading.vue';
-import Success from '../common/Success.vue';
+import { toast } from 'vue3-toastify';
 
 export default {
     data: () => ({
@@ -98,7 +98,7 @@ export default {
         districtId: null,
         wardId: null,
         loading: false,
-        success: true
+        success: true,
     }),
 
     computed: {
@@ -160,8 +160,16 @@ export default {
             const response = await AddressApi.update(this.address);
             this.loading = false;
             if(response.data.code === 200) {
-                
-        
+                toast.success('Cập nhật thông tin thành công!', {
+                    position: toast.POSITION.TOP_RIGHT,
+                    autoClose: 3000, // Thời gian hiển thị (3 giây)
+                });
+            }
+            else {
+                toast.error('Cập nhật thông tin thất bại!', {
+                    position: toast.POSITION.TOP_RIGHT,
+                    autoClose: 3000,
+                });
             }
         },
 
