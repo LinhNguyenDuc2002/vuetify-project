@@ -90,6 +90,10 @@ export const UserToolBarItems = [
         title: 'view_orders',
         icon: 'mdi-list-box-outline',
     },
+    {
+        title: 'view_carts',
+        icon: 'mdi-cart-outline',
+    },
 ];
 
 export const HeaderItems = [
@@ -104,18 +108,6 @@ export const HeaderItems = [
     {
         title: 'about',
         name: RouteConstant.HOME_PAGE.name,
-    },
-];
-
-export const HeaderIconItems = [
-    {
-        icon: 'mdi-cart-outline',
-    },
-    {
-        icon: 'mdi-bell-outline',
-    },
-    {
-        icon: 'mdi-chat-processing-outline',
     },
 ];
 

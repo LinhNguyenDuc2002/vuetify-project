@@ -25,12 +25,36 @@
             </v-text-field>
 
             <v-list class="d-flex">
-                <v-list-item class="text-center" v-for="item in headerIconItems">
-                    <v-icon class="cursor-pointer" size="25">{{ item.icon }}</v-icon>
+                <v-list-item class="text-center">
+                    <v-menu>
+                        <template v-slot:activator="{ props }">
+                            <v-icon class="cursor-pointer" size="25" v-bind="props">mdi-cart-outline</v-icon>
+                        </template>
+
+                        <CartDialog></CartDialog>
+                    </v-menu>
+                </v-list-item>
+
+                <v-list-item class="text-center">
+                    <v-menu>
+                        <template v-slot:activator="{ props }">
+                            <v-icon class="cursor-pointer" size="25" v-bind="props">mdi-bell-outline</v-icon>
+                        </template>
+
+                        <NotificationDialog></NotificationDialog>
+                    </v-menu>
+                </v-list-item>
+
+                <v-list-item class="text-center">
+                    <v-menu>
+                        <template v-slot:activator="{ props }">
+                            <v-icon class="cursor-pointer" size="25" v-bind="props">mdi-chat-processing-outline</v-icon>
+                        </template>
+
+                        <ChatDialog></ChatDialog>
+                    </v-menu>
                 </v-list-item>
             </v-list>
-
-            <CartDialog :cartDialog="cartDialog"></CartDialog>
 
             <v-menu v-if="isLoggedIn">
                 <template v-slot:activator="{ props }">
@@ -67,20 +91,19 @@
 
 <script>
 import '@/styles/common.css';
-import { HeaderIconItems, HeaderItems, MenuItems } from '@/constants/label_constant';
+import { HeaderItems, MenuItems } from '@/constants/label_constant';
 import { RouteConstant } from '@/constants/route_constant';
 import { useUserStore } from '@/stores/app';
 import * as SecurityConstant from '@/constants/security_constant';
 import UserApi from '@/services/api/UserApi';
 import imageUrl from '@/assets/logo.png';
 import CartDialog from '../cart/CartDialog.vue';
-import { ca } from 'vuetify/locale';
+import NotificationDialog from '../notification/NotificationDialog.vue';
 
 export default {
     data: () => ({
         userStore: useUserStore(),
         headerItems: HeaderItems,
-        headerIconItems: HeaderIconItems,
         menuItems: MenuItems,
         loginPage: RouteConstant.LOGIN_PAGE.name,
         loaded: false,
