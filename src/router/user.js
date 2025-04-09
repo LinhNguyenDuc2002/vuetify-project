@@ -1,6 +1,7 @@
 import { RouteConstant } from "@/constants/route_constant";
 import UserLayout from "@/layouts/UserLayout.vue";
 import AddressDetailPage from "@/pages/address/AddressDetailPage.vue";
+import CartPage from "@/pages/cart/CartPage.vue";
 import ChangeEmailPage from "@/pages/user/ChangeEmailPage.vue";
 import ChangePasswordPage from "@/pages/user/ChangePasswordPage.vue";
 import UserDetailPage from "@/pages/user/UserDetailPage.vue";
@@ -28,6 +29,11 @@ const UserRoutes = {
             path: RouteConstant.CHANGE_EMAIL_PAGE.path,
             name: RouteConstant.CHANGE_EMAIL_PAGE.name,
             component: ChangeEmailPage,
+        },
+        {
+            path: RouteConstant.CART_PAGE.path,
+            name: RouteConstant.CART_PAGE.name,
+            component: CartPage,
         },
     ],
 };

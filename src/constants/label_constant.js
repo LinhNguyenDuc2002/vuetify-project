@@ -93,6 +93,7 @@ export const UserToolBarItems = [
     {
         title: 'view_carts',
         icon: 'mdi-cart-outline',
+        path: RouteConstant.CART_PAGE.path,
     },
 ];
 

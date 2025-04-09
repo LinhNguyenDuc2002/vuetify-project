@@ -41,7 +41,7 @@
 
             <hr class="my-4">
             <div class="mt-8">
-                <v-btn class="w-100 mb-3 text-center mb-5" size="large" data-mdb-ripple-init style="background-color: #dd4b39; color: white;"
+                <v-btn class="w-100 mb-3 text-center" size="large" data-mdb-ripple-init style="background-color: #dd4b39; color: white;"
                 type="submit">
                     <v-icon class="mr-1" size="20" color="white">mdi-google</v-icon> {{ $t('sign_in_with_google') }}
                 </v-btn>
