@@ -18,7 +18,7 @@ const VietNam = {
     view_orders: 'Xem đơn hàng',
     view_carts: 'Xem giỏ hàng',
     my_account: 'Tài khoản của tôi',
-    settings: 'Cài đặt',
+    settings: 'Cài đặt hệ thống',
     help: 'Trợ giúp',
     logout: 'Đăng xuất',
     toolbar: {

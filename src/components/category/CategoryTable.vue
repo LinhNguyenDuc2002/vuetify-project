@@ -74,7 +74,6 @@
 
 <script>
 import CategoryApi from '@/services/api/CategoryApi';
-import { fa } from 'vuetify/locale';
 
 export default {
     data() {

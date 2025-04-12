@@ -1,6 +1,19 @@
 <template>
     <div>
-        <v-card class="pa-10 bg-white rounded">
+        <v-card class="pa-10 bg-white rounded position-relative">
+            <div class="d-flex align-center position-absolute top-0 left-0 w-100 order-type" style="height: 50px;">
+                <a class="h-100">Tất cả</a>
+                <a class="h-100">Chờ xác nhận</a>
+                <a class="h-100">Chờ thanh toán</a>
+                <a class="h-100">Đang giao hàng</a>
+                <a class="h-100">Hoàn thành</a>
+                <a class="h-100">Đã hủy</a>
+                <a class="h-100">Trả hàng/ Hoàn tiền</a>
+            </div>
+
+            <div>
+
+            </div>
             <table class="w-100 cart-table">
                 <thead class="bg-white border-b-thin">
                     <tr>
@@ -96,30 +109,6 @@
                 </tbody>
             </table>
         </v-card>
-
-        <v-card class="pa-10 bg-white rounded position-fixed" style="z-index: 1; right: 16px; left: 21%; bottom: 16px;">
-            <div class="w-100 d-flex justify-end mb-3 pb-3 border-b-thin">
-                <div class="w-50 d-flex justify-space-between">
-                    <p>Voucher</p>
-                    <a href="#">Chọn hoặc nhập mã</a>
-                </div>
-            </div>
-
-            <div class="w-100 d-flex justify-space-between">
-                <div class="d-flex align-center justify-space-between w-50">
-                    <v-checkbox label="Chọn tất cả" hide-details></v-checkbox>
-                    <v-btn>Xóa</v-btn>
-                    <v-btn style="width: fit-content;">Bỏ sản phẩm không hoạt động</v-btn>
-                </div>
-
-                <div class="d-flex align-center">
-                    <p class="mr-5">Tổng cộng (0 sản phẩm): 0đ</p>
-                    <v-btn class="text-center" size="large" data-mdb-ripple-init style="background-color: #dd4b39; color: white;" type="submit" elevation="0">
-                        Mua hàng
-                    </v-btn>
-                </div>
-            </div>
-        </v-card>
     </div>
 </template>
 
@@ -136,11 +125,10 @@ export default {
 </script>
 
 <style>
-.cart-table th, td {
-    border: none;
-}
-
-.cart-table td {
-    padding: 50px 0px;
+.order-type a {
+    flex: 1; 
+    text-align: center; 
+    padding: 10px; 
+    box-sizing: border-box;
 }
 </style>
