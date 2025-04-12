@@ -54,8 +54,9 @@ export const AdminToolBarItems = [
         icon: 'mdi-chevron-up-circle',
     },
     {
-        title: 'mail_address',
-        icon: 'mdi-chevron-up-circle',
+        title: 'settings',
+        icon: 'mdi-cog-outline',
+        path: RouteConstant.LANGUAGE_PAGE.path,
     },
 ];
 
@@ -89,11 +90,17 @@ export const UserToolBarItems = [
     {
         title: 'view_orders',
         icon: 'mdi-list-box-outline',
+        path: RouteConstant.ORDER_PAGE.path
     },
     {
         title: 'view_carts',
         icon: 'mdi-cart-outline',
         path: RouteConstant.CART_PAGE.path,
+    },
+    {
+        title: 'settings',
+        icon: 'mdi-cog-outline',
+        path: RouteConstant.LANGUAGE_PAGE.path,
     },
 ];
 

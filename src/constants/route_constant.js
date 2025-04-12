@@ -12,10 +12,13 @@ const ADDRESS_DETAIL_PATH = USER_PATH + "/account/address";
 const CHANGE_PASSWORD_PATH = USER_PATH + "/account/password";
 const CHANGE_EMAIL_PATH = USER_PATH + "/account/email";
 const CART_PAGE_PATH = USER_PATH + "/cart";
+const ORDER_PAGE_PATH = USER_PATH + "/order";
 
 const ADD_PRODUCT_PATH = ADMIN_PATH + "/product/add";
 const PRODUCT_LIST_PATH = ADMIN_PATH + "/product/all";
 const CATEGORY_TABLE_PATH = ADMIN_PATH + "/category/all";
+
+const SYSTEM_LANGUAGE_PATH = USER_PATH + "/sys/language";
 
 export const RouteConstant = {
     HOME_PAGE: {
@@ -62,6 +65,14 @@ export const RouteConstant = {
     CART_PAGE: {
         path: CART_PAGE_PATH,
         name: 'CartPage'
+    },
+    ORDER_PAGE: {
+        path: ORDER_PAGE_PATH,
+        name: 'OrderListPage'
+    },
+    LANGUAGE_PAGE: {
+        path: SYSTEM_LANGUAGE_PATH,
+        name: 'LanguagePage'
     },
 
     // Admin
